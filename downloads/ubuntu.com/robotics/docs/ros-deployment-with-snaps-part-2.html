@@ -1,0 +1,3408 @@
+
+    
+<!doctype html>
+
+<html prefix="og: http://ogp.me/ns#" class="" lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Developer guide - Part 2: Distributing ROS apps with snaps | Ubuntu</title>
+
+  <link rel="preconnect" href="https://res.cloudinary.com">
+
+  
+  <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+  <script src="/static/js/dist/main.js?v=d670c07" defer></script>
+  <script src="/static/js/src/infer-preferred-language.js?v=b69e09e"></script>
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=25147bc">
+  <link rel="stylesheet" type="text/css" media="print" href="/static/css/print.css?v=0980a57">
+  <script>performance.mark("Stylesheets finished")</script>
+
+  <link rel="canonical" href="https://ubuntu.com/robotics/docs/ros-deployment-with-snaps-part-2">
+
+  <link rel="shortcut icon" href="https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://assets.ubuntu.com/v1/17b68252-apple-touch-icon-180x180-precomposed-ubuntu.png">
+
+  
+
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/46ed6870-Ubuntu-L-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/3baab91b-Ubuntu-Th-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/6113b69a-Ubuntu-LI-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/0c7b8dc0-Ubuntu-R-subset.woff2" crossorigin>
+
+  <meta name="description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+
+  <meta name="facebook-domain-verification" content="zxp9j79g1gy2xenbu9ll964pttk5hu">
+  <meta name="twitter:account_id" content="4503599627481511">
+  <meta name="twitter:site" content="@ubuntu">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ubuntu.com/robotics/docs/ros-deployment-with-snaps-part-2">
+  <meta property="og:site_name" content="Ubuntu">
+  <meta name="copydoc" content="https://drive.google.com/drive/folders/0B4s80tIYQW4BMjNiMGFmNzQtNDkxZC00YmQ0LWJiZWUtNTk2YThlY2MzZmJh">
+  <meta name="google-site-verification" content="ddh2iq7ZuKf1LpkL_gtM_T7DkKDVD7ibq6Ceue4a_3M">
+
+  
+  <meta name="twitter:title" content="Developer guide - Part 2: Distributing ROS apps with snaps | Ubuntu">
+  <meta property="og:title" content="Developer guide - Part 2: Distributing ROS apps with snaps | Ubuntu">
+  
+  
+  <meta name="twitter:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  <meta property="og:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  
+
+  
+  <!-- Meta image:  -->
+  
+
+  
+
+          <!-- Google Analytics and Google Optimize -->
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-1018242-59', 'auto', {'allowLinker': true});
+        ga('require', 'GTM-N2MDH37');
+        ga('require', 'linker');
+        ga('linker:autoLink', ['conjure-up.io', 'login.ubuntu.com', 'www.ubuntu.com',
+        'ubuntu.com', 'insights.ubuntu.com', 'developer.ubuntu.com', 'cn.ubuntu.com',
+        'design.ubuntu.com', 'maas.io', 'canonical.com', 'landscape.canonical.com',
+        'pages.ubuntu.com', '/tutorials', 'docs.ubuntu.com']);
+        </script>
+        <!-- End Google Analytics and Google Optimize -->
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K92JCQ');</script>
+        <!-- End Google Tag Manager -->
+</head>
+
+<body class="">
+  <!-- google tag manager -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K92JCQ" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+  </noscript>
+  <!-- end google tag manager -->
+
+  
+    
+
+<header id="navigation" class="p-navigation">
+  
+  <div class="p-navigation__row">
+    <div class="p-navigation__banner">
+      <div class="p-navigation__logo">
+        <a class="p-navigation__item" href="/">
+          <svg class="p-navigation__image" width="107px" height="32px" viewBox="0 0 107 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Ubuntu</title><g id="ubuntu-logo"><path d="M100.470409,13.7615448 C96.9385448,13.7615448 94.0754031,10.8982838 94.0754031,7.36627238 C94.0754031,3.83426097 96.9385448,0.971 100.470409,0.971 C104.002273,0.971 106.865415,3.83426097 106.865415,7.36627238 C106.865415,10.8982838 104.002273,13.7615448 100.470409,13.7615448 Z M96.479398,6.59820047 C96.0559273,6.59820047 95.7123568,6.9417853 95.7123568,7.36727117 C95.7123568,7.78976066 96.0559273,8.13434429 96.479398,8.13434429 C96.9038674,8.13434429 97.2504342,7.78976066 97.2504342,7.36727117 C97.2504342,6.9417853 96.9038674,6.59820047 96.479398,6.59820047 Z M101.966539,10.0919788 C101.601995,10.3017254 101.475153,10.7731557 101.684891,11.1377152 C101.898624,11.5092663 102.369036,11.6341154 102.73358,11.4213725 C103.103118,11.2116259 103.22996,10.7401956 103.015228,10.3726397 C102.803493,10.0030862 102.334079,9.87823709 101.966539,10.0929776 L101.966539,10.0919788 Z M98.1493106,7.36727117 C98.1493106,6.6081884 98.5268386,5.93500183 99.104117,5.52949182 L98.5428187,4.58762991 C97.8686614,5.03708681 97.3682869,5.72425648 97.1605465,6.52828495 C97.4062394,6.72804357 97.5580496,7.02768151 97.5580496,7.36727117 C97.5580496,7.70386446 97.4062394,8.00649877 97.1605465,8.20425981 C97.3682869,9.00828828 97.8696601,9.69445915 98.5428187,10.1419185 L99.104117,9.20305294 C98.5268386,8.79754293 98.1493106,8.12435636 98.1493106,7.36727117 Z M100.392506,5.11998664 C101.568037,5.11998664 102.529835,6.02089804 102.62971,7.16951013 L103.726339,7.14953427 C103.671408,6.30555408 103.30187,5.54147734 102.73358,4.98714716 C102.438948,5.09501681 102.100372,5.08003492 101.809735,4.90924129 C101.518099,4.74144405 101.337325,4.4577868 101.286389,4.15015852 C101.001745,4.07225265 100.703118,4.03030334 100.392506,4.03030334 C99.8631682,4.03030334 99.3617949,4.15415369 98.9143542,4.37388818 L99.4486863,5.33073199 C99.735328,5.19589492 100.057925,5.12098543 100.392506,5.12098543 L100.392506,5.11998664 Z M100.392506,9.61155932 C100.056926,9.61155932 99.735328,9.53565105 99.4486863,9.40181277 L98.9143542,10.3586566 C99.3607962,10.5783911 99.8631682,10.7022414 100.392506,10.7022414 C100.704117,10.7022414 101.001745,10.6622897 101.286389,10.5823862 C101.336327,10.2727604 101.518099,9.98810433 101.809735,9.82130588 C102.103368,9.65350864 102.438948,9.63553036 102.73358,9.74839398 C103.302868,9.18607345 103.670409,8.42599188 103.726339,7.5810129 L102.62971,7.56503221 C102.529835,8.71064793 101.568037,9.61056053 100.392506,9.61056053 L100.392506,9.61155932 Z M101.966539,4.64156473 C102.334079,4.85430767 102.803493,4.72945853 103.015228,4.35990507 C103.22996,3.993348 103.103118,3.52091885 102.735578,3.30917471 C102.370035,3.09942815 101.899623,3.22427729 101.686888,3.59183316 C101.474154,3.95839024 101.600996,4.4288218 101.966539,4.64056594 L101.966539,4.64156473 Z M12.7910109,24.1489933 C12.1418224,24.3107977 11.2828961,24.4855865 10.2172282,24.6663681 C9.15056154,24.850146 7.91610464,24.942035 6.5178525,24.942035 C5.29737813,24.942035 4.27365781,24.7642498 3.43970028,24.4086795 C2.60774025,24.0541079 1.93857672,23.551715 1.4322097,22.9005019 C0.922846416,22.2512863 0.558302106,21.4842132 0.335580515,20.6032777 C0.109862669,19.7153506 0,18.7385309 0,17.6598343 L0,8.76857793 L2.83146059,8.76857793 L2.83146059,17.0515693 C2.83146059,18.9822364 3.13508106,20.3635673 3.746317,21.1945632 C4.35555543,22.0275567 5.38127325,22.4430546 6.82247172,22.4430546 C7.12609218,22.4430546 7.44169767,22.4330667 7.76629191,22.4110932 C8.09188491,22.3911174 8.39750288,22.3661475 8.67915081,22.3361837 C8.96279625,22.3062199 9.22247165,22.2762561 9.45617951,22.2462924 C9.68988736,22.214331 9.85568012,22.1813708 9.95955028,22.1384227 L9.95955028,8.76857793 L12.7910109,8.76857793 L12.7910109,24.1499921 L12.7910109,24.1489933 Z M19.7033702,9.46773311 C20.049937,9.24600104 20.5722841,9.01028586 21.2734076,8.76857793 C21.9725337,8.5258712 22.7785262,8.40202085 23.6943813,8.40202085 C24.8299618,8.40202085 25.8396996,8.60777223 26.7235947,9.01128466 C27.6084886,9.41679466 28.3535572,9.98710554 28.9637944,10.7192209 C29.5700366,11.4483399 30.0324586,12.3212851 30.3470653,13.3360589 C30.6636695,14.3518315 30.8204735,15.469481 30.8204735,16.6880086 C30.8204735,17.9664638 30.6327082,19.1180723 30.2551802,20.1438328 C29.8786508,21.1685946 29.3463163,22.0365458 28.6571777,22.7466877 C27.9660416,23.459826 27.1350804,24.005167 26.1583014,24.3917 C25.1865161,24.7782329 24.0908857,24.971 22.8694126,24.971 C21.5490631,24.971 20.3825213,24.8781122 19.366791,24.6953331 C18.3520594,24.512554 17.5191006,24.328776 16.8699121,24.1459969 L16.8699121,1.45940984 L19.7023715,0.971998793 L19.7023715,9.46773311 L19.700374,9.46773311 L19.7033702,9.46773311 Z M20.9078646,22.3661475 C21.4242191,22.4390594 22.0664163,22.4730184 22.8404488,22.4730184 C24.3605486,22.4730184 25.5820217,21.9686279 26.4938819,20.9648408 C27.4077395,19.9590561 27.8651677,18.5327795 27.8651677,16.686011 C27.8651677,15.8739922 27.7852676,15.1129119 27.6214724,14.4007724 C27.4586759,13.6896317 27.1940067,13.0763727 26.8294624,12.557999 C26.4639193,12.0386266 25.9905111,11.636113 25.4152302,11.3394714 C24.8339568,11.0438287 24.1388258,10.8970061 23.3278395,10.8970061 C22.5548058,10.8970061 21.8456923,11.0298456 21.195505,11.2915294 C20.5463165,11.5582071 20.0469408,11.8308776 19.7023715,12.1155337 L19.7023715,22.1354263 C19.9880144,22.2203237 20.3885138,22.296232 20.9078646,22.3661475 Z M46.6257165,24.1489933 C45.976528,24.3107977 45.1176017,24.4855865 44.0529326,24.6663681 C42.9872647,24.850146 41.7528078,24.942035 40.3505606,24.942035 C39.1340813,24.942035 38.1083635,24.7642498 37.2764034,24.4086795 C36.4444434,24.0541079 35.7742811,23.551715 35.2689128,22.9005019 C34.7575521,22.2512863 34.3940065,21.4842132 34.1702862,20.6032777 C33.9475646,19.7173482 33.8367032,18.7395297 33.8367032,17.6618319 L33.8367032,8.77057551 L36.6681637,8.77057551 L36.6681637,17.0535669 C36.6681637,18.984234 36.9717842,20.3655649 37.5810226,21.1965608 C38.1902611,22.0295542 39.2149802,22.4450522 40.6571774,22.4450522 C40.9617966,22.4450522 41.2784008,22.4350643 41.6029951,22.4130908 C41.9275893,22.3931149 42.2322085,22.3681451 42.5168527,22.3381813 C42.7994994,22.3082175 43.0591748,22.2782537 43.2938814,22.2482899 C43.5255918,22.2153298 43.693382,22.1823696 43.7962534,22.1384227 L43.7962534,8.77057551 L46.6287128,8.77057551 L46.6287128,24.1519896 L46.6267153,24.1519896 L46.6257165,24.1489933 Z M50.7066153,9.22602518 C51.3558038,9.06222311 52.2177263,8.89142948 53.2953793,8.70665275 C54.3710347,8.52686999 55.6084878,8.43398223 57.010735,8.43398223 C58.2711594,8.43398223 59.3148547,8.61176741 60.1468148,8.96633897 C60.9807723,9.32190932 61.6449421,9.8183095 62.1423203,10.4585359 C62.6396986,11.0977635 62.9912591,11.8648366 63.1940057,12.7557601 C63.3957535,13.6526763 63.4976262,14.6354887 63.4976262,15.7121877 L63.4976262,24.6054417 L60.6641681,24.6054417 L60.6641681,16.3214515 C60.6641681,15.3456307 60.5982505,14.513636 60.467414,13.8244687 C60.3355788,13.1313063 60.117851,12.5759773 59.812233,12.1494927 C59.5096113,11.7200116 59.1011219,11.4123833 58.5937561,11.220615 C58.0873891,11.0238528 57.4551794,10.9289675 56.7061157,10.9289675 C56.4014965,10.9289675 56.0868898,10.9419518 55.764293,10.9619276 C55.4387,10.9819035 55.1280883,11.0078721 54.8354541,11.0378359 C54.5358287,11.0677997 54.2761533,11.1037563 54.0414466,11.143708 C53.8057413,11.1836597 53.6389498,11.2156211 53.5380759,11.2335994 L53.5380759,24.6044429 L50.7066153,24.6044429 L50.7066153,9.22602518 Z M70.0444424,8.76857793 L76.0449416,8.76857793 L76.0449416,11.143708 L70.0444424,11.143708 L70.0444424,18.4548737 C70.0444424,19.2439202 70.106365,19.9031237 70.2292115,20.4175021 C70.3490617,20.9368746 70.5328319,21.3443822 70.7765273,21.6380273 C71.0202227,21.9296749 71.3258407,22.1374239 71.6893862,22.262273 C72.0549293,22.3841258 72.4813962,22.4440534 72.9677882,22.4440534 C73.8396983,22.4440534 74.5298356,22.3471705 75.0401976,22.1544034 C75.5465646,21.9606375 75.8921327,21.8248017 76.0739054,21.7419018 L76.6831439,24.0591019 C76.3994984,24.2009305 75.8961277,24.3827108 75.1750291,24.6054417 C74.455928,24.8301702 73.6389492,24.9430338 72.7250916,24.9430338 C71.6484374,24.9430338 70.7595485,24.8061991 70.058425,24.5305322 C69.3592989,24.2548653 68.796003,23.8453601 68.3705349,23.2970227 C67.9430692,22.7496841 67.6434438,22.0744999 67.4716585,21.2724691 C67.2978757,20.4684406 67.2119831,19.5405618 67.2119831,18.4858362 L67.2119831,4.35191473 L70.0424449,3.8625061 L70.0424449,8.77057551 L70.0444424,8.77057551 L70.0444424,8.76857793 Z M91.4556778,24.1489933 C90.803493,24.3107977 89.947563,24.4855865 88.8788988,24.6663681 C87.8142297,24.850146 86.5817703,24.942035 85.1835182,24.942035 C83.9630438,24.942035 82.9393235,24.7642498 82.1073634,24.4086795 C81.2714084,24.0541079 80.6022449,23.551715 80.0958779,22.9005019 C79.5865146,22.2512863 79.2239678,21.4842132 78.9972512,20.6032777 C78.7775258,19.7173482 78.6626694,18.7395297 78.6626694,17.6618319 L78.6626694,8.77057551 L81.4991238,8.77057551 L81.4991238,17.0535669 C81.4991238,18.984234 81.8027442,20.3655649 82.4109839,21.1965608 C83.0202223,22.0295542 84.0459402,22.4450522 85.4871386,22.4450522 C85.7917578,22.4450522 86.1063646,22.4350643 86.4319576,22.4130908 C86.7535556,22.3931149 87.0591735,22.3681451 87.3438177,22.3381813 C87.6274632,22.3082175 87.8891361,22.2782537 88.1198477,22.2482899 C88.3535555,22.2153298 88.5223445,22.1823696 88.6242172,22.1384227 L88.6242172,8.77057551 L91.4576753,8.77057551 L91.4576753,24.1519896 L91.4556778,24.1519896 L91.4556778,24.1489933 Z" fill="#FFFFFF" fill-rule="nonzero"></path></g></svg>
+          <script>performance.mark("Logo rendered")</script>
+        </a>
+
+        
+        <h5 class="p-navigation--secondary__logo u-hide--nav-threshold-up">
+          <a class="p-navigation--secondary__banner" href="/robotics">
+            Robotics
+          </a>
+        </h5>
+        
+
+        
+      </div>
+      <div class="u-hide u-show--small js-account--small"></div>
+    </div>
+    <nav aria-label="Main navigation" class="p-navigation__nav">
+      <ul class="p-navigation__items u-hide js-show-nav" role="menu">
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="enterprise" onmouseover="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#enterprise-content" onfocus="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content');">Enterprise</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="developer" onmouseover="fetchDropdown('/templates/navigation-developer-h', 'developer-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#developer-content" onfocus="fetchDropdown('/templates/navigation-developer-h', 'developer-content');">Developer</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="community" onmouseover="fetchDropdown('/templates/navigation-community-h', 'community-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#community-content" onfocus="fetchDropdown('/templates/navigation-community-h', 'community-content');">Community</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="download" onmouseover="fetchDropdown('/templates/navigation-download-h', 'download-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#download-content" onfocus="fetchDropdown('/templates/navigation-download-h', 'download-content');">Download</a>
+        </li>
+      </ul>
+      <noscript>
+        <ul class="p-navigation__items" role="menu">
+          
+
+
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/openstack">OpenStack</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/kubernetes">Kubernetes</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/desktop">Desktop</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/internet-of-things">IoT</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/support">Support</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/download">Downloads</a></li>
+
+        </ul>
+      </noscript>
+      <ul class="p-navigation__items u-hide--small">
+        <li class="p-navigation__item" id="link-4">
+          <a href="/search" class="js-search-button p-navigation__link-anchor" style="padding-right: 1rem;">
+            <span class="u-hide u-show--large">Search</span> <i class="p-icon--search is-light">Search</i>
+          </a>
+        </li>
+        <li class="p-navigation__user js-account" id="canonical-login"></li>
+      </ul>
+      <div class="p-navigation__search u-show--small u-hide" style="z-index: 39;">
+        <form action="/search" class="p-search-box" id="ubuntu-global-search-form">
+          <input type="search" class="p-search-box__input" name="q" placeholder="Search our sites" required="" aria-label="Search our sites">
+          <button type="reset" class="p-search-box__reset"><i class="p-icon--close">Close</i></button>
+          <button type="submit" class="p-search-box__button"><i class="p-icon--search">Search</i></button>
+        </form>
+      </div>
+    </nav>
+  </div>
+  
+</header>
+<div class="dropdown-window-overlay fade-animation"></div>
+<div class="dropdown-window slide-animation">
+  <div class="u-hide" id="enterprise-content"></div>
+  <div class="u-hide" id="developer-content">  </div>
+  <div class="u-hide" id="community-content"></div>
+  <div class="u-hide" id="download-content"></div>
+</div>
+
+
+<nav aria-label="Sub navigation" class="p-navigation--secondary">
+  <div class="row">
+    <div class="col-12 u-equal-height">
+      <a class="p-navigation--secondary__banner u-hide--nav-threshold-down" href="/robotics">
+        <h5 class="p-navigation--secondary__logo">
+          Robotics
+        </h5>
+      </a>
+      
+      <ul class="breadcrumbs--secondary">
+        
+          
+        
+          
+            
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link p-link--soft" href="/robotics/ros-esm" >ROS ESM</a>
+            </li>
+            
+          
+        
+          
+            
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link p-link--soft" href="/robotics/what-is-ros" >What is ROS</a>
+            </li>
+            
+          
+        
+          
+            
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link p-link--soft" href="/robotics/community" >Community</a>
+            </li>
+            
+          
+        
+          
+            
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link p-link--active" href="/robotics/docs" aria-current="page">Docs</a>
+            </li>
+            
+          
+        
+
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+
+
+
+<script>
+  var nav = document.querySelector('.js-show-nav');
+  var hash = window.location.hash;
+  nav.classList.remove('u-hide');
+
+  // If the page loads with a preselected hash load and open the menu
+  if (hash) {
+    try {
+      var selected = nav.querySelector(hash);
+    } catch(error) {
+      console.warn("Hash " + hash + " not found in topnav");
+    }
+    if (selected) {
+      selected.onmouseover();
+    }
+  }
+
+  function fetchDropdown(url, id) {
+    var div = document.getElementById(id);
+    var req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.send();
+    req.addEventListener('load', function() {
+      div.innerHTML = this.responseText;
+    });
+  }
+
+  function initSearch() {
+    var searchButton = document.querySelector('.js-search-button');
+    var searchReset = document.querySelector('.p-search-box__reset');
+    if (searchButton) {
+      searchButton.addEventListener('click', openSearch);
+    }
+
+    if (searchReset) {
+      searchReset.addEventListener('click', closeSearch);
+    }
+  }
+  initSearch();
+
+  function openSearch(e) {
+    e.preventDefault();
+    var navigation = document.querySelector('.p-navigation__nav');
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var banner = document.querySelector(".p-navigation__banner");
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    var searchInput = document.querySelector('.p-search-box__input');
+    var searchActive = !search.classList.contains('u-hide');
+    search.classList.remove('u-hide');
+    searchButton.classList.add('u-hide');
+    banner.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    navigationItems.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    dropdownWindow.style="z-index: 37;"
+    dropdownWindowOverlay.classList.remove("fade-animation");
+    navigation.classList.add('has-active-search');
+    searchInput.focus();
+    dropdownWindowOverlay.addEventListener('click', closeSearch);
+    document.addEventListener('keyup', keyPressHandler);
+  }
+
+  function closeSearch() {
+    var navigation = document.querySelector('.p-navigation__nav');
+    var banner = document.querySelector(".p-navigation__banner")
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    search.classList.add('u-hide');
+    banner.style= "opacity: 1;"
+    dropdownWindow.style="z-index: 39;"
+    navigationItems.style= "opacity: 1;"
+    dropdownWindowOverlay.classList.add("fade-animation");
+    navigation.classList.remove('has-active-search');
+    searchButton.classList.remove('u-hide');
+    document.removeEventListener('keyup', keyPressHandler);
+    dropdownWindowOverlay.removeEventListener('click', closeSearch);
+  }
+
+  function keyPressHandler (e) {
+    console.log(e);
+    if (e.key === "Escape") {
+      closeSearch();
+    }
+  }
+</script>
+  
+
+  <div class="wrapper u-no-margin--top">
+    <div id="success" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">Your submission was sent successfully! <a href="#" onclick="location.href = document.referrer; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unsubscribed" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">You have successfully unsubscribed! <a href="#" onclick="location.href = ''; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="main-content" class="inner-wrapper">
+      
+      
+      
+
+  
+    
+<div class="p-strip is-shallow">
+    <div class="u-fixed-width">
+        <form class="p-search-box u-no-margin--bottom" action="/robotics/docs/search">
+        <input class="p-search-box__input" name="q" id="search-input" type="search"  placeholder="Search on Robotics Docs" required/>
+        
+            <input name="siteSearch" type="hidden" value="https://ubuntu.com/robotics/docs" />
+        
+        <button type="submit" alt="search" class="p-search-box__button" alt="search"><i class="p-icon--search">Submit</i></button>
+        </form>
+    </div>
+</div>
+  
+  <script src="/static/js/dist/side-navigation.js?v=b6538bd" defer></script>
+
+
+<div class="p-strip is-shallow">
+  <div class="row">
+    <aside class="col-3">
+      
+
+      <nav class="p-side-navigation--raw-html" id="drawer">
+        <a href="#drawer" class="p-side-navigation__toggle js-drawer-toggle" aria-controls="drawer">
+          Toggle side navigation
+        </a>
+        <div class="p-side-navigation__overlay js-drawer-toggle" aria-controls="drawer"></div>
+        <div class="p-side-navigation__drawer">
+          <div class="p-side-navigation__drawer-header">
+            <a href="#" class="p-side-navigation__toggle--in-drawer js-drawer-toggle" aria-controls="drawer">
+              Toggle side navigation
+            </a>
+          </div>
+          
+            
+              
+                
+                  <h3 class="p-side-navigation__heading--linked u-no-padding--left" data-level="0">
+                    <a class="p-side-navigation__link" href="/robotics/docs" >
+                      Home
+                    </a>
+                  </h3>
+                
+              
+              
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+            
+          
+            
+              
+                
+                  <h3 class="p-side-navigation__heading--linked u-no-padding--left" data-level="0">
+                    <a class="p-side-navigation__link" href="/robotics/docs/tutorials" >
+                      Tutorials
+                    </a>
+                  </h3>
+                
+              
+              
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/tutorials#heading--snapcraft"
+          class="p-side-navigation__link is-expandable"
+          aria-expanded="false"
+          >
+            Snapcraft
+        </a>
+      
+
+      
+        
+          <button
+            class="p-side-navigation__expand"
+            aria-expanded="true"
+            aria-label="show submenu for Snapcraft">
+          </button>
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/ros-deployment-with-snaps-part-1"
+          class="p-side-navigation__link is-expandable"
+          aria-expanded="true"
+          >
+            Developer guide - Part 1: Distributing ROS apps with snaps
+        </a>
+      
+
+      
+        
+          <button
+            class="p-side-navigation__expand"
+            aria-expanded="false"
+            aria-label="show submenu for Developer guide - Part 1: Distributing ROS apps with snaps">
+          </button>
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/developer-guide-part-1-exercise"
+          class="p-side-navigation__link "
+          
+          >
+            Developer guide - Part 1: exercise
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/ros-deployment-with-snaps-part-2"
+          class="p-side-navigation__link is-expandable"
+          aria-expanded="true"
+          aria-current="page">
+            Developer guide - Part 2: Distributing ROS apps with snaps
+        </a>
+      
+
+      
+        
+          <button
+            class="p-side-navigation__expand"
+            aria-expanded="true"
+            aria-label="show submenu for Developer guide - Part 2: Distributing ROS apps with snaps">
+          </button>
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/developer-guide-part-2-exercise"
+          class="p-side-navigation__link "
+          
+          >
+            Developer guide - Part 2: exercise
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+            
+          
+            
+              
+                
+                  <h3 class="p-side-navigation__heading--linked u-no-padding--left" data-level="0">
+                    <a class="p-side-navigation__link" href="/robotics/docs/how-to-guides" >
+                      How-to guides
+                    </a>
+                  </h3>
+                
+              
+              
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/how-to-guides#heading--snapcraft"
+          class="p-side-navigation__link is-expandable"
+          aria-expanded="false"
+          >
+            Snapcraft
+        </a>
+      
+
+      
+        
+          <button
+            class="p-side-navigation__expand"
+            aria-expanded="false"
+            aria-label="show submenu for Snapcraft">
+          </button>
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/build-and-publish-a-ros-snap-with-github-actions"
+          class="p-side-navigation__link "
+          
+          >
+            Build and publish a snap with GitHub Actions
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/migrate-from-docker-to-snap"
+          class="p-side-navigation__link "
+          
+          >
+            Migrate from docker to snap
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/ros-2-shared-memory-in-snaps"
+          class="p-side-navigation__link "
+          
+          >
+            ROS 2 shared memory in snaps
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/ros-distributions-with-no-extensions"
+          class="p-side-navigation__link "
+          
+          >
+            ROS distributions with no extensions
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/how-to-guides#heading--ubuntu-core"
+          class="p-side-navigation__link "
+          
+          >
+            Ubuntu Core
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+            
+          
+            
+              
+                
+                  <h3 class="p-side-navigation__heading--linked u-no-padding--left" data-level="0">
+                    <a class="p-side-navigation__link" href="/robotics/docs/extensions" >
+                      References
+                    </a>
+                  </h3>
+                
+              
+              
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/extensions#heading--snapcraft"
+          class="p-side-navigation__link is-expandable"
+          aria-expanded="false"
+          >
+            Snapcraft
+        </a>
+      
+
+      
+        
+          <button
+            class="p-side-navigation__expand"
+            aria-expanded="false"
+            aria-label="show submenu for Snapcraft">
+          </button>
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/extensions#heading--plugins"
+          class="p-side-navigation__link "
+          
+          >
+            Plugins
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/extensions#heading--extensions"
+          class="p-side-navigation__link "
+          
+          >
+            Extensions
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/faq-and-troubleshooting"
+          class="p-side-navigation__link "
+          
+          >
+            FAQ and troubleshooting
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/extensions#heading--others"
+          class="p-side-navigation__link "
+          
+          >
+            Additional resources
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+            
+          
+            
+              
+                
+                  <h3 class="p-side-navigation__heading--linked u-no-padding--left" data-level="0">
+                    <a class="p-side-navigation__link" href="/robotics/docs/explanation" >
+                      Explanation
+                    </a>
+                  </h3>
+                
+              
+              
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/explanation#heading--ubuntu-core"
+          class="p-side-navigation__link "
+          
+          >
+            Ubuntu Core
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="https://ubuntu.com/engage/securing-ros-on-robotics-platforms-whitepaper"
+          class="p-side-navigation__link "
+          
+          >
+            Security
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/explanation#heading--snaps"
+          class="p-side-navigation__link is-expandable"
+          aria-expanded="false"
+          >
+            Snaps
+        </a>
+      
+
+      
+        
+          <button
+            class="p-side-navigation__expand"
+            aria-expanded="false"
+            aria-label="show submenu for Snaps">
+          </button>
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/ros-architectures-with-snaps"
+          class="p-side-navigation__link "
+          
+          >
+            ROS architectures with snaps
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/identify-functionalities-and-applications-of-a-robotics-snap"
+          class="p-side-navigation__link "
+          
+          >
+            Identify functionalities and applications of a robotics snap
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/snap-configurations-and-hooks"
+          class="p-side-navigation__link "
+          
+          >
+            Snap configurations and hooks
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/snap-data-and-file-storage"
+          class="p-side-navigation__link "
+          
+          >
+            Snap data and file storage
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/snap-environment-variables"
+          class="p-side-navigation__link "
+          
+          >
+            Snap environment variables
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/application-orchestration"
+          class="p-side-navigation__link "
+          
+          >
+            Application orchestration
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/vcstool-and-rosinstall-file"
+          class="p-side-navigation__link "
+          
+          >
+            Vcstool and rosinstall file
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/debug-the-build-of-a-snap"
+          class="p-side-navigation__link "
+          
+          >
+            Debug the build of a snap
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/debug-a-snap-application"
+          class="p-side-navigation__link "
+          
+          >
+            Debug a snap application
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </li>
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          href="/robotics/docs/explanation#heading--iot-app-store"
+          class="p-side-navigation__link "
+          
+          >
+            IoT App Store
+        </a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+            
+          
+        </div>
+      </nav>
+    </aside>
+
+    <main class="col-9">
+      
+      <h1>Developer guide - Part 2: Distributing ROS apps with snaps</h1>
+      
+
+      <h2>How to use this developer guide</h2>
+<p>In <a href="/robotics/docs/ros-deployment-with-snaps-part-1">part 1</a> of our developer guide series, we introduced the main concepts and learned what snaps can do for ROS applications. We also explored the most important features of snapcraft.</p>
+<p>In this developer guide, we will explore advanced snap topics and tools that will show you how to structure, package, and test complex robotics applications.</p>
+<p>This guide is meant for ROS snap beginners and advanced users looking for guidelines.</p>
+<p>This is not a quick guide  nor a ROS tutorial. A new developer will take approximately one full day to cover the entire guide.</p>
+<p>While this developer guide is meant to be read completely, a second-time reader or an experienced snapcraft developer might come back to a specific section. Some sections can be used independently to learn how to solve a specific problem.</p>
+<p>Here are sections you can jump directly into:</p>
+<ul>
+<li>
+<a href="#heading--identification-of-robot-components">Snapping a robot, where to start?</a>
+<ul>
+<li>Know the basics of snap but wonder how it would apply to a complete robotics stack.</li>
+<li>How to define the architecture of a robot snap.</li>
+</ul>
+</li>
+<li>
+<a href="#heading--snapping-our-software">Snapping</a>
+<ul>
+<li>Snap a complete robot software stack.</li>
+<li>Manage all the ROS workspace dependencies.</li>
+</ul>
+</li>
+<li>
+<a href="#heading--application-scripts">Application scripts</a>
+<ul>
+<li>The snap filesystem and data on the host.</li>
+<li>Snap background application (daemon).</li>
+<li>Orchestration between apps.</li>
+<li>Use a Bash script to start an application.</li>
+<li>Sharing data between applications.</li>
+</ul>
+</li>
+<li>
+<a href="#heading--turtlebot3-configurations">Hooks</a>
+<ul>
+<li>Make a snap configurable and expose ROS parameters at the snap level.</li>
+<li>Trigger a script when a special action happens (install, update, remove).</li>
+</ul>
+</li>
+<li>
+<a href="#heading--applications-debugging">Applications debug</a>
+<ul>
+<li>Debug the building of a snap.</li>
+<li>Inspect the state of an installed snap.</li>
+<li>Debug an installed snap.</li>
+<li>Debug confinement violation issue.</li>
+</ul>
+</li>
+</ul>
+<h2 id="heading--packaging-complex-robotics-software-with-snaps">Packaging complex robotics software with snaps</h2>
+<p>The first step for deploying a robotics application is to package it. Snaps are specifically designed to confine embedded Linux applications, making it easier to install and manage software versions. They offer useful features for deployment, such as over-the-air (OTA) updates, delta updates, automatic rollback, security policies, and more. While bundling all software dependencies, snaps provide a comprehensive deployment infrastructure for robotics software.</p>
+<p>While snaps adapt to the way ROS developers work, they bring new concepts and tools that we need to understand first.</p>
+<h3 id="heading--what-we-will-learn">What we will learn</h3>
+<p>Deploying robotics software is usually tackled when a project reaches certain maturity. We need a fast and reliable way to distribute software and subsequent updates. Additionally, we need the deployed software to be fully isolated in its sandbox, thus minimising security risks.</p>
+<p>Addressing those points and more, snaps represent an ideal solution to deploy ROS applications to devices and users.</p>
+<p>Snapping a simple talker-listener in <a href="/robotics/docs/ros-deployment-with-snaps-part-1">Part 1</a> was good enough to see the potential of snaps. However, when packaging a more complex application, one might wonder:</p>
+<ul>
+<li>Should we build one snap for our entire robot?</li>
+<li>Should we have one part per ROS package?</li>
+<li>What should a final robot snap look like?</li>
+</ul>
+<p>Snap and snapcraft contain tons of features that will come in handy when defining our robot application. This guide will help you understand these features and how to use them.</p>
+<p>In this second part, we will learn:</p>
+<ul>
+<li>How to create a snap for a robot software stack.</li>
+<li>How to take the decisions that a ROS snap developer has to take to design a snap.</li>
+<li>We will introduce new features and concepts associated with snaps that will be useful in a robot application.</li>
+<li>The different means to debug a snap package and its snapped applications.</li>
+</ul>
+<p>While covering the theoretical aspects of ROS snaps, we will apply all this knowledge to <a href="https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/">TurtleBot3</a> for a more interesting real-world scenario.</p>
+<h3 id="heading--requirements">Requirements</h3>
+<p>You will need basic ROS knowledge. Ideally, you will already understand how to build packages, call a service, and know what a launch file is. You should also be familiar with the process of creating a map and using it to navigate.</p>
+<p>A basic understanding of the Linux environment (Ubuntu) is also required.</p>
+<p>Finally, we expect the reader to have a working knowledge of snaps. This means either previous experience with snap and snapcraft, or having followed the <a href="/robotics/docs/ros-deployment-with-snaps-part-1">Deployment Guide - PART 1</a>.</p>
+<h4 id="heading--setup">Setup</h4>
+<p>Since this developer guide builds a snap for a robot, we will need:</p>
+<ul>
+<li>TurtleBot3 <a href="https://classic.gazebosim.org/">Gazebo classic</a> simulation running under ROS Noetic.</li>
+<li>Depending on our current OS, we can choose between the following Native setup and the Multipass setup.</li>
+</ul>
+<h5 id="heading--native-setup">Native setup</h5>
+<p>The Native setup will need <a href="https://releases.ubuntu.com/focal/">Ubuntu 20.04</a>. This is because we will need the TurtleBot3 simulation to run. We don’t intend to embed the simulation into our snap.</p>
+<p>With the running Ubuntu 20.04, follow the next step to install all the dependencies:</p>
+<ul>
+<li>Install ROS Noetic desktop-full following the <a href="http://wiki.ros.org/noetic/Installation/Ubuntu">official documentation</a>
+</li>
+<li>Install the TurtleBot3 simulation with the following command:
+<ul>
+<li><code>sudo apt install -y ros-noetic-turtlebot3-gazebo</code></li>
+</ul>
+</li>
+<li>Make sure <a href="https://snapcraft.io/docs/installing-snapd">snapd</a> and <a href="https://snapcraft.io/snapcraft">snapcraft</a> are installed</li>
+<li>Jump to the section <a href="#heading--setup-check">Setup Check</a>
+</li>
+</ul>
+<h5 id="heading--alternative-to-native-setup-multipass">Alternative to native setup: Multipass</h5>
+<p>If a native setup is not possible, we will use a Virtual Machine. In this case, we are going to use <a href="https://multipass.run/docs">Multipass</a> to quickly generate an Ubuntu VM.</p>
+<h6 id="heading--install-multipass">Install Multipass</h6>
+<p>On Ubuntu, the installation of Multipass is straightforward:</p>
+<pre><code class="lang-bash">sudo snap install multipass
+</code></pre>
+<p>We can also install it on Windows and macOS by following the <a href="https://multipass.run/install">documentation</a>.</p>
+<h6 id="heading--launch-the-vm">Launch the VM</h6>
+<p>To launch the VM, we are going to use a <a href="https://canonical-cloud-init.readthedocs-hosted.com/en/latest/">cloud-init</a> configuration stored in GitHub. In essence, we will launch the VM, and install ROS Noetic along with the TurtleBot3 simulation automatically. Note that this might take some time depending on our configuration (~15 mins).</p>
+<pre><code class="lang-bash">multipass launch --cpus 2 --disk 20G --memory 4G --cloud-init https://raw.githubusercontent.com/canonical/ros_snap_workshop_part2_multipass/main/cloud-init.yaml 20.04 --name workshop-part2 --timeout 10000
+</code></pre>
+<p>The VM must now be up and running. We can verify that with:</p>
+<pre><code class="lang-bash">$ multipass list
+
+Name           State   IPv4       Image
+
+workshop-part2 Running 10.26.1.87 Ubuntu 20.04 LTS
+</code></pre>
+<h6 id="heading--attach-to-the-vm">Attach to the VM</h6>
+<p>Multipass offers a way to attach a shell to the VM with:</p>
+<pre><code class="lang-bash">multipass shell workshop-part2
+</code></pre>
+<p>Unfortunately, with this solution, we cannot forward X11 (for graphic applications).</p>
+<p>We can connect with ssh into the VM with X11 forwarding with the command:</p>
+<pre><code class="lang-bash">ssh -X ubuntu@$(multipass list --format csv | awk -F, '$1=="workshop-part2"{print $3}')
+</code></pre>
+<p>The password for the Ubuntu user is simply: Ubuntu.</p>
+<p><em>Disclaimer: Using a VM with a pre-saved password is not a good practice in general. Here we only do so to make it simple to follow the developer guide. If you wish to use a VM for anything else please change the password.</em></p>
+<p>In the case of a VM setup, all the commands and instructions from this guide must be executed in the VM.</p>
+<h5 id="heading--setup-check">Setup check</h5>
+<p>We can make sure that everything is properly installed by launching:</p>
+<pre><code class="lang-bash">TURTLEBOT3_MODEL=waffle_pi roslaunch turtlebot3_gazebo turtlebot3_world.launch
+</code></pre>
+<p>We should then see the TurtleBot3 simulated in the <code>turtlebot3_world</code> environment:</p>
+<p><img alt="" height="401" src="https://lh6.googleusercontent.com/5gAV3AtN7ZwfGeY-wtfQl6qRjoCBh9J16udACglEBT83gVGSWTVj30afDCF0NpGKIbA2G9Ygz-SOtn2c8JiIyedoh8CdtMNGYS9WB5PxD7pC7D9U3nDdnIzZ_Y1sDhTF7sSotFa7mYTofCUCQkUakw" width="624"/></p>
+<p>We can now <code>ctrl-c</code> the Gazebo launch file.</p>
+<p>We can also:</p>
+<pre><code class="lang-bash">snapcraft --version
+</code></pre>
+<p>And it should display a version equal to or above <code>7.2.9</code>.</p>
+<p>We are now all set up for this developer guide.</p>
+<h2 id="heading--identification-of-robot-components">Identification of robot components</h2>
+<p>While we can find many examples to snap various applications, robots might sound more complicated. A robot is usually composed of multiple applications, background services, and applications to call.</p>
+<p>Snaps are designed to deploy applications. Thus, <strong>we must think of our robot software as an application and not as a set of launch files</strong> to call in 5 different terminals.</p>
+<p>To start snapping our stack we first need to <a href="https://ubuntu.com/robotics/docs/identify-functionalities-and-applications-of-a-robotics-snap">identify the various functionalities and applications of our robot application</a>.</p>
+<p>We are going to apply the methodology to the TurtleBot3. This way, we will have a clear example of the functionalities and snap entries for a robot, as well as the process to identify these entries.</p>
+<p>For this guide, we will focus on the monolithic snap approach since it is the simplest for a first robot snap. All the possible architectures for ROS snap applications are described <a href="https://snapcraft.io/docs/ros-architectures-with-snaps">in the documentation</a>.</p>
+<h3 id="heading--functionalities-of-our-robot-snap">Functionalities of our robot snap</h3>
+<p>Before defining our applications, we must define the final functionalities that the snap should bring to our robot. We want the user to do three things:</p>
+<ol>
+<li>Teleoperate the robot with a keyboard or a joystick.</li>
+<li>Create a map of our environment.</li>
+<li>Navigate into our mapped environment.</li>
+</ol>
+<p>These are the three functionalities that we want our users to be able to perform with our robot.</p>
+<p>Additionally, we don’t want our snap to be compatible only with our physical TurtleBot3. We also want our snap to be compatible with the simulation.</p>
+<p>Note that <strong>we won’t need the snap to run the simulation itself</strong>, since the simulation is a substitute for the real robot. <strong>The snap should simply interface with the simulation.</strong></p>
+<h3 id="heading--defining-the-turtlebot3-applications">Defining the TurtleBot3 applications</h3>
+<p>Now that we have defined the functionalities of the robot, let’s have a look at the applications we need to cover them.</p>
+<p>We want most of it to be ready as quickly as possible on the robot. Hence, the common set of nodes for these functionalities must be always up and running. We will call it the <strong>core</strong> application.</p>
+<p>The diagram below summarises all these different applications inside our TurtleBot3c (C for Canonical) snap and how they will be used by the final user. The TurtleBot3B3C snap contains all the system and ROS dependencies for our applications. We have <code>core</code> and <code>teleop</code> which are daemons started automatically at boot since they are always necessary. <code>Joy</code> and <code>key</code> apps are applications that can be called from the terminal by a user to be able to control the robot manually. Finally, <code>mapping</code> and <code>navigation</code> are background applications that can be enabled or disabled. Once enabled they will act exactly like <code>core</code> and simply automatically start at boot. All these applications are communicating with each other with ROS.<br/>
+<a class="onebox" href="https://assets.ubuntu.com/v1/2529db37-tb3snap.png" rel="noopener" target="_blank">
+<img height="523" src="https://assets.ubuntu.com/v1/2529db37-tb3snap.png" width="800"/>
+</a>
+</p>
+<p>Let’s break down what each of these applications will do and the requirements they have.</p>
+<h4 id="heading--core">Core</h4>
+<p>Core is going to be our common set of nodes always running in the background. In the case of the TurtleBot3, we are talking about all the nodes to interface with the hardware (mobile base, LIDAR, camera) as well as the <code>robot_state_publisher</code> to have the model of the robot available. This <code>core</code> snap application must be running in the background.</p>
+<h4 id="heading--teleoperation-applications">Teleoperation applications</h4>
+<p>TurtleBot3 should have the functionality to be teleoperated with a joystick or a keyboard. We want to be able to do that from a controller connected to the robot. We also want another computer on the network to be able to control our robot.</p>
+<p>To be able to manage so many different ways of teleoperating the robot, we will need an application to be able to route all this traffic. Similarly to the core app enabling the common part of all functionalities, the <code>teleop</code> app will be starting the common part necessary for all teleoperation scenarios.</p>
+<p>On the contrary, we don’t want the joystick or keyboard specific apps to be running all the time.</p>
+<p>We will then need three different snap applications:</p>
+<ul>
+<li>The first one called <code>teleop</code> simply runs the teleoperation basics in the background. This way, a controller application running on the robot or remotely can always control the robot.</li>
+<li>The second application will be called <code>joy</code> and will be a command to call whenever we want to control the robot with a joystick. Meaning that every node and configuration specific to the joystick control should be launched in the application.</li>
+<li>The third application, <code>key</code>, will be similar to the <code>joy</code> application, but for the keyboard control.</li>
+</ul>
+<p>You can see all of them in the diagram above. This is an example of how we can split our applications. Depending on the use case one might decide for a different split.</p>
+<p>With these three different snap applications, we will be able to have all the teleoperation functionality that we wanted.</p>
+<h4 id="heading--mapping">Mapping</h4>
+<p>We will use TurtleBot3 to create a map of its environment. Thus, we want a <code>mapping</code> application that we can call to start mapping our environment. We also want this application to automatically save the map when we stop the application. This way there will be no need to manipulate any file or to call a service of any kind.</p>
+<p>Remember that the idea is to think of creating an application for deployment. The final user of our snap will understand what creating a map of the environment means. On the contrary, our end-user might not know ROS and thus how to save a map the ROS way (calling a <code>rosservice</code> from the <code>map_server</code>).</p>
+<p>Since the <code>core</code> &amp; <code>teleop</code> daemons will be running, launching <code>joy</code> or <code>key</code> along with <code>mapping</code> will be all we need to start creating a map of any environment.</p>
+<h4 id="heading--navigation">Navigation</h4>
+<p>After mapping, we navigate in our freshly mapped environment.</p>
+<p>Hence, we will need another application called <code>navigation</code>. This application will be launching everything we need for the navigation (localization + navigation). This application should make sure to load the last map that we created (with the <code>mapping</code> application). While the mapping is done on rare occasions, the navigation will be rather standard.</p>
+<p>Thus, our <code>navigation</code> should be running as a daemon in the background. With the specificity that it should be shipped as disabled (we can enable it) since we won’t have a map created on the very first install.</p>
+<h4 id="heading--turtlebot3-ros-workspace-presentation">TurtleBot3 ROS workspace presentation</h4>
+<p>We have now seen the different applications that TurtleBot3 snap will have to make its applications easy and error-proof to use.</p>
+<p>In the section below we covered the methodology used to define our snap application. <strong>We must think in terms of functionalities once deployed</strong>. The usage of a deployed application can differ from the usage that a developer would have of the same ROS workspace.</p>
+<p>It’s now time to look at what’s inside the TurtleBot3 repositories. This way we will identify how to expand a traditional ROS workspace into an application-oriented workspace.</p>
+<p>In this developer guide, we are going to work with three repositories: TurtleBot3, TurtleBot3 messages, and TurtleBot3c.</p>
+<h4 id="heading--turtlebot3">TurtleBot3</h4>
+<p>This is the <a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel">official repository from Robotis</a>, which contains most of the TurtleBot3 packages. The main packages for this demo are:</p>
+<ul>
+<li>
+<a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel/turtlebot3_bringup">Turtlebot3_bringup</a>: Contains robot launch files for different configurations.</li>
+<li>
+<a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel/turtlebot3_description">Turtlebot3_description</a>: Contains URDF files as well as meshes.</li>
+<li>
+<a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel/turtlebot3_navigation">Turtlebot3_navigation</a>: Contains launch files and parameters for navigation algorithm and ROS packages (AMCL, move_base).</li>
+<li>
+<a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel/turtlebot3_slam">Turtlebot3_slam</a>: Contains launch files and configurations for the different SLAM algorithm (gmapping, hector slam, etc.).</li>
+<li>
+<a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel/turtlebot3_teleop">Turtlebot3_teleop</a>: Containing the node to control TurtleBot3 with a keyboard.</li>
+</ul>
+<p>All these ROS packages contain <code>package.xml</code>, effectively listing all the build time and run-time dependencies. Recall that these <code>packages.xml</code> files are used by <code>snapcraft</code> plugins to automatically pull dependencies. If we were to use a different robot stack we should make sure that similarly, the <code>package.xml</code> is properly listing the dependencies.</p>
+<p>Since we are running ROS Noetic for this guide, we will be using the <code>noetic-devel</code> branch along with the corresponding Ubuntu 20.04.</p>
+<h4 id="heading--turtlebot3-messages">TurtleBot3 messages</h4>
+<p>Additionally, the <a href="https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git"><code>turtlebot3_msgs</code></a> repository is another official repository from Robotis and contains the TurtleBot3 messages definition. The messages (<code>Version</code>, <code>Sound</code>, and <code>SensorState</code>) are specific to the TurtleBot3 application.</p>
+<h4 id="heading--turtlebot3c">TurtleBot3c</h4>
+<p><a href="https://github.com/canonical/turtlebot3c/tree/noetic-devel">TurtleBot3c</a> is a collection of configurations/launch files maintained by the robotics team at Canonical created for this developer guide. The purpose of this repository is to easily expose applications-oriented <code>launchfiles</code>.</p>
+<p>It is composed of four different packages:</p>
+<ul>
+<li>
+<a href="https://github.com/canonical/turtlebot3c/tree/noetic-devel/turtlebot3c">Turtlebot3c</a>: The meta-package of this repository.</li>
+<li>
+<a href="https://github.com/canonical/turtlebot3c/tree/noetic-devel/turtlebot3c_2dnav">Turtlebot3c_2dnav</a>: Contains one mapping launch file, and one navigation launch file.</li>
+<li>
+<a href="https://github.com/canonical/turtlebot3c/tree/noetic-devel/turtlebot3c_bringup">Turtlebot3c_bringup</a>: Contains a general bring-up launch file capable of launching the basic nodes to interface with the real TurtleBot3 or its Gazebo classic simulation.</li>
+<li>
+<a href="https://github.com/canonical/turtlebot3c/tree/noetic-devel/turtlebot3c_teleop">Turtlebot3c_teleop</a>: Contains launch files as well as configuration for joystick and keyboard teleoperation.</li>
+</ul>
+<p>While the first three packages are rather straightforward, the <a href="https://github.com/canonical/turtlebot3c/tree/noetic-devel/turtlebot3c_teleop">turtlebot3c_teleop</a> package adds logic that is not present in the original TurtleBot3 repository. We indeed use a topic multiplexer called <a href="http://wiki.ros.org/topic_tools/mux">topic_tools/mux</a> responsible for rooting the desired robot control topic to the /cmd_vel topic (see figure below). This way our TurtleBot3 could be controlled by a joystick, a keyboard, or even the navigation depending on what we desire without interfering with each other.</p>
+<p> <a class="onebox" href="https://assets.ubuntu.com/v1/c59f2f80-teleop-mux.png" rel="noopener" target="_blank">
+<img height="509" src="https://assets.ubuntu.com/v1/c59f2f80-teleop-mux.png" width="466"/>
+</a>
+</p>
+<p>Selecting the topic which is going to be redirected, can be done with the following command:</p>
+<pre><code class="lang-bash">rosservice call /mux/select "topic: 'key_vel'"
+</code></pre>
+<h2 id="heading--snapping-our-software">Snapping our software</h2>
+<p>In the previous section, we have defined the applications that our snap must expose. We have also seen the different repositories from TurtleBot3 that we will need to implement those applications. This is the first step to writing our <code>snapcraft.yaml</code> file.</p>
+<p>The following section is going to cover how to snap applications, step by step. The final version of the snap workspace is <a href="https://github.com/canonical/turtlebot3c-snap/tree/noetic-devel">available on GitHub</a>. We can refer to it at any time in case we have questions regarding the content of a file.</p>
+<h3 id="heading--completing-our-snapcraft-yaml">Completing our snapcraft.yaml</h3>
+<p>Let’s create a directory for our project:</p>
+<pre><code class="lang-bash">mkdir -p turtlebot3c_snap/
+
+cd turtlebot3c_snap
+</code></pre>
+<p>And let’s initialise our snap project:</p>
+<pre><code class="lang-bash">snapcraft init
+</code></pre>
+<p>This will create a <code>snap/snapcraft.yaml</code> file.</p>
+<p>In this file, we first need to complete the metadata along with <a href="https://snapcraft.io/docs/snap-confinement"><code>strict</code> confinement</a> and <a href="https://snapcraft.io/docs/base-snaps"><code>core20</code></a>.</p>
+<pre><code class="lang-auto">name: turtlebot3c
+base: core20
+version: '1'
+summary: Turtlebot3c core snap
+description: |
+  This snap automatically spawns a roscore and the core components for the
+  Turtlebot3.
+confinement: strict
+</code></pre>
+<p>Everything here is self-explanatory. We start directly from <code>strict</code> confinement since we already know that <code>network</code> and <code>network</code> bind are the necessary plugs for ROS.</p>
+<h4 id="heading--build-the-workspace">Build the workspace</h4>
+<p>As mentioned in the previous section, we will use three different repositories. <a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel">turtlebot3</a> and <a href="https://github.com/canonical/turtlebot3c">turtlebot3c</a> but also <a href="https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git"><code>turtlebot3_msgs</code></a> since TurtleBot3 messages are hosted on a different repository.</p>
+<p>Here we will define one <a href="https://snapcraft.io/docs/snapcraft-parts-metadata">snapcraft part</a> for our ROS workspace. For this snapcraft part, we will use the <a href="https://snapcraft.io/docs/catkin-plugin"><code>catkin</code> plugin</a>. As seen in the <a href="https://ubuntu.com/robotics/docs/ros-deployment-with-snaps-part-1">previous part of this guide</a>, the <code>catkin</code> plugin comes in handy with the <a href="https://snapcraft.io/docs/ros-noetic"><code>ros-noetic</code> snapcraft extensions</a>.</p>
+<p>The source is used to retrieve the source tree to build. Here we have three different GitHub repositories (<a href="https://github.com/ROBOTIS-GIT/turtlebot3/tree/noetic-devel">turtlebot3</a>, <a href="https://github.com/canonical/turtlebot3c">turtlebot3c</a> and <a href="https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git"><code>turtlebot3_msgs</code></a>). We cannot put all three in the source entry. We will use <a href="https://github.com/dirk-thomas/vcstool">Vcstool</a> to pull all the repositories that we need based on a <a href="https://docs.ros.org/en/independent/api/rosinstall/html/rosinstall_file_format.html">rosinstall file</a>.</p>
+<p>A detailed explanation of this process can be found in the <a href="https://ubuntu.com/robotics/docs/vcstool-and-rosinstall-file">Vcstool and rosinstall file documentation</a>.</p>
+<h5 id="heading--writing-our-turtlebot3-part">Writing our turtlebot3 part</h5>
+<p>The very first thing that we need is a <code>.rosinstall</code> file. We will populate this file with our three repositories:</p>
+<p><em>turtlebot3c.rosinstall</em>:</p>
+<pre><code class="lang-auto">- git: {local-name: turtlebot3, uri: 'https://github.com/ROBOTIS-GIT/turtlebot3.git', version: noetic-devel}
+- git: {local-name: turtlebot3_msgs, uri: 'https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git', version: noetic-devel}
+- git: {local-name: turtlebot3c, uri: 'https://github.com/ubuntu-robotics/turtlebot3c.git', version: noetic-devel}
+</code></pre>
+<p>We will place this file at the root of our <code>turtlebot3c_snap</code> directory. Right next to the <code>snap/</code> folder.</p>
+<p>Now we must write the <code>snapcraft</code> part to lever this file with the vcs tool. We will need <code>python3-vcstool</code> at build time to use our <code>rosinstall</code> file.</p>
+<p>Our part to build ROS workspace is going to be:</p>
+<pre><code class="lang-auto">parts:
+  workspace:
+    plugin: catkin
+    source: . # import our rosinstall file
+    build-packages: [python3-vcstool, git]
+    stage-packages:
+      - ros-noetic-rosbash # necessary if we need rosrun
+      - ros-noetic-roslaunch # necessary if we need roslaunch
+    override-pull: |
+      snapcraftctl pull
+      # Here we are going to use the local .rosinstall file
+      vcs import --input turtlebot3c.rosinstall
+</code></pre>
+<p>Here, the <a href="https://snapcraft.io/docs/catkin-plugin"><code>catkin</code> plugin</a> is going to use the package.xml present in the different source packages to manage the ROS dependencies. It will also build and install our packages.</p>
+<p>Before running any kind of build, let’s declare our applications.</p>
+<h5 id="heading--building-the-core-app">Building the core app</h5>
+<p>Above, we defined that we needed a <code>core</code> daemon responsible to launch the motor controller, advertising the sensors, uploading the robot model to the <code>rosparam</code> server and publishing the robot <code>tf</code> tree.</p>
+<p>In the TurtleBot3c ROS world this corresponds to the launch file <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_bringup/launch/turtlebot3c_bringup.launch"><code>turtlebot3c_bringup.launch</code></a> inside the <code>turtlebot3_bringup</code> package (installed by the part we just added). This application must be running in the background, we will thus declare it as a <code>daemon</code>. Remember that since it’s a ROS application we will need a ROS environment. So we will use the <a href="https://snapcraft.io/docs/ros-noetic"><code>ros-noetic</code> snapcraft extensions</a>.</p>
+<p>In our case, we will define a <code>core</code> application that will work with the <a href="https://emanual.robotis.com/docs/en/platform/turtlebot3/features/">TurtleBot3 waffle_pi model</a>. In the launch file this is done by defining an environment variable.</p>
+<p>The robot is managing all its hardware interfaces through USB. By default, our snap won’t have access to it. We then have to declare the <a href="https://snapcraft.io/docs/raw-usb-interface">usb-raw plug</a>.</p>
+<p>Let’s add this app to our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-auto">apps:
+  core:
+    daemon: simple
+    environment:
+      TURTLEBOT3_MODEL: waffle_pi
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_bringup turtlebot3c_bringup.launch
+    plugs: [network, network-bind, raw-usb]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>We have introduced a new entry to our app called <code>environment</code>. This way we can define environment variables that are specific to our application. We can find all the apps and services metadata in the <a href="https://snapcraft.io/docs/snapcraft-app-and-service-metadata">documentation</a>.</p>
+<h5 id="heading--building-the-teleop-app">Building the teleop app</h5>
+<p>Along with <code>core</code>, the <code>teleop</code> should be declared as a daemon too since we want it to be running in the background. The <code>teleop</code> app will be running our teleoperation multiplexer. This corresponds to the launch file <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_teleop/launch/turtlebot3c_teleop.launch"><code>turtlebot3c_teleop.launch</code></a> in the <code>turtlebot3c_teleop</code> package.</p>
+<p>We can declare this application by adding the following to our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-auto">apps:
+  [...]
+  teleop:
+    daemon: simple
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_teleop turtlebot3c_teleop.launch
+    plugs: [network, network-bind]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>This application is highly similar to the <code>core</code> app. Nothing to declare.</p>
+<h4>Building the key app</h4>
+<p>Using the above <code>teleop</code> application and adding a <code>key</code> application would let us effectively teleoperate the TurtleBot3. Here the <code>key</code> application will be a command to call.</p>
+<p>This app must publish a <code>/key_vel</code> topic based on the keyboard input. This corresponds to the <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_teleop/launch/key.launch"><code>key.launch</code></a> from the <code>turtlebot3c_teleop</code> package. Snaps are by default accessing the keyboard, so we won’t need any special <code>plugs</code> here.</p>
+<p>We then add the following to our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-auto">apps:
+  [...]
+  key:
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_teleop key.launch
+    plugs: [network, network-bind]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>Again this is very straightforward with what we have already done.</p>
+<p>With this new application, our snap will now make a command available called <code>turtlebot3c.key</code>.</p>
+<h5 id="heading--building-the-joy-app">Building the joy app</h5>
+<p>Very similar in terms of usage to <code>key</code>, but we will use a different launch file for the joystick. It’s <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_teleop/launch/joy.launch"><code>joy.launch</code></a> from the <code>turtlebot3c_teleop</code> package. The major differences are that this is going to be published on the <code>/joy_vel</code> topic and that our application will need access to the joystick. We must use the <a href="https://snapcraft.io/docs/joystick-interface"><code>joystick</code> interface</a>, so our confined application will be able to access the joystick device from our host.</p>
+<p>We then add the following to our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-auto">apps:
+  [...]
+  joy:
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_teleop joy.launch
+    plugs: [network, network-bind, joystick]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>With this new application, our snap will now make a command available called <code>turtlebot3c.joy</code>.</p>
+<p>Now we have all the applications necessary for teleoperation whether we want to use a keyboard or a joystick.</p>
+<h5 id="heading--building-the-mapping-app">Building the mapping app</h5>
+<p>For the mapping, we will need a command that we can call whenever we want to start doing a mapping. This command <code>mapping</code> is going to rely on the <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_2dnav/launch/turtlebot3c_mapping.launch"><code>turtlebot3c_mapping.launch</code></a> file from the <code>turtlebot3c_2dnav</code> repository. This is also straightforward.</p>
+<p>We add the following to our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-auto">apps:
+  [...]
+  mapping:
+    environment:
+      TURTLEBOT3_MODEL: waffle_pi
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_mapping.launch
+    plugs: [network, network-bind]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>With this new application, our snap will now make a command available called <code>turtlebot3c.mapping</code>.</p>
+<p>Note that the <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_2dnav/launch/turtlebot3c_mapping.launch"><code>turtlebot3c_mapping.launch</code></a> accepts ROS arguments to select a different SLAM algorithm. This is nicely compatible with our snap application, and we could imagine calling our application with the argument:</p>
+<pre><code class="lang-bash">turtlebot3c.mapping slam_methods:=hector
+</code></pre>
+<h5 id="heading--building-the-navigation-app">Building the navigation app</h5>
+<p>Finally, our last application, <code>navigation</code>. <code>Navigation</code> will also be a daemon running in the background but with one specificity. It’s not going to be enabled at first. The reason is that when we first install our snap, we won’t have created any map. This way we can create our first map and then activate our navigation daemon. Daemons can be installed in a disabled state thanks to the additional app entry: <code>install-mode: disable</code>. Once enabled it will remain enabled even after an update.</p>
+<p>The whole navigation stack relies on <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_2dnav/launch/turtlebot3c_navigation.launch"><code>turtlebot3c_navigation.launch</code></a> from the package <code>turtlebot3c_2dnav</code>. It will launch the localization as well as the navigation.</p>
+<p>Let’s add the following to our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-auto">apps:
+  [...]
+  navigation:
+    environment:
+      TURTLEBOT3_MODEL: waffle_pi
+    daemon: simple
+    install-mode: disable
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_mapping.launch
+    plugs: [network, network-bind]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>Once our snap is installed, we will be able to enable this daemon with the command:</p>
+<pre><code class="lang-bash">sudo snap start --enable turtlebot3c.navigation
+</code></pre>
+<h2 id="heading--application-scripts">Application scripts</h2>
+<p>So far we have defined our part as well as our different applications in our snap. Nothing there was new. It was simply an application of the basic ROS/snap knowledge to the TurtleBot3 case.</p>
+<p>Let’s say that we want our snap <code>navigation</code> daemon to always use the latest recorded map. Or that we want the mapping to automatically save the map without having to manually call a ROS service to save the map.</p>
+<p>For these, we can use additional features of <code>snap</code> and <code>snapcraft</code>. These features will make our applications much more integrated and easier for the final user. The features that we will describing below are:</p>
+<ul>
+<li>Environment variables.</li>
+<li>Local file parts.</li>
+<li>Launcher scripts.</li>
+<li>Daemon scripts.</li>
+</ul>
+<h3 id="heading--snap-environment-variables">Snap environment variables</h3>
+<p>Environment variables are widely used across Linux to provide convenient access to system and application properties. Both <code>snapcraft</code> and <code>snapd</code> consume, set, and pass-through specific environment variables to support building and running snaps.</p>
+<p>There are snap environment variables, like <code>$SNAP</code> and <code>$SNAP_INSTANCE_NAME</code> used to identify the snap and its location. The <a href="https://ubuntu.com/robotics/docs/snap-environment-variables"><em>Snap environment variables</em></a> documentation is a great place to learn about these.</p>
+<p>Additionally, snaps define environment variables specific to data and file storage. The <a href="https://ubuntu.com/robotics/docs/snap-data-and-file-storage"><em>Snap data and file storage documentation</em></a> is a great place to learn about these.</p>
+<h3 id="heading--local-files-part">Local files part</h3>
+<p>In order to create additional behaviour for a snap, we need to add scripts. These scripts could be for example responsible for calling the ROS node in charge of saving the map.</p>
+<p>To import all these local files into our snap we will need an additional <code>snapcraft</code> <a href="https://snapcraft.io/docs/snapcraft-parts-metadata">part</a>. They are used to declare pieces of code that will be pulled into your snap package.</p>
+<p>So far we only have one part called <code>workspace</code> using our <code>rosinstall</code> file to build and install our ROS repository. This part is relying on the <a href="https://snapcraft.io/docs/catkin-plugin"><code>catkin</code> plugin</a>.</p>
+<p>In order to simply import scripts into our snap we will need a different plugin, the <a href="https://snapcraft.io/docs/dump-plugin"><code>dump</code> plugin</a>.</p>
+<p>As its name suggests, the <code>dump</code> plugin is simply used to “dump” the specified sources in a specified location into our snap. Usually, the dumped files are scripts, configuration files, binaries etc.</p>
+<h3 id="heading--adding-scripts-to-our-snap-s-part">Adding scripts to our snap’s part</h3>
+<p>In our case we will simply need to dump all the files that we are going to store in <code>snap/local</code> into the <code>usr/bin</code> of our snap.</p>
+<p>We will then need to add the following part to the <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-diff">parts:
+  workspace:
+    [...]
++ # copy local scripts to the snap usr/bin
++ local-files:
++   plugin: dump
++   source: snap/local/
++   organize:
++     '*.sh': usr/bin/
+</code></pre>
+<p>The organize keyword is a key/value pair, the key represents the path of a file inside the selected source of the part and the value represents the file’s destination in the stage area.</p>
+<h3 id="heading--launcher-scripts">Launcher scripts</h3>
+<p>Now we have a part to import local files, but we don’t have the local files yet.</p>
+<p>So far for our <code>snapcraft</code> apps, in the <code>command</code> entry, we have been writing the full name of the commands. For example, for our <code>core</code> application, we wrote:</p>
+<pre><code class="lang-auto">command: /opt/ros/noetic/bin/roslaunch turtlebot3c_bringup turtlebot3c_bringup.launch
+</code></pre>
+<p>Our <a href="https://github.com/canonical/turtlebot3c/blob/noetic-devel/turtlebot3c_bringup/launch/turtlebot3c_bringup.launch#L21">turtlebot3c_bringup.launch</a> is actually taking a <code>simulation</code> argument. It can be set to <code>false</code> or <code>true</code>, to specify whether we want to run the bring-up for the simulation or not. Since the core application is a daemon, we cannot append anything to the specified command at launch. This means that we must give it directly in the command.</p>
+<p>By trying we will quickly realise that we are facing an issue. The character “=” is forbidden in the <code>snapcraft.yaml</code>. To specify an argument to a ROS launch file we must use the syntax <code>arg_name:=arg_value</code>. For this reason (and actually many others that we will discuss later on) our snapcraft command entry is going to call a script containing a call to our command.</p>
+<p>This way, we will not only be able to specify ROS arguments, but we will also be able to potentially perform some simple checks or any kind of behaviour that would not be that easy on a one-liner. For example, verifying that a file exists before calling a command.</p>
+<h4 id="heading--adding-scripts-launcher">Adding scripts’ launcher</h4>
+<p>For our TurtleBot3 snap, we will add a launcher script for <code>core</code>, <code>mapping</code> and <code>navigation</code>.</p>
+<p>Let’s add these scripts into our snap/local folder.</p>
+<p>First, we create the folder:</p>
+<pre><code class="lang-bash">mkdir -p snap/local
+</code></pre>
+<p>Then we add the file:<br/>
+<em>snap/local/core_launcher.sh</em>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+
+${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_bringup turtlebot3c_bringup.launch simulation:=true
+</code></pre>
+<p>Here we are using the <code>$SNAP</code> variable that we saw earlier. This way we are sure of the binary that we are calling. Also, we are assigning the <code>simulation</code> argument to <code>true</code>. We will see <a href="#heading--turtlebot3-configurations">in the next section</a> how to make it configurable.</p>
+<p>Similarly, the next two scripts:</p>
+<p><em>snap/local/mapping_launcher.sh</em>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+
+${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_mapping.launch
+</code></pre>
+<p><em>snap/local/navigation_launcher.sh</em>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+
+${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_navigation.launch
+</code></pre>
+<p>Since these three scripts are going to be executed. Let’s turn them into executables:</p>
+<pre><code class="lang-bash">chmod +x snap/local/*.sh
+</code></pre>
+<h4 id="heading--using-scripts">Using scripts</h4>
+<p>Now, let’s use these scripts in our <code>snapcraft.yaml</code> instead of the “raw” commands.<br/>
+Remember that with the new part we added: “<code>local-files</code>”, our scripts are going to be staged into <code>usr/bin</code>.</p>
+<pre><code class="lang-diff">apps:
+  core:
+    [...]
+-   command: opt/ros/noetic/bin/roslaunch turtlebot3c_bringup turtlebot3c_bringup.launch
++   command: usr/bin/core_launcher.sh
+    [...]
+  mapping:
+    [...]
+-   command: opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_mapping.launch
++   command: usr/bin/mapping_launcher.sh
+    [...]
+  navigation:
+    [...]
+-   command: opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_mapping.launch
++   command: usr/bin/navigation_launcher.sh
+</code></pre>
+<p>Our <code>snapcraft.yaml</code> is now using scripts for the commands. They are the first scripts of our snaps since many are coming. For now, we might think that those scripts are a complexity we could avoid. But in the next sections, we will see that we will greatly need them.</p>
+<h4 id="heading--daemon-scripts">Daemon scripts</h4>
+<p>In TurtleBot3 we already have a few daemons. These snap services can use multiple new features that will come in handy for our application.</p>
+<p><code>Snap</code> and <code>snapcraft</code> offer great features to orchestrate daemon applications. The <a href="https://ubuntu.com/robotics/docs/application-orchestration"><em>Application orchestration</em></a> documentation is a great place to learn more about orchestration.</p>
+<p>The orchestration features that we are going to use for the TurtleBot3 are:</p>
+<ul>
+<li>Command-chain
+<ul>
+<li>We will use it to select the right multiplexer topic for controlling the robot.</li>
+</ul>
+</li>
+<li>Stop-command
+<ul>
+<li>We will use it for our <code>mapping</code> application. This way we will trigger the save of the map whenever we exit the mapping. No more maps lost that took forever to create!</li>
+</ul>
+</li>
+<li>Post-stop-command
+<ul>
+<li>We will use it to “install” the map for our <code>navigation</code> application. This way the <code>navigation</code> will always use the last created map.</li>
+</ul>
+</li>
+</ul>
+<h4 id="heading--applying-daemon-scripts-to-turtlebot3">Applying daemon scripts to TurtleBot3</h4>
+<p>We have already made our applications run in the background, it’s now time to automate and simplify our user experience.</p>
+<p>Here we want to make the map creation and use as simple as it can be. We don’t want the user to have to call ROS nodes manually or even manipulate map files by himself.</p>
+<p>To achieve this we will:</p>
+<ol>
+<li>Save the map whenever we stop the <code>mapping</code>.</li>
+<li>Use only the last map we created for the <code>navigation</code> without having to specify the new map name.</li>
+<li>Verify that a map is available before starting our navigation stack.</li>
+<li>Make the velocity command multiplexer automatically select the correct topic depending on the command we are using.</li>
+</ol>
+<p>These are basic functionalities that our applications need to automate and simplify the user experience. Similarly, your application could also require implementing similar features.</p>
+<h4 id="heading--save-the-map">Save the map</h4>
+<p>When the <code>mapping</code> is running, to save the map we will have to call the following ROS node:</p>
+<pre><code class="lang-bash">rosrun map_server map_saver -f "PATH_AND_NAME_OF_THE_FILE"
+</code></pre>
+<p>Having to run it manually is, first, more work, but also the user must provide the correct path. Let’s make this automatic!</p>
+<p>The <code>stop-command</code> will be the perfect feature to call our map server. The only thing is that our <code>mapping</code> is currently a command. To use <code>stop-command</code> we will have to turn it into a daemon.</p>
+<p>Let’s modify our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-diff">apps:
+  [...]
+  mapping:
+    environment:
+      TURTLEBOT3_MODEL: waffle_pi
+    command: usr/bin/mapping_launcher.sh
++   daemon: simple
++   install-mode: disable
++   stop-command: usr/bin/save_map.sh
+    plugs: [network, network-bind]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>Now our <code>mapping</code> is a daemon (disabled by default, so it doesn’t start by itself on the first install). It will launch a script called <code>save_map.sh</code> that we will create right now.</p>
+<p>The script is simply going to run the map saver in the <code>$SNAP_USER_COMMON</code> directory (read/write directory kept over the updates).<br/>
+Let’s create the file <code>snap/local/save_map.sh</code>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+
+# make map directory if not existing
+mkdir -p ${SNAP_USER_COMMON}/map
+
+$SNAP/opt/ros/noetic/bin/rosrun map_server map_saver -f "${SNAP_USER_COMMON}/map/new_map"
+</code></pre>
+<p>Now our map will be saved automatically whenever we stop our mapping service (with the <code>sudo snap stop mapping</code> command).<br/>
+The current limitation here is that every map that we create is called <code>new_map</code>. It would be better to keep all the maps created and simply mark one as the current one. This way we could even restore a previous one later.</p>
+<h4 id="heading--install-the-last-map">Install the last map</h4>
+<p>Here we are going to make sure that we keep every map and also that <code>current_map</code> is always pointing to the last created map. This way our navigation will always load the same symlink file but always point to the latest map.<br/>
+To do so we will have to create a script installing the last map and execute it as a <code>post-stop-command</code>. Once the <code>stop-command</code> and our service is stopped our map is created, and it’s time to install it.</p>
+<p>Let’s modify our <code>snapcraft.yaml</code> to add the <code>post-stop-command</code>:</p>
+<pre><code class="lang-diff">apps:
+  [...]
+  mapping:
+    [...]
++   stop-command: usr/bin/save_map.sh 
+    post-stop-command: usr/bin/install_last_map.sh
+    plugs: [network, network-bind]
+    extensions: [ros1-noetic]
+</code></pre>
+<p>Now let’s create our <code>install_last_map.sh</code> script in <code>snap/local</code>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+set -e
+# backup our map with the date and time
+DATE=`date +%Y%m%d-%H-%M-%S`
+mv ${SNAP_USER_COMMON}/map/new_map.yaml ${SNAP_USER_COMMON}/map/$DATE.yaml
+sed -i "s/new_map.pgm/$DATE.pgm/" ${SNAP_USER_COMMON}/map/$DATE.yaml
+mv ${SNAP_USER_COMMON}/map/new_map.pgm ${SNAP_USER_COMMON}/map/$DATE.pgm
+
+# create symlink to use the map
+rm -f ${SNAP_USER_COMMON}/map/current_map.yaml
+ln -s ${SNAP_USER_COMMON}/map/$DATE.yaml ${SNAP_USER_COMMON}/map/current_map.yaml 
+</code></pre>
+<p>Here we move the freshly created map files (prefixed with <code>new_map</code>) to new file names based on date.<br/>
+Finally, we create a UNIX symlink to point to the last map.<br/>
+This way we keep track of every map created and when it was created. Our navigation service is already loading the file <code>${SNAP_USER_COMMON}/map/current_map.yaml</code>. So by loading the symlink our <code>navigation</code> is always going to load the last created map.</p>
+<h4 id="heading--navigation-launcher-adaptation">Navigation launcher adaptation</h4>
+<p>Here we are simply going to adapt our navigation launcher to verify that our map file exists before launching the navigation launch file.</p>
+<p>We already created the <code>navigation_launch.sh</code> script in <code>snap/local</code>:</p>
+<pre><code class="lang-diff">#!/usr/bin/bash
++if [ -f "${SNAP_USER_COMMON}/map/current_map.yaml" ]; then
+   ${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_navigation.launch
++else
++  &gt;&amp;2 echo "File ${SNAP_USER_COMMON}/map/current_map.yaml does not exist." \ "Have you run the mapping application?"
++fi
+</code></pre>
+<p>The script is simply checking if the file <code>${SNAP_USER_COMMON}/map/current_map.yaml</code> exists and launches the navigation. Otherwise, we simply log an error message.</p>
+<h4 id="heading--velocity-multiplexer-selection">Velocity multiplexer selection</h4>
+<p>In the first sections of this guide, we described that a multiplier has been set to forward only one topic (<code>/joy_vel</code>, <code>/key_vel</code> or <code>/nav_vel</code>). Once selected the topic is forwarded to <code>/cmd_vel</code>. To select a topic we must call a ROS service with the command:</p>
+<pre><code class="lang-bash">rosservice call /mux/select "/joy_vel"
+</code></pre>
+<p>Every time we call the <code>key</code> command (to start the keyboard teleoperation) we will have to call the ROS service to select our <code>/key_vel</code> topic.</p>
+<p>Let’s make this automatic every time we start any of the applications that need a specific topic. We are talking about <code>key</code>, <code>joy</code> and <code>navigation</code>.</p>
+<p>Let’s add a <code>command-chain</code> in our <code>snapcraft.yaml</code> calling a selection script for all our apps that need it.</p>
+<pre><code class="lang-diff">apps:
+  [...]
+  key:
++   command-chain: [usr/bin/mux_select_key_vel.sh]
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_teleop key.launch
+  [...]
+  joy:
++   command-chain: [usr/bin/mux_select_joy_vel.sh]
+    command: opt/ros/noetic/bin/roslaunch turtlebot3c_teleop joy.launch
+  [...]
+  navigation:
++   command-chain: [usr/bin/mux_select_nav_vel.sh]
+    command: usr/bin/navigation_launcher.sh
+</code></pre>
+<p>Now let’s add the different scripts:</p>
+<p><em>snap/local/mux_select_key_vel.sh</em>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+$SNAP/opt/ros/noetic/bin/rosservice call /mux/select "/key_vel"
+exec $@
+</code></pre>
+<p><em>snap/local/mux_select_joy_vel.sh</em>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+$SNAP/opt/ros/noetic/bin/rosservice call /mux/select "/joy_vel"
+exec $@
+</code></pre>
+<p><em>snap/local/mux_select_nav_vel.sh</em>:</p>
+<pre><code class="lang-bash">#!/usr/bin/bash
+$SNAP/opt/ros/noetic/bin/rosservice call /mux/select "/nav_vel"
+exec $@
+</code></pre>
+<p>Note that the exec <code>$@</code> is necessary at the end of our <code>command-chain</code> scripts since our actual command is given as an argument of the <code>command-chain</code>.<br/>
+Now with the help of our <code>command-chain</code> scripts whenever we start the <code>joy</code> app (or another controlling app) we are ready to control the robot with any additional commands.</p>
+<h2 id="heading--turtlebot3-configurations">Turtlebot3 configurations</h2>
+<p>In the previous section, we have seen how to add advanced behaviour to our snap by leveraging new <code>snapcraft</code> YAML keywords. Our final TurtleBot3 snap application must cover multiple cases. It should work with all the flavours of TurtleBot3 as well as with the simulation and the real robot.</p>
+<p>Adding such behaviour is going to require a new feature from snap: <code>hooks</code>. <code>Hooks</code> are executable files that run within a snap’s confined environment when a certain action occurs. They are typically used for configurations. The documentation on <a href="https://ubuntu.com/robotics/docs/snap-configurations-and-hooks"><em>snap configurations and hooks</em></a> explains this in detail.</p>
+<h3 id="heading--adding-turtlebot3-hooks">Adding TurtleBot3 hooks</h3>
+<p>Here there are multiple things that we want to achieve:</p>
+<ul>
+<li>Our snap must be working for the simulation but also for the real robot. We will need a <code>simulation</code> configuration.</li>
+<li>TurtleBot3s come in different flavours: <code>burger</code>, <code>waffle</code> and <code>waffle_pi</code>. We will then also need a <code>turtlebot3-model</code> configuration.</li>
+<li>We will have to declare hooks to define our configurations and make sure the new value matches the requirements.</li>
+<li>Additionally, we will integrate those new parameters into our different scripts.</li>
+</ul>
+<h4 id="heading--simulation-parameter">Simulation parameter</h4>
+<p>For the simulation, the only application that is going to be impacted is the <code>core</code> daemon. Since the snap is not meant to run the simulation itself but simply to interface with it, there is no big challenge here.</p>
+<p>For this first parameter, we will have to create the hook scripts first.</p>
+<h5 id="heading--hooks-1">Hooks</h5>
+<p>The very first hook that we are going to define is the <a href="https://snapcraft.io/docs/supported-snap-hooks#heading--install"><code>install</code></a> hook. This hook is called upon initial installation only. We are going to use the <code>install</code> hook to declare our parameter default value.</p>
+<p>First we create the directory:</p>
+<pre><code class="lang-bash">mkdir -p snap/hooks
+</code></pre>
+<p>Let’s create a file called <code>install</code> inside the directory <code>snap/hooks</code> and add the following content:</p>
+<pre><code class="lang-bash">#!/bin/sh -e
+# set default configuration values
+snapctl set simulation=false
+</code></pre>
+<p>We used <code>snapctl</code> to set the default value to false.</p>
+<p>Additionally, we are going to create a file called <code>configure</code> in the <code>snap/hooks</code> directory.</p>
+<p>Add the following content to <code>snap/hooks/configure</code>:</p>
+<pre><code class="lang-auto">#!/bin/sh -e
+SIMULATION="$(snapctl get simulation)"
+case "$SIMULATION" in
+  "true") ;;
+  "false") ;;
+  "0") ;;
+  "1") ;;
+  *)
+    &gt;&amp;2 echo "'$SIMULATION' is not a supported value for simulation." \ "Possible values are true, false, 0, 1"
+    return 1
+    ;;
+esac
+
+# restart core and teleop on new config
+snapctl stop "$SNAP_INSTANCE_NAME.core"
+snapctl stop "$SNAP_INSTANCE_NAME.teleop"
+snapctl start "$SNAP_INSTANCE_NAME.core"
+snapctl start "$SNAP_INSTANCE_NAME.teleop"
+</code></pre>
+<p>Here again we used <code>snapctl</code>. We use it to read the parameter and make sure it contains a valid value (in our case: <code>true</code>, <code>false</code>, <code>0</code> or <code>1</code>). In case the value is wrong we simply return an error.</p>
+<p>Additionally, we made sure to restart our <code>core</code> and <code>teleop</code> daemons (meant to be always running). This way when we change a parameter we are sure that it’s taken into consideration immediately.</p>
+<p>Since our hooks are scripts we must make sure to make them executable. We can do so with:</p>
+<pre><code class="lang-bash">chmod +x snap/hooks/*
+</code></pre>
+<h5 id="heading--use-the-configuration">Use the configuration</h5>
+<p>Now that our snap is defining our configuration we must use it in our application.</p>
+<p>Let’s modify our <code>core_launcher.sh</code> script located in <code>snap/local</code>:</p>
+<pre><code class="lang-diff">#!/usr/bin/bash
++SIMULATION="$(snapctl get simulation)"
+-${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_bringup turtlebot3c_bringup.launch simulation:=true
++${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_bringup turtlebot3c_bringup.launch simulation:=$SIMULATION
+</code></pre>
+<p>This way we read the snap configuration to store it into a variable and finally use it as a ROS argument for our launch file.</p>
+<p>This way, when changing the configuration of the snap with the command:</p>
+<pre><code class="lang-auto">sudo snap set turtlebot3c simulation=true
+</code></pre>
+<p>Our <code>configure</code> script is going to be called, restarting the <code>core</code> daemon. And finally our <code>core_launcher.sh</code> is going to be started with the correct configuration.</p>
+<h4 id="heading--turtlebot3-model">Turtlebot3 model</h4>
+<p>The TurtleBot3 has several hardware configurations. These models are <code>burger</code>, <code>waffle</code>, and <code>waffle_pi</code>. The different models are available for the real robot but also for the simulation. While we will mostly work with the <code>waffle_pi</code> simulation, the others can also be tested easily.<br/>
+Similarly, we will complete our hooks and the different scripts where we must specify the model.</p>
+<h5 id="heading--hooks-2">Hooks</h5>
+<p>First, let’s define the default value for our configuration <code>turtlebot3-model</code>.<br/>
+Let’s add our configuration to the <code>snap/hooks/install</code> file:</p>
+<pre><code class="lang-diff">snapctl set simulation=false
+
++# set default turtlebot 3 model
++snapctl set turtlebot3-model=waffle_pi
+</code></pre>
+<p>Similarly, we must complete the <code>snap/hooks/configure</code> hook:</p>
+<pre><code class="lang-diff">+TURTLEBOT3_MODEL="$(snapctl get turtlebot3-model)"
++case "$TURTLEBOT3_MODEL" in
++  "burger") ;;
++  "waffle") ;;
++  "waffle_pi") ;;
++  *)
++    &gt;&amp;2 echo "'$TURTLEBOT3' is not a supported value for turtlebot3-model." \
++"Possible values are burger, waffle and waffle_pi"
++    return 1
++    ;;
++esac
+
+# restart core and teleop on new config
+snapctl stop "$SNAP_INSTANCE_NAME.core"
+snapctl stop "$SNAP_INSTANCE_NAME.teleop"
+</code></pre>
+<p>Now, our hooks are correctly handling the <code>turtlebot3-model</code> configuration. Nothing new here we have applied what we used for the other configuration.</p>
+<h6 id="heading--use-the-configuration">Use the configuration</h6>
+<p>Now let’s use the robot model configuration for our applications. So far we have specified the robot model via the <code>environment</code> keyword in our application. This is no longer possible since we now need to use <code>snapctl</code> to read our configuration. The TurtleBot3 model is read <a href="https://github.com/ROBOTIS-GIT/turtlebot3/blob/master/turtlebot3_bringup/launch/turtlebot3_robot.launch#L4">by the mean of an environment variable</a>. We will then have to remove the hard-coded environment variable in our <code>snapcraft.yaml</code> and define it in our different launcher scripts.</p>
+<p>First, let’s remove the hard-coded one in our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-diff">apps:
+  core:
+-   environment:
+-   TURTLEBOT3_MODEL: waffle_pi
+  [...]
+  mapping:
+-   environment:
++     TURTLEBOT3_MODEL: waffle_pi
+  [...]
+  navigation:
+-   environment:
+-     TURTLEBOT3_MODEL: waffle_pi
+</code></pre>
+<p>Now let’s define this <code>TURTLEBOT3_MODEL</code> in the launcher scripts that need it.<br/>
+The first one is the <code>core</code> daemon. We can modify <code>snap/local/core_launcher.sh</code> this way:</p>
+<pre><code class="lang-diff">SIMULATION="$(snapctl get simulation)"
++TURTLEBOT3_MODEL="$(snapctl get turtlebot3-model)"
+
++export TURTLEBOT3_MODEL
+</code></pre>
+<p>We read the parameter and then simply export the environment variable.</p>
+<p>Now let’s do the same thing but to the <code>navigation</code> and <code>mapping</code> launcher script: <em>snap/local/mapping_launcher.sh</em>.</p>
+<pre><code class="lang-diff">+TURTLEBOT3_MODEL="$(snapctl get turtlebot3-model)"
++export TURTLEBOT3_MODEL
+${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_2dnav turtlebot3c_mapping.launch
+</code></pre>
+<p>And <em>snap/local/navigation_launcher.sh</em>:</p>
+<pre><code class="lang-diff">+TURTLEBOT3_MODEL="$(snapctl get turtlebot3-model)"
++export TURTLEBOT3_MODEL
+if [ -f "${SNAP_USER_COMMON}/map/current_map.yaml" ]; then
+</code></pre>
+<p>Then we can make sure that all these scripts are executable:</p>
+<pre><code class="lang-bash">chmod +x snap/local/*
+</code></pre>
+<p>From now on, we can select an alternative TurtleBot3 model with the simple command</p>
+<pre><code class="lang-bash">sudo snap set turtlebot3c turtlebot3-model=burger
+</code></pre>
+<p>We have finally finished defining all our snap hooks. Additionally, we have implemented every application and functionality we need for our snap. It’s time to build it and test it!</p>
+<p>We will run all our tests in simulation, but with a TurtleBot3 robot available we could also test it on the real robot.</p>
+<h2 id="heading--applications-debugging">Applications debugging</h2>
+<p>Now that we have explored and used all these new features of snap, our TurtleBot3 snap is feature complete and ready to be tested. We have our different <code>parts</code> and <code>apps</code> defined in our <code>snapcraft.yaml</code>. We also defined hooks to manage our different configurations. Furthermore, we also implemented various scripts to make the user experience seamless when launching an app or managing map creation. We will perform every test with the simulation and the TurtleBot3 <code>waffle_pi</code> model.</p>
+<p>By the means of testing our snap we will also discover a way to debug our snap and find out what is going on.</p>
+<p>Keep in mind that a snap is not a good place to debug code. This section is really about debugging the packaging of our code and not the code behaviour itself or its compilation.</p>
+<h3 id="heading--debug-a-snap-application">Debug a snap application</h3>
+<p>When developing a snap, things can go wrong. In this section, we will explore some common ways to debug a snap.</p>
+<p>Since the build of the snap itself can go wrong. <code>Snapcraft</code> offers multiple ways to introspect the instance state and files. The documentation <a href="https://ubuntu.com/robotics/docs/debug-the-build-of-a-snap"><em>Debug snap build</em></a>, is a great place to learn about this.</p>
+<p>When the build went right and this is the run-time that is causing issues, snap also offers multiple ways to debug it. The documentation <a href="https://ubuntu.com/robotics/docs/debug-a-snap-application"><em>Debug a snap application</em></a>, is a great place to learn about this.</p>
+<h3 id="heading--debug-the-core-application">Debug the core application</h3>
+<p>Testing our TurtleBot3 snap will be the perfect opportunity to apply the different debugging approaches.</p>
+<p>Before performing any test we need our actual snap. Although now it should be clear how to build our snap, let’s see how.</p>
+<h4 id="heading--first-run-of-our-snap">First run of our snap</h4>
+<p>To build our snap, we must be located at the root of our directory next to our <code>snap/</code> folder.<br/>
+Then we simply run the command:</p>
+<pre><code class="lang-bash">snapcraft
+</code></pre>
+<p>This will take some time but after some time we must get the file <code>turtlebot3c_*.snap</code>.</p>
+<p>Then we can simply install this snap with the following command:</p>
+<pre><code class="lang-bash">sudo snap install turtlebot3c_*.snap --dangerous
+</code></pre>
+<p>And that’s it. Our snap is installed and since our <code>core</code> and <code>teleop</code> apps are daemons they must be already running!<br/>
+Let’s inspect the logs to see what is going on.</p>
+<pre><code class="lang-bash">sudo snap logs turtlebot3c.core -n 100
+</code></pre>
+<p>And we get the following output:</p>
+<pre><code class="lang-auto">turtlebot3c.core[88370]: &lt;/font&gt;RLException: while processing /snap/turtlebot3c/x1/opt/ros/noetic/share/turtlebot3_bringup/launch/turtlebot3_robot.launch:
+turtlebot3c.core[88370]: while processing /snap/turtlebot3c/x1/opt/ros/noetic/share/turtlebot3_bringup/launch/turtlebot3_lidar.launch:
+turtlebot3c.core[88370]: Invalid tag: environment variable 'LDS_MODEL' is not set.
+turtlebot3c.core[88370]: Arg xml is
+turtlebot3c.core[88370]: The traceback for the exception was written to the log file
+
+turtlebot3c.core[88370]: ... logging to /root/snap/turtlebot3c/x1/ros/log/fdf740ce-b920-11ed-a4a0-e5f11893ed73/roslaunch-workshop-part2-88370.log
+turtlebot3c.core[88370]: Checking log directory for disk usage. This may take a while.
+turtlebot3c.core[88370]: Press Ctrl-C to interrupt
+turtlebot3c.core[88370]: Done checking log file disk usage. Usage is &lt;1GB.
+Turtlebot3c.core[88370]:
+systemd[1]: snap.turtlebot3c.core.service: Main process exited, code=exited, status=1/FAILURE
+systemd[1]: snap.turtlebot3c.core.service: Failed with result 'exit-code'.
+systemd[1]: snap.turtlebot3c.core.service: Scheduled restart job, restart counter is at 5.
+systemd[1]: Stopped Service for snap application turtlebot3c.core.
+systemd[1]: snap.turtlebot3c.core.service: Start request repeated too quickly.
+systemd[1]: snap.turtlebot3c.core.service: Failed with result 'exit-code'.
+systemd[1]: Failed to start Service for snap application turtlebot3c.core.
+</code></pre>
+<p>The <code>environment variable 'LDS_MODEL' is not set.</code> is the guilty part. The LDS model is the model of LIDAR that is used by the TurtleBot3. The TurtleBot3 can work with two different LIDAR models, <code>LDS-01</code> and <code>LDS-02</code>. The LIDAR model is read directly from an environment variable <a href="https://github.com/ROBOTIS-GIT/turtlebot3/blob/master/turtlebot3_bringup/launch/turtlebot3_lidar.launch#L3">by the launch file</a>. So we will have to read the snap configuration and simply export it as an environment variable. We will need an <code>lds-model</code> configuration.</p>
+<p>We already set two configurations so nothing new here. Let’s add this additional configuration.</p>
+<h4 id="heading--lidar-configuration">LIDAR configuration</h4>
+<p>We will first add our configuration to our different hooks, and then use the configuration in our <code>core_launcher.sh</code> script.</p>
+<h5 id="heading--hooks-3">Hooks</h5>
+<p>First, let’s define the default value for our configuration <code>lds-model</code>.<br/>
+Let’s add our configuration to the <code>snap/hooks/install</code> file:</p>
+<pre><code class="lang-diff">snapctl set simulation=false
++# set default lidar model for real robot
++snapctl set lds-model=LDS-01
+</code></pre>
+<p>Similarly to the simulation configuration we will also complete the <code>snap/hooks/configure</code>:</p>
+<pre><code class="lang-diff">+LDS_MODEL="$(snapctl get lds-model)"
++case "$LDS_MODEL" in
++  "LDS-01") ;;
++  "LDS-02") ;;
++  *)
++    &gt;&amp;2 echo "'$LDS_MODEL' is not a supported value for lds_model." \ "Possible values are LDS-01 and LDS-02"
++    return 1
++    ;;
++esac
+# restart core and teleop on new config
+snapctl stop "$SNAP_INSTANCE_NAME.core"
+snapctl stop "$SNAP_INSTANCE_NAME.teleop"
+</code></pre>
+<p>Now, our hooks are correctly handling the <code>lds-model</code> configuration. Nothing new here; we applied the same method as for the <code>turtlebot3-model</code> configuration.</p>
+<h5 id="heading--use-the-configuration">Use the configuration</h5>
+<p>Now let’s use the configuration within our TurtleBot3 snap.</p>
+<p>Let’s do so by modifying the file <code>snap/local/core_launcher.sh</code>:</p>
+<pre><code class="lang-diff">#!/usr/bin/bash
+[...]
+TURTLEBOT3_MODEL="$(snapctl get turtlebot3-model)"
++LDS_MODEL="$(snapctl get lds-model)"
+[...]
++export LDS_MODEL
+${SNAP}/opt/ros/noetic/bin/roslaunch turtlebot3c_bringup turtlebot3c_bringup.launch simulation:=$SIMULATION
+</code></pre>
+<p>Now, when the <code>core</code> daemon is going to start it will use the <code>lds-model</code> configuration in the launch file.</p>
+<p>Since we already installed our snap, we must set a value manually here:</p>
+<pre><code class="lang-bash">sudo snap set turtlebot3c lds-model=LDS-02
+</code></pre>
+<p>We can now rebuild the snap and reinstall it.<br/>
+Once reinstalled we can now set the proper configuration:</p>
+<pre><code class="lang-auto">sudo snap set turtlebot3c lds-model=LDS-01
+</code></pre>
+<p><code>Roscore</code> tend to stay alive sometime, so make sure no <code>roscore</code> is running when you have stopped the snap. <code>Roscore</code> zombies create unsupported behaviour.</p>
+<h4 id="heading--teleoperate-the-turtlebot3">Teleoperate the Turtlebot3</h4>
+<p>We just fixed the previous issue regarding the <code>lds-model</code>. It’s now time to see if the <code>core</code> daemon is now running properly.</p>
+<p>Let’s check again the logs now that we fixed the LIDAR model issue:</p>
+<pre><code class="lang-auto">systemd[1]: Started Service for snap application turtlebot3c.core.
+turtlebot3c.core[101438]: [ERROR] [1677843362.232445761]: An exception was thrown: open: No such file or directory
+turtlebot3c.core[101437]: [ERROR] [1677843362.654190]: Error opening serial: [Errno 2] could not open port /dev/ttyACM0: [Errno 2] No such file or directory: '/dev/ttyACM0' 
+</code></pre>
+<p>Our application cannot access the USB port. There are multiple reasons for that.</p>
+<p>First, we declared the <code>raw-usb</code> interface but didn’t connect it. We can verify that with:</p>
+<pre><code class="lang-bash">$ snap connections turtlebot3c
+
+Interface		Plug				      Slot			Notes 
+Joystick		turtlebot3c:joystick 	  - 			-
+network 		turtlebot3c:network 	  :network 		-
+network-bind 	turtlebot3c:network-bind  :network-bind -
+raw-usb		    turtlebot3c:raw-usb		  -			    -
+</code></pre>
+<p>The <code>raw-usb</code> plug has no slot assigned. This is because it’s not connected. <code>Raw-usb</code> is not auto-connect, so it has to be connected manually.<br/>
+We can connect it with:</p>
+<pre><code class="lang-auto">sudo snap connect turtlebot3c:raw-usb
+</code></pre>
+<p>Not that once you have connected a <code>plug</code> on a device for a given snap you won’t have to do it again (even over the updates).<br/>
+And we can check the result with the <code>snap connections</code> command:</p>
+<pre><code class="lang-bash">$ snap connections turtlebot3c
+
+Interface		Plug				      Slot			  Notes 
+Joystick		turtlebot3c:joystick 	  - 			  -
+network 		turtlebot3c:network 	  :network 		  -
+network-bind 	turtlebot3c:network-bind  :network-bind   -
+raw-usb		    turtlebot3c:raw-usb	      :raw-usb		  manual
+</code></pre>
+<p>We can restart our application with the <code>sudo snap restart turtlebot3c.core</code> command and check the logs. Unfortunately, we will see the error again, because we are not running on the real robot.<br/>
+We must change the snap configuration simulation to run the simulation mode.</p>
+<pre><code class="lang-bash">sudo snap set turtlebot3c simulation=true
+</code></pre>
+<p>Now the logs look better:</p>
+<pre><code class="lang-auto">systemd[1]: Started Service for snap application turtlebot3c.core.
+turtlebot3c.core[102917]: xacro: in-order processing became default in ROS Melodic. You can drop the option.
+</code></pre>
+<p>We can now launch the simulation with:</p>
+<pre><code class="lang-bash">TURTLEBOT3_MODEL=waffle_pi roslaunch turtlebot3_gazebo turtlebot3_world.launch 
+</code></pre>
+<p>And in another terminal, we can teleoperate our robot with:</p>
+<pre><code class="lang-bash">turtlebot3c.key
+</code></pre>
+<p>Alternatively, if we have a joystick we can test the <code>turtelbot3c.joy</code>.</p>
+<p>Since our key application is already selecting the right topic we should be able to fully control our robot with the keyboard. This means that our <code>core</code>, <code>teleop</code>, and at least <code>key</code> applications are working fine.</p>
+<p>Now we can focus on our remaining applications. Let’s see if our <code>mapping</code> is working fine.</p>
+<h3 id="heading--save-the-map-in-the-correct-location">Save the map in the correct location</h3>
+<p>Our <code>mapping</code> daemon is a rather complex snap application. Indeed, we used various features of snaps to manage the saving of the map. It’s time to verify if everything works as expected.<br/>
+With our simulation running and our <code>core</code> and <code>teleop</code> daemons running in the background we will simply need to run <code>turtlebot3c.key</code> to control our robot, but also we will need to start the mapping service.<br/>
+To do so we can start the service (without enabling it) with:</p>
+<pre><code class="lang-bash">sudo snap start turtlebot3c.mapping
+</code></pre>
+<p>We can then follow the logs of our application with the command:</p>
+<pre><code class="lang-bash">sudo snap logs turtlebot3c.mapping -f
+</code></pre>
+<p>The logs should be similar to this:</p>
+<pre><code class="lang-auto">turtlebot3c.mapping[104495]: Laser Pose= -1.65701 -0.499409 -3.13914
+turtlebot3c.mapping[104495]: m_count 9
+turtlebot3c.mapping[104495]: Average Scan Matching Score=303.733
+turtlebot3c.mapping[104495]: neff= 100
+turtlebot3c.mapping[104495]: Registering Scans:Done
+</code></pre>
+<p>This is what the normal log of the mapping should look like.<br/>
+In case it’s not the case we must stop the simulation and the snap to make sure there is no <code>roscore</code> zombies.<br/>
+We can then use our <code>key</code> application to move around and create the map!</p>
+<p>Once we moved around, the SLAM should have enough data to generate the map.<br/>
+We can test our “smart map saving” feature by simply stopping the map and seeing if it’s created.</p>
+<p>We can stop the map with:</p>
+<pre><code class="lang-bash">sudo snap stop turtlebot3c.mapping
+</code></pre>
+<p>We should see at the end of our mapping logs something similar to:</p>
+<pre><code class="lang-auto">turtlebot3c.mapping[104749]: Waiting for the map
+turtlebot3c.mapping[104749]: Received a 384 X 384 map @ 0.050 m/pix
+turtlebot3c.mapping[104749]: Writing map occupancy data to /root/snap/turtlebot3c/common/map/new_map.pgm
+turtlebot3c.mapping[104749]: Writing map occupancy data to /root/snap/turtlebot3c/common/map/new_map.yaml
+turtlebot3c.mapping[104749]: Done
+</code></pre>
+<p>What we see in the logs is rather positive since the logs report that the map was saved.</p>
+<p>Recall that we decided to save the map in the directory <code>${SNAP_USER_COMMON}/map</code>. In this case, our user is <code>ubuntu</code>, and the <code>SNAP_USER_COMMON</code> should be pointing to <code>/home/ubuntu/snap/turtlebot3c/common</code>. But here we can see that the map was saved in the directory: <code>/root/snap/turtlebot3c/common/</code>.</p>
+<p>Let’s check why that is.</p>
+<h4 id="heading--where-is-my-map-">Where is my map?</h4>
+<p>When we call a snap application command, the command is executed with the permission of our current user.<br/>
+In case the user is <code>ubuntu</code>, calling the command <code>MY_SNAP</code> will run the command with the <code>ubuntu</code> permissions. This also means that if we call sudo <code>MY_SNAP</code> we will run our command with the <code>root</code> permissions. From that point of view, nothing is different with snaps.<br/>
+One thing to know is that snap daemons are running as <code>root</code>. This will obviously have some impact.<br/>
+Let’s jump inside our snap environment and verify some things. We can start a shell in the snap daemon environment with the following command:</p>
+<pre><code class="lang-bash">sudo snap run --shell turtlebot3c.mapping
+</code></pre>
+<p>We will then enter a shell.</p>
+<p>Let’s go to the root of our snap system.</p>
+<pre><code class="lang-bash">cd $SNAP
+</code></pre>
+<p>Simply by running the <code>ls</code> command, we might recognize a typical Linux system:</p>
+<pre><code class="lang-bash">etc/ lib/ meta/ opt/ snap/ usr/ var/
+</code></pre>
+<p>We can even see our ROS install inside <code>opt/ros/noetic/</code>.</p>
+<p>If we check the content of the <code>$HOME</code> environment variable we will see:</p>
+<pre><code class="lang-bash">$ echo $HOME
+
+/root/snap/turtlebot3c/x
+</code></pre>
+<p>So the home of our snap when run as root is this specific directory.</p>
+<p>We can run:</p>
+<pre><code class="lang-bash">echo $SNAP_USER_COMMON
+</code></pre>
+<p>As we can guess it will give the value:</p>
+<pre><code class="lang-bash">/root/snap/turtlebot3c/common
+</code></pre>
+<p>And this is where our maps are saved. This then explains the location of our map. It’s simply saved in our <code>root</code> user home since we are running a daemon.<br/>
+We can exit this terminal by typing <code>exit</code>.</p>
+<p>Back to our machine, we can verify that our maps are present with the command:</p>
+<pre><code class="lang-bash">ls -l /root/snap/turtlebot3c/common/map
+</code></pre>
+<p>We can see our map files as well as our symbolic link.</p>
+<p>Our <code>mapping</code> application was then perfectly working. In the future we might want to be careful regarding the <code>$SNAP_*</code> variable since they might point to different directories depending on the user or if it’s a daemon or not.<br/>
+Let’s now see if the <code>navigation</code> works!</p>
+<h3 id="heading--fix-the-navigation-application">Fix the navigation application</h3>
+<p>The <code>mapping</code> application successfully created map files. Let’s see if our navigation application starts and loads the correct files.<br/>
+We will still need the simulation up and running.<br/>
+Let’s keep the logs in a dedicated terminal by typing:</p>
+<pre><code class="lang-bash">sudo snap logs turtlebot3c -f
+</code></pre>
+<p>We can then start our navigation service with:</p>
+<pre><code class="lang-bash">sudo snap start turtlebot3c.navigation
+</code></pre>
+<p>Then we can see that something is going wrong. We get this log:</p>
+<pre><code class="lang-auto">systemd[1]: Started Service for snap application turtlebot3c.navigation.
+turtlebot3c.navigation[106426]: prev_topic: "/nav_vel"
+turtlebot3c.navigation[106455]: /snap/turtlebot3c/x2/opt/ros/noetic/lib/map_server/map_server: error while loading shared libraries: libpulsecommon-13.99.so: cannot open shared object file: No such file or directory
+</code></pre>
+<p>A shared library is missing. It’s <code>libpulsecommon</code>.<br/>
+A missing library in a snap is a very common problem when building a snap.<br/>
+Let’s stop our application since anyway it’s crashing:</p>
+<pre><code class="lang-bash">sudo snap stop turtlebot3c.navigation
+</code></pre>
+<p>Let’s debug our application to give an overview of how to debug such cases.</p>
+<h4 id="heading--debug-the-missing-libpulsecommon-library">Debug the missing libpulsecommon library</h4>
+<p>Our application is crashing because of a missing shared library. This is a very common problem in snaps since the confined environment only contains what was explicitly declared.<br/>
+Let’s quickly jump into our application environment to verify what is going on:</p>
+<pre><code class="lang-bash">sudo snap run --shell turtlebot3c.navigation
+</code></pre>
+<p>We are now in the exact same condition that our snap is right before calling <code>navigation_launcher.sh</code>.<br/>
+Let’s see if our <code>map_server</code> application is missing a library.<br/>
+We can do so by typing:</p>
+<pre><code class="lang-bash">ldd /snap/turtlebot3c/current/opt/ros/noetic/lib/map_server/map_server
+</code></pre>
+<p>Here we are using <code>ldd</code> to print the shared object dependencies.</p>
+<p>We can then see that in the middle of all the different links and found libraries we have:</p>
+<pre><code class="lang-bash">libpulsecommon-13.99.so =&gt; not found
+</code></pre>
+<p>So our <code>map_server</code> is depending on a library <code>libpulsecommon</code> that it cannot find.<br/>
+Let’s see if we can find this missing library inside our snap. Type the following command:</p>
+<pre><code class="lang-bash">find $SNAP -type f -name "libpulsecommon-13.99.so"
+</code></pre>
+<p>It will search for the library file that our <code>map_server</code> is not finding inside our snap.<br/>
+Surprisingly, we find it in our snap:</p>
+<pre><code class="lang-bash">/snap/turtlebot3c/x2/usr/lib/x86_64-linux-gnu/pulseaudio/libpulsecommon-13.99.so
+</code></pre>
+<p>This means that our library is installed already in our snap, just that our application is not finding it.</p>
+<p>Now we must verify why our library is not found while being present in our snap. On Linux, like in a snap, there are several mechanisms used to search for a dynamic library. The most common is the <code>$LD_LIBRARY_PATH</code> environment variable.<br/>
+If we run:</p>
+<pre><code class="lang-bash">echo $LD_LIBRARY_PATH
+</code></pre>
+<p>we will see that <code>$SNAP/usr/lib/x86_64-linux-gnu/</code> is listed but not with the subdirectory <code>pulseaudio</code>.</p>
+<p>We can now exit this snap shell by typing <code>exit</code>.</p>
+<p>The simplest solution would be to extend the <code>$LD_LIBRARY_PATH</code> environment variable with the additional directory.</p>
+<p>To do that we must modify our <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-diff">  navigation:
++  environment:
++    # map server need pulseaudio
++    LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/x86_64-linux-gnu/pulseaudio"
+   command-chain: [usr/bin/mux_select_nav_vel.sh]
+</code></pre>
+<p>The <code>environment</code> keyword lets us define environment variables for our application. Here we extend the <code>$LD_LIBRARY_PATH</code> with the additional <code>pulseaudio</code> path relative to our snap.</p>
+<p>We can now rebuild and reinstall the snap!</p>
+<p>At the end of the build we will see this warning:</p>
+<pre><code class="lang-auto">CVE-2020-27348: A potentially empty LD_LIBRARY_PATH has been set for environment in 'navigation'. The current working directory will be added to the library path if empty. This can cause unexpected libraries to be loaded.
+</code></pre>
+<p>In our case, we can ignore this warning since we set the <code>$LD_LIBRARY_PATH</code> to a non-empty value.</p>
+<p>We can now retest the <code>navigation</code> application.</p>
+<h4 id="heading--navigation-test">Navigation test</h4>
+<p>Once our snap is properly rebuilt and reinstalled we can test our <code>navigation</code> app. With our last modification, our application should now find every library it needs.<br/>
+We must make sure to restart the simulation after reinstalling the snap.<br/>
+Once up and running, let’s run the navigation again:</p>
+<pre><code class="lang-bash">sudo snap start turtlebot3c.navigation
+</code></pre>
+<p>This time we will see that the logs look fine.<br/>
+We can then run <code>RViz</code> and see if we can navigate. <code>RViz</code> is a debug/visualisation tool, so it doesn’t have to be included inside our snap.<br/>
+We can run <code>RViz</code> with the TurtleBot3 configuration with the following command:</p>
+<pre><code class="lang-bash">rviz -d /opt/ros/noetic/share/turtlebot3_slam/rviz/turtlebot3_gmapping.rviz
+</code></pre>
+<p>We should see something like this:</p>
+<p><img alt="|516x410.0948453608247" height="" src="https://lh6.googleusercontent.com/iPQF08-CvLLv_KmmR2Aqhoq3MUTA5DHViWLhBZOnTcvrIMbJpFt3ZD3LAHb5FwTJhLHje_Y-gN3N16A4NRhVJ9PiHEq0TD3njgYNXwpOGgxI2QQOTl4YcQ8xDHtX8OPhV6Vw-j4BXvQGmiGDMrbdb1o" width=""/></p>
+<p>Let’s select the “2D Pose Estimate” and select the actual position:</p>
+<p><img alt="|518x411.46611909650926" height="" src="https://lh4.googleusercontent.com/ok-PE2sRUglTDQB7rySmXZYp-z7NcN1nq6UFKoGn2ZzzDAkb-CxBCaN7822o15qMyd8L8FtbOnUPlgOl7wZTgpJL98YabzKX011IgDSfzT8n1Px-oQ6OeR04aSAESsSQp0eSlH3jxqHWJGwl3AOSW90" width=""/></p>
+<p>We can now check with the “2D Nav Goal” to send a goal to our navigation:</p>
+<p><img alt="|531x421.49794238683126" height="" src="https://lh5.googleusercontent.com/Lb38y0GBK8sB3rh9XnILufRVccbDEUcXaxZnbDBINs0VK_6IXcbWy2Cva7n8BIcE86h2k9dJazPpdDLxPVozrWKsB-QupyTvpGGrxugas8mYSwJgUruUyylZU7FighVWYtDMqERIsAP0oV0ihuP7hpA" width=""/></p>
+<p>Our robot is now navigating. This means that the <code>navigation</code> daemon is running properly but also that our <code>core</code> and <code>teleop</code> daemons are also working fine.</p>
+<p>Now our whole software stack is running!</p>
+<h4 id="heading--final-detail">Final detail</h4>
+<p>We have now tested our whole stack and every feature was properly working. There is still a final detail to look at before we run a final test.</p>
+<p>During the test we could have noticed this warning in the <code>mapping</code> and <code>navigation</code> logs:</p>
+<pre><code class="lang-auto">[rospack] Warning: cannot create rospack cache directory /root/.ros: boost::filesystem::create_directory: Permission denied: "/root/.ros"
+</code></pre>
+<p><a href="http://wiki.ros.org/rospack">Rospack</a> doesn’t use the <code>$HOME</code> environment variable but <a href="https://github.com/ros/rospack/blob/ad85a874575bbed74124b722b42b545537cc6aa3/src/rospack.cpp#L1951">uses the password structure to get the home directory</a>. By default, snaps make sure that the environment variable <code>$HOME</code> is pointing to a writable directory, but unfortunately, <code>rospack</code> is not using it. The good news is that rospack<a href="https://github.com/ros/rospack/blob/ad85a874575bbed74124b722b42b545537cc6aa3/src/rospack.cpp#L1935"> first tries to read the <code>$ROS_HOME</code></a>. We could make the error disappear by defining the <code>$ROS_HOME</code> to <code>$SNAP_USER_DATA/ros</code>.<br/>
+Since ROS logging is also using <code>$ROS_HOME</code> too, to have the logs of every app and daemon in the same directory we will apply the environment variable change to every app and daemon.<br/>
+We can do that by modifying the <code>snapcraft.yaml</code>:</p>
+<pre><code class="lang-diff">  core:
++   environment:
++     ROS_HOME: $SNAP_USER_DATA/ros
+[...]
+  teleop:
++   environment:
++     ROS_HOME: $SNAP_USER_DATA/ros
+[...]
+  joy:
++   environment:
++     ROS_HOME: $SNAP_USER_DATA/ros
+[...]
+  key:
++   environment:
++     ROS_HOME: $SNAP_USER_DATA/ros
+[...]
+  mapping:
++   environment:
++     ROS_HOME: $SNAP_USER_DATA/ros
+[...]
+  navigation:
+    environment:
++   ROS_HOME: $SNAP_USER_DATA/ros
+</code></pre>
+<p>We can then rebuild our snap!</p>
+<p>By solving this last little detail, we made sure that all the logs are written properly and in the same location. Snaps rely on the standard usage of Linux. Any solution not following the standard might need adjustment.</p>
+<h3 id="heading--final-test">Final test</h3>
+<p>Now that we have solved every problem, we can do a final test of everything.</p>
+<p>Since we did multiple tests, our writable directories already have data. To reproduce the first install of our snap, we can remove and purge our snap. This will not only remove our snap and previous revisions, but it will also clean all its data.</p>
+<p>To do so:</p>
+<pre><code class="lang-bash">sudo snap remove turtlebot3c --purge
+</code></pre>
+<p>We can now proceed to a complete test, from installation to navigation.<br/>
+Let’s go through the following steps:</p>
+<ol>
+<li>Install the snap – <code>sudo snap install turtlebot3c_*.snap --dangerous</code>
+</li>
+<li>Set the simulation parameter – <code>sudo snap set turtlebot3c simulation=true</code>
+</li>
+<li>Start the simulation – <code>TURTLEBOT3_MODEL=waffle_pi roslaunch turtlebot3_gazebo turtlebot3_world.launch</code>
+</li>
+<li>Start the <code>mapping</code> – <code>sudo snap start turtlebot3c.mapping</code>
+</li>
+<li>Roam around with the <code>key</code> application - <code>turtlebot3c.key</code>
+</li>
+<li>Stop the <code>mapping</code> – <code>sudo snap stop turtlebot3c.mapping</code>
+</li>
+<li>Start the <code>navigation</code> – <code>sudo snap start turtlebot3c.navigation</code>
+</li>
+<li>Start <code>RViz</code> - <code>rviz -d /opt/ros/noetic/share/turtlebot3_slam/rviz/turtlebot3_gmapping.rviz</code>
+</li>
+<li>Test the navigation</li>
+</ol>
+<p>We now have a complete snap that is completely tested.<br/>
+We created a map, we can now make sure the <code>navigation</code> daemon starts automatically at boot by enabling the service.<br/>
+Let’s call the following command.</p>
+<pre><code class="lang-bash">sudo snap start --enable turtlebot3c.navigation
+</code></pre>
+<p>In case we want all the <code>turtlebot3c</code> daemons to stop and not start again, we can disable the snap with:</p>
+<pre><code class="lang-bash">sudo snap disable turtlebot3c
+</code></pre>
+<p>This will prevent any application and daemons from starting. Additionally, it will also prevent updates.</p>
+<p>By checking the output of:</p>
+<pre><code class="lang-bash">snap info turtlebot3c
+</code></pre>
+<p>We can confirm that all the daemons are stopped and disabled. Of course, we can enable it later with the snap enable command.</p>
+<p>We have now presented every single step to snap a TurtleBot3 software stack. We went from application identification to actual snapping and finally added some advanced behaviour to automatize the map management tasks.</p>
+<h3 id="heading--exercise">Exercise</h3>
+<p>Now that we have learned the ins and outs of the TurtleBot3 snap, we can apply some of our fresh knowledge for a quick exercise. The exercise as well as the solution are available in the <a href="https://ubuntu.com/robotics/docs/developer-guide-part-2-exercise">Developer guide part 2 - exercise</a>.</p>
+<h2 id="heading--conclusion">Conclusion</h2>
+<p>We are reaching the conclusion of this developer guide. This developer guide addressed almost any topic that one might need to ship a robot software as a snap.</p>
+<p>The final version of the snap workspace is <a href="https://github.com/canonical/turtlebot3c-snap/tree/noetic-devel">available on GitHub</a>. This is the official code that is used to publish the <a href="https://snapcraft.io/turtlebot3c">TurtleBot3c snap</a> from the store. This means that the GitHub repository will keep getting updated.</p>
+<h3 id="heading--what-we-achieved">What we achieved</h3>
+<p>In this developer guide, we went through the creation of the TurtleBot3 snap. We have covered all the steps that one must go through when creating a snap for a robot.</p>
+<p>First, we identified the different applications and daemons that our snap must expose. We also identified the scope of our snap. Then we applied the knowledge of the first part of the developer guide to build the first draft of our snap. By discovering new features of snaps we were able to implement features to manage our maps and to select the right velocity topic. We implemented these features to simplify and automate the usage of the snap.</p>
+<p>We finally covered the snap debugging aspect. This helped us to solve all the different issues we encountered while testing the snap.</p>
+<p>Now the whole stack of TurtleBot3 for the simulation or the real robot is packed in a single snap.</p>
+
+      <div class="p-strip">
+        <hr class="u-no-margin--bottom">
+        <div class="p-article-pagination">
+          
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                
+            
+            
+            
+            
+              
+                <a class="p-article-pagination__link--previous" href="/robotics/docs/developer-guide-part-1-exercise">
+                  <span class="p-article-pagination__label">Previous</span>
+                  <span class="p-article-pagination__title">Developer guide - Part 1: exercise</span>
+                </a>
+                
+              
+            
+            
+            
+            
+            
+            
+
+          
+          
+            
+            
+            
+            
+            
+            
+                
+            
+            
+              
+                <a class="p-article-pagination__link--next" href="/robotics/docs/developer-guide-part-2-exercise">
+                  <span class="p-article-pagination__label">Next</span>
+                  <span class="p-article-pagination__title">Developer guide - Part 2: exercise</span>
+                </a>
+                
+              
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </div>
+      </div>
+
+			<div class="p-strip is-shallow">
+				<div class="p-notification--information">
+					<div class="p-notification__content">
+            <p class="p-notification__message">Last updated a month ago. <a href="https://discourse.ubuntu.com/t/developer-guide-part-2-distributing-ros-apps-with-snaps/37108">Help improve this document in the forum</a>.</p>
+          </div>
+				</div>
+			</div>
+    </main>
+  </div>
+</div>
+
+<script>
+// Allows the 'onchange' listener to be used on a select field, while still being accessible.
+(function initSelect() {
+	var selectField = document.querySelector("#version-select");
+
+  selectField.changed = false;
+  selectField.onfocus = selectFocussed;
+  selectField.onblur = selectUnFocussed;
+  selectField.onkeyup = selectKeyed;
+  selectField.onchange = updatePage;
+})();
+
+function updatePage(e) {
+	this.changed = true;
+  window.location.href =  e.target.value;
+}
+
+function selectFocussed() {
+  this.initValue = this.value;
+}
+
+function selectUnFocussed() {
+  if (this.value != this.initValue) {
+    this.changed = true;
+		window.location.href = this.value;
+  }
+}
+
+function selectKeyed(e) {
+  e.preventDefault();
+	var theKeyPressed;
+  var validConfirmKeys = [9, "Tab", 13, "Enter"]
+  var validCancleKeys = [27, "Escape", "esc"]
+
+	if (e) {
+    theKeyPressed = e.key || e.keyCode;
+  } else {
+    return false;
+  }
+
+	if (validConfirmKeys.includes(theKeyPressed) &&  this.value != this.initValue) {
+		this.changed = true;
+		window.location.href = this.value;
+	} else if (validCancleKeys.includes(theKeyPressed)) {
+		this.value = this.initValue;
+	} else {
+		this.changed = false;
+	}
+}
+</script>
+
+      
+    </main><!-- /.inner-wrapper -->
+  </div><!-- /.wrapper -->
+
+  <!-- footer content goes here -->
+  
+    
+
+
+
+<footer class="p-footer p-strip u-clearfix">
+  <div class="u-fixed-width p-footer__container">
+    <p class="u-hide--medium u-hide--large link-to-top"><a href="#"><small>Back to top</small></a></p>
+    <nav aria-label="Footer navigation" id="main-navigation" class="p-footer__nav u-clearfix row u-no-padding--left u-no-padding--right">
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/openstack">OpenStack</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/openstack-footer-nav">OpenStack</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/openstack-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/openstack/what-is-openstack">What is OpenStack</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/install">Install</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/support">Support</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/ceph">Ceph</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/ceph-footer-nav">Ceph</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/ceph-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/ceph/what-is-ceph">What is Ceph</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/docs">Docs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/install">Install</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/managed">Managed</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/managed-footer-nav">Managed</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/managed-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/openstack/managed">OpenStack</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/managed">Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/managed">Ceph</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/managed/apps">Apps</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/observability/managed">Observability</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/kubernetes">Kubernetes</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/kubernetes-footer-nav">Kubernetes</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/kubernetes-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/kubernetes/what-is-kubernetes">What is Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/charmed-k8s">Charmed Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/install">Install</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/docs">Docs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/resources">Resources</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/ai">AI / ML</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/ai-footer-nav">AI / ML</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/ai-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/ai/mlops">MLOps</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/what-is-kubeflow">Kubeflow</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/mlflow">MLflow</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/roadshow">Roadshow</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/robotics">Robotics</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/robotics-footer-nav">Robotics</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/robotics-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/robotics/ros-esm">ROS ESM</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/what-is-ros">What is ROS</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/community">Community</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/cloud">Cloud</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/cloud-footer-nav">Cloud</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/cloud-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/cloud/cloud-computing">What is cloud computing</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/private-cloud">What is private cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/hybrid-cloud">What is hybrid cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/multi-cloud">What is multi-cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/public-cloud">Public cloud</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/internet-of-things">IoT</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/internet-of-things-footer-nav">IoT</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/internet-of-things-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/internet-of-things/appstore">App store</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/embedded">Embedded Linux</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/internet-of-things/edgex">EdgeX</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/internet-of-things/management">Management</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/raspberry-pi">Raspberry Pi</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/raspberry-pi-footer-nav">Raspberry Pi</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/raspberry-pi-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/raspberry-pi/desktop">Desktop</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/raspberry-pi/server">Server</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/core">Core</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/core-footer-nav">Core</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/core-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/core/services">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/stories">Success stories</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/tutorials?q=core">Tutorials</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/desktop">Desktop</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/desktop-footer-nav">Desktop</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/desktop-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/desktop/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/organisations">Organisations</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/developers">Developers</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/partners">Partners</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/flavours">Flavours</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/server">Server</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/server-footer-nav">Server</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/server-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/server/hyperscale">Hyperscale</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/server/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/security">Security</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/security-footer-nav">Security</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/security-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/security/esm">ESM</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/livepatch">Livepatch</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/certifications">Certifications &amp; Hardening</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/cves">CVEs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/notices">Notices</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/docker-images">Docker Images</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/download">Downloads</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/download-footer-nav">Downloads</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/download-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/download/desktop">Desktop</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/server">Server</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/iot">IoT</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/cloud">Cloud</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/observability">Observability</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/observability-footer-nav">Observability</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/observability-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/observability/what-is-observability">What is observability</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/observability/managed">Managed</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/appliance">Appliance</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/appliance-footer-nav">Appliance</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/appliance-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/appliance/about">About</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/portfolio">Portfolio</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/community">Community</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/hardware">Hardware</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/vm">Virtual machines</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom last-col">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/support">Support</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/support-footer-nav">Support</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/support-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/pro/dashboard">Your subscriptions</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pro/users">Account users</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/pro">Pricing</a></li>
+      
+      
+    
+      
+      
+        <li><a href="https://discourse.ubuntu.com/c/ubuntu-pro">Discourse</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/pricing">Pricing</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/pricing-footer-nav">Pricing</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/pricing-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/pricing/infra">Support</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/desktop">Desktops</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/devices">Devices</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          <li class="p-footer__item p-footer__item--spaced">
+            <h2 class="p-footer__title p-footer__title-text">
+              <span class="js-footer-accordion-cta" aria-controls="sectors-footer-nav">Sectors</span>
+            </h2>
+            <ul class="second-level-nav" id="sectors-footer-nav">
+              <li><a href="/automotive">Automotive</a></li>
+              <li><a href="/industrial">Industrial</a></li>
+              <li><a href="/gov">Government</a></li>
+              <li><a href="/telco">Telco</a></li>
+              <li><a href="/financial-services">Finance</a></li>
+            </ul>
+          </li>
+          <li>
+            <ul class="second-level-nav second-level-nav-small">
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/containers">Containers</a>
+</li>
+              
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/tutorials">Tutorials</a>
+</li>
+              
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/16-04">16-04</a>
+</li>
+              
+              <li class="p-footer-list-single-child">
+                <a href="/software-partnerships">Software partnerships</a>
+              </li>
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/landscape">Landscape</a>
+</li>
+              
+              <li class="p-footer-list-single-child">
+                <a href="/embedding">Canonical Embedding Programme</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <hr class="p-footer__divider" />
+    <div class="p-footer--secondary row">
+      <div class="col-7">
+        <nav aria-label="Resources navigation">
+          <ul class="p-inline-list">
+            <li class="u-hide--small p-inline-list__item">
+              <a class="p-button" href="/contact-us"><small class="u-no-padding--top">Contact us</small></a>
+            </li>
+            <li class="u-hide--medium u-hide--large p-inline-list__item">
+              <a class="p-link--soft" href="/contact-us"><small>Contact us</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/about"><small>About us</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/community"><small>Community</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="https://www.canonical.com/careers"><small>Careers</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/blog"><small>Blog</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/engage"><small>Resources</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/blog/press-centre"><small>Press centre</small></a>
+            </li>
+          </ul>
+        </nav>
+
+        <p class="p-footer--secondary__content"><small>&copy; 2023 Canonical Ltd. Ubuntu and Canonical are
+    registered trademarks of Canonical Ltd.</small></p>
+<nav class="p-footer--secondary__nav">
+  <ul class="p-inline-list--middot u-no-margin--bottom">
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="8" href="/legal"><small>Legal information</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="9" href="/legal/data-privacy"><small>Data privacy</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a href="" class="p-link--soft js-revoke-cookie-manager"><small>Manage your tracker settings</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" href="https://github.com/canonical/ubuntu.com/issues/new" id="report-a-bug">
+        <small>Report a bug on this site</small>
+      </a>
+    </li>
+  </ul>
+</nav>
+        </div>
+        <div class="p-footer__nav-col col-5">
+          <ul class="p-inline-list-icons">
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--twitter" title="Follow Ubuntu on Twitter" href="https://twitter.com/ubuntu"><svg
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 374.9999">
+                <defs>
+                  <style>
+                    .twitter-icon {
+                      fill: #666666;
+                    }
+                    .cls-2{
+                      fill: #e5e5e5;
+                    }
+                    
+                  </style>
+                </defs>
+                <g>
+                  <path class="twitter-icon" d="M 187.46875 7.09375 C 87.851562 7.09375 7.09375 87.851562 7.09375 187.46875 C 7.09375 287.085938 87.851562 367.84375 187.46875 367.84375 C 287.085938 367.84375 367.84375 287.085938 367.84375 187.46875 C 367.84375 87.851562 287.085938 7.09375 187.46875 7.09375 "></path>
+                </g>
+                <g class="cls-2" transform="translate(85, 75)"> 
+                  <svg xmlns="http://www.w3.org/2000/svg" x="-32" y="-30" height="280" width="280" viewBox="0 0 50 50">
+                    <path d="M 6.9199219 6 L 21.136719 26.726562 L 6.2285156 44 L 9.40625 44 L 22.544922 28.777344 L 32.986328 44 L 43 44 L 28.123047 22.3125 L 42.203125 6 L 39.027344 6 L 26.716797 20.261719 L 16.933594 6 L 6.9199219 6 z"></path>
+                  </svg>
+                </g>
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--facebook" title="Follow Ubuntu on Facebook" href="https://www.facebook.com/ubuntulinux/"><svg
+                xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32">
+                <defs>
+                  <style>
+                    .facebook-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <g>
+                  <path class="facebook-icon" d="M15.947 0C7.14 0 0 7.143 0 15.95 0 24.76 7.142 31.9 15.95 31.9s15.948-7.14 15.948-15.95c0-4.23-1.68-8.286-4.672-11.277C24.234 1.68 20.176 0 15.946 0z" />
+                </g>
+                <path class="cls-2" d="M18.632 5.102c-2.91 0-4.904 1.776-4.904 5.04v2.55h-3.293v3.814h3.293V26.87c1.353-.18 2.678-.53 3.942-1.045v-9.31h3.285l.492-3.812h-3.784v-2.18c0-1.104.357-2.238 1.894-1.855h2.02V5.252c-.978-.103-1.96-.154-2.943-.15h-.002z" />
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--linkedin" title="Find Canonical on LinkedIn" href="https://www.linkedin.com/company/234280"><svg
+                xmlns="http://www.w3.org/2000/svg" viewbox="0 0 33 33">
+                <defs>
+                  <style>
+                    .linkedin-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <g>
+                  <path class="linkedin-icon" d="M16.26 0C7.28 0 0 7.28 0 16.26s7.28 16.262 16.26 16.262 16.262-7.28 16.262-16.26C32.522 7.28 25.242 0 16.262 0z" />
+                </g>
+                <path class="cls-2" d="M7 8.512v16.38c0 .758.63 1.37 1.404 1.37h16.192c.775 0 1.404-.612 1.404-1.37V8.512c0-.755-.63-1.37-1.404-1.37H8.404C7.63 7.143 7 7.757 7 8.513zm5.76 14.636H9.89v-8.634h2.87v8.634zm-1.435-9.812h-.02c-.962 0-1.585-.663-1.585-1.492 0-.847.642-1.492 1.624-1.492s1.586.645 1.604 1.492c0 .83-.623 1.492-1.623 1.492zm3.022 9.812s.038-7.824 0-8.634h2.87v1.252h-.02c.38-.59 1.058-1.454 2.607-1.454 1.888 0 3.303 1.234 3.303 3.885v4.95h-2.87V18.53c0-1.162-.415-1.953-1.453-1.953-.793 0-1.265.534-1.472 1.05-.076.184-.095.44-.095.7v4.82h-2.87z" />
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--rss" title="Use the Ubuntu Blog rss feed" href="/blog/feed"><svg width="2rem" height="2rem" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                  <style>
+                    .rss-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #E5E5E5;
+                    }
+                  </style>
+                </defs>
+                <g class="rss-icon">
+                  <circle cx="20" cy="20" r="20"></circle>
+                </g>
+                <g class="cls-2" transform="translate(10.000000, 8.000000)">
+                  <circle cx="3" cy="18.875" r="3"></circle>
+                  <path d="M14.5,21.875 L10.25,21.875 C10.25,16.2140813 5.66091869,11.625 3.55271368e-15,11.625 L3.55271368e-15,7.375 C8.00812887,7.375 14.5,13.8668711 14.5,21.875 Z"></path>
+                  <path d="M17.5,21.875 C17.5,12.2100169 9.66498312,4.375 7.10542736e-15,4.375 L7.10542736e-15,0 C12.0812289,0 21.875,9.7937711 21.875,21.875 L17.5,21.875 Z"></path>
+                </g>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      /* Add the page to the report a bug link */
+      var bugLink = document.querySelector('#report-a-bug');
+      bugLink.href += '?body=%0a%0a%0a---%0a*Reported%20from:%20' + location.href + '*';
+    </script>
+    <span class="u-off-screen"><a href="#">Go to the top of the page</a></span>
+  </div>
+</footer>
+
+
+    
+    
+    
+  
+</body>
+</html>
+  
+  

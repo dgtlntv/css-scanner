@@ -1,0 +1,1191 @@
+
+  
+
+<!doctype html>
+
+<html prefix="og: http://ogp.me/ns#" class="" lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Migrare ad Ubuntu LTS: 6 fatti per gli utenti CentOS | Ubuntu</title>
+
+  <link rel="preconnect" href="https://res.cloudinary.com">
+
+  
+  <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+  <script src="/static/js/dist/main.js?v=d670c07" defer></script>
+  <script src="/static/js/src/infer-preferred-language.js?v=b69e09e"></script>
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=25147bc">
+  <link rel="stylesheet" type="text/css" media="print" href="/static/css/print.css?v=0980a57">
+  <script>performance.mark("Stylesheets finished")</script>
+
+  <link rel="canonical" href="https://ubuntu.com/engage/it/migrare-a-ubuntu-lts-centos">
+
+  <link rel="shortcut icon" href="https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://assets.ubuntu.com/v1/17b68252-apple-touch-icon-180x180-precomposed-ubuntu.png">
+
+  
+  
+
+  
+  
+
+
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/46ed6870-Ubuntu-L-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/3baab91b-Ubuntu-Th-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/6113b69a-Ubuntu-LI-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/0c7b8dc0-Ubuntu-R-subset.woff2" crossorigin>
+
+  <meta name="description" content="State pensando di migrare a Ubuntu da altre piattaforme Linux, come CentOS?">
+
+  <meta name="facebook-domain-verification" content="zxp9j79g1gy2xenbu9ll964pttk5hu">
+  <meta name="twitter:account_id" content="4503599627481511">
+  <meta name="twitter:site" content="@ubuntu">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ubuntu.com/engage/it/migrare-a-ubuntu-lts-centos">
+  <meta property="og:site_name" content="Ubuntu">
+  <meta name="copydoc" content="https://docs.google.com/document/d/1wnoqcZmFpD8qZ5wMwtLYVw6kzvQC-4hG-X4-Llo14NU/edit#heading=h.gzyxcj74bsep">
+  <meta name="google-site-verification" content="ddh2iq7ZuKf1LpkL_gtM_T7DkKDVD7ibq6Ceue4a_3M">
+
+  
+  <meta name="twitter:title" content="Migrare ad Ubuntu LTS: 6 fatti per gli utenti CentOS | Ubuntu">
+  <meta property="og:title" content="Migrare ad Ubuntu LTS: 6 fatti per gli utenti CentOS | Ubuntu">
+  
+  
+  <meta name="twitter:description" content="State pensando di migrare a Ubuntu da altre piattaforme Linux, come CentOS?">
+  <meta property="og:description" content="State pensando di migrare a Ubuntu da altre piattaforme Linux, come CentOS?">
+  
+
+  
+  <!-- Meta image: https://assets.ubuntu.com/v1/0d7c313d-__Generic_Recipe___Get_All_Links___932524047.png -->
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://assets.ubuntu.com/v1/0d7c313d-__Generic_Recipe___Get_All_Links___932524047.png">
+  <meta property="og:image" content="https://assets.ubuntu.com/v1/0d7c313d-__Generic_Recipe___Get_All_Links___932524047.png">
+  
+
+  
+
+          <!-- Google Analytics and Google Optimize -->
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-1018242-59', 'auto', {'allowLinker': true});
+        ga('require', 'GTM-N2MDH37');
+        ga('require', 'linker');
+        ga('linker:autoLink', ['conjure-up.io', 'login.ubuntu.com', 'www.ubuntu.com',
+        'ubuntu.com', 'insights.ubuntu.com', 'developer.ubuntu.com', 'cn.ubuntu.com',
+        'design.ubuntu.com', 'maas.io', 'canonical.com', 'landscape.canonical.com',
+        'pages.ubuntu.com', '/tutorials', 'docs.ubuntu.com']);
+        </script>
+        <!-- End Google Analytics and Google Optimize -->
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K92JCQ');</script>
+        <!-- End Google Tag Manager -->
+</head>
+
+<body class="">
+  <!-- google tag manager -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K92JCQ" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+  </noscript>
+  <!-- end google tag manager -->
+
+  
+
+  <div class="wrapper u-no-margin--top">
+    <div id="success" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">Your submission was sent successfully! <a href="#" onclick="location.href = document.referrer; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unsubscribed" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">You have successfully unsubscribed! <a href="#" onclick="location.href = ''; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="main-content" class="inner-wrapper">
+      
+      
+      
+  
+
+<span id="publish_date" class="u-hide"></span>
+<span id="created_date" class="u-hide"></span>
+<section class="p-strip p-engage-banner--grad">
+  <div class="u-fixed-width navigation-logo-engage">
+    <a href="/">
+      
+        
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_143,h_32/https://assets.ubuntu.com/v1/f263d9c4-logo-ubuntu-white.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_286,h_64/https://assets.ubuntu.com/v1/f263d9c4-logo-ubuntu-white.svg 2x"
+      alt="Ubuntu"
+      width="143"
+      height="32"
+      loading="auto"
+    />
+      
+
+    </a>
+  </div>
+  <div class="row">
+    <div class="col-7 u-vertically-center">
+      <h1>Migrare ad Ubuntu LTS: 6 fatti per gli utenti CentOS</h1>
+      <p class="u-no-padding--top p-heading--4">
+        State pensando di migrare a Ubuntu da altre piattaforme Linux, come CentOS?
+      </p>
+      
+    </div>
+    
+    <div class="col-5 u-hide--small u-hide--medium u-vertically-center u-align--center">
+      <img src="https://assets.ubuntu.com/v1/22f9a6dd-download.png" alt="" width=""/>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="p-strip is-shallow is-bordered">
+  <div class="row">
+    <div class="col-12">
+      <div class="md-table">
+
+</div><p>State pensando di migrare a Ubuntu da altre piattaforme Linux, come CentOS?</p>
+<p>Pensate a Ubuntu, la distribuzione Linux più popolare sui cloud pubblici, i data center e l’edge. Sin dalla sua nascita, Ubuntu ha costantemente guadagnato quote di mercato, <a href="https://w3techs.com/technologies/history_details/os-linux/all/y">raggiungendo ad oggi quasi il 50%</a>.</p>
+<p>Vi state chiedendo perché Ubuntu sia così popolare?</p>
+<p>Ecco la nostra opinione:</p>
+<h2>Fatto 1. Gli sviluppatori preferiscono Ubuntu</h2>
+<p>Secondo il <a href="https://recruit-c7ff.kxcdn.com/recruit/wp-content/uploads/2020/05/he-developer-survey-2020.pdf">2020 HackerEarth Developer Survey</a>, il 66% degli sviluppatori esperti e il 69% degli studenti preferiscono Ubuntu rispetto ad altre distribuzioni Linux. Questo perché Ubuntu fornisce loro la maggior quantità di software open source più recenti con cui lavorare.</p>
+<p>Per esempio, Ubuntu 20.04 LTS viene fornito con oltre 30.000 pacchetti open source come Python, Ruby, Go, Java, Apache, Nginx, PostgreSQL, MySQL, Node.js, PHP e altri ancora. Questo è il motivo per cui Ubuntu è di gran lunga la distribuzione Linux più popolare, seguita da un lontano n. 2, ovvero CentOS, scelta dall’11% dei professionisti attivi.</p>
+<h2>Fatto 2. Ubuntu LTS è prevedibile, stabile e sicuro</h2>
+<p>Una versione di supporto a lungo termine (LTS) di Ubuntu viene <a href="https://ubuntu.com/about/release-cycle">rilasciata ogni due anni</a>, e tutte le versioni LTS beneficiano di cinque anni di manutenzione gratuita della sicurezza (che può essere estesa a dieci anni). Per mantenere sicuri gli utenti di Ubuntu, l’Ubuntu Security Team applica migliaia di patch di sicurezza. Per esempio, Ubuntu 16.04 LTS ha beneficiato delle patch di oltre 5.000 vulnerabilità ed esposizioni comuni (CVE) che sono state applicate da aprile 2016 in modo assolutamente gratuito!</p>
+<p>Inoltre, il team agisce molto velocemente per non permettere ai cattivi attori di sfruttare le vulnerabilità: le CVE critiche vengono patchate in media in meno di 24 ore. Con l’ultima release (<a href="https://wiki.ubuntu.com/FocalFossa/ReleaseNotes">Ubuntu 20.04 LTS</a>), tutti gli utenti otterranno aggiornamenti di sicurezza e un accesso diretto a migliaia di applicazioni open source curate e disponibili gratuitamente fino al 2025.</p>
+<h2>Fatto 3. Ubuntu non ha abbonamenti obbligatori</h2>
+<p>Ubuntu è liberamente disponibile per il download e l’uso. Ogni istanza di Ubuntu è dotata degli stessi bit, indipendentemente dal fatto che un <a href="https://ubuntu.com/advantage">abbonamento Ubuntu Advantage (UA)</a> vi sia collegato o meno. UA è un abbonamento opzionale, per macchina, per una <a href="https://ubuntu.com/security/certifications">maggiore conformità</a>, <a href="https://ubuntu.com/security/esm">sicurezza estesa</a> e <a href="https://ubuntu.com/support">assistenza di livello enterprise disponibile 24 ore su 24</a>.</p>
+<p>Come risultato, gli utenti beneficiano di un’esperienza uniforme indipendentemente dal fatto che la loro macchina Ubuntu sia utilizzata per scopi di sviluppo o stia eseguendo carichi di lavoro in produzione.</p>
+<h2>Fatto 4. Ubuntu LTS offre un supporto di livello enterprise con prezzi trasparenti, per macchina</h2>
+<p>Ubuntu è la piattaforma open source più economicamente vantaggiosa con milioni di utenti in tutto il mondo. È anche sostenuta da un <a href="https://ubuntu.com/support">team di supporto enterprise composto da esperti</a> che offrono assistenza con una migrazione a Ubuntu. Fornisce accesso a moduli specifici per la conformità, compresa la crittografia certificata FIPS 140-2, DISA/STIG e CIS hardening, <a href="https://ubuntu.com/livepatch">Kernel Livepatch</a> per migliorare l’uptime e la sicurezza.</p>
+<h2>Fatto 5. Ubuntu offre un’esperienza multi-cloud</h2>
+<p>Scoprirete che Ubuntu funziona esattamente allo stesso modo, ovunque ne abbiate bisogno. Sulle workstation, nel data center, sull’edge e sui <a href="https://ubuntu.com/cloud">cloud</a>. Sui cloud pubblici in particolare, offre la stessa ottima esperienza Ubuntu con un livello di integrazione continua e molte ottimizzazioni a livello di kernel, specifiche per cloud.</p>
+<p>Inoltre, con Ubuntu Pro, gli utenti possono beneficiare di dieci anni di manutenzione della sicurezza, hardening integrato, moduli di crittografia FIPS e modello cloud-native pay-as-you-go su <a href="https://ubuntu.com/azure/pro">Azure</a> e <a href="https://ubuntu.com/aws/pro">AWS</a>.</p>
+<h2>Fatto 6. Ubuntu alimenta grandi infrastrutture</h2>
+<p>Ubuntu è nel cuore dello stack dell’infrastruttura. È una piattaforma ideale per la costruzione di infrastrutture su larga scala, come cloud privati OpenStack, Kubernetes, High Performance Computing (HPC) e Big Data. L’adozione diffusa di Ubuntu in questo tipo di progetti deriva dalla sua stabilità, interoperabilità, sicurezza e esperienza utente lineare.</p>
+<p>Ubuntu è anche usato dagli scienziati di tutto il mondo per potenziare varie piattaforme per l’analisi dei dati. Ricordate la prima immagine di un buco nero? Indovinate su cosa è stata creata?</p>
+<p><img alt="" height="" src="https://lh6.googleusercontent.com/6abEhckd3RU8maTqEBFYCOCRV5H5crSy0jTgDjfdDf1Zi8lbemT4uPpm9JznHQEHPP4VI8jJv4KcWdah_TboznYzcowam2Rslm5lgVIW1oemQqfvPcXN2jm8wTs_nnLFMtCdGLuj" width=""/></p>
+<p>Astronomi che creano la prima immagine in assoluto di un buco nero usando Ubuntu</p>
+<p>Crediti: <a href="https://twitter.com/8none1/status/1116371894616428544">Will Cooke, Twitter</a></p>
+<h2>Conclusione</h2>
+<p>Unisciti a migliaia di sviluppatori e imprese che hanno scelto Ubuntu come piattaforma per lo sviluppo, l’innovazione e i carichi di lavoro di produzione.</p>
+<p>Decolliamo insieme!</p>
+<p><a href="https://ubuntu.com/server#get-in-touch">Mettiti in contatto con il team di Ubuntu &gt;</a></p>
+<h3><a href="https://microk8s.io/?utm_source=rtp">Kubernetes veloce, leggero e a nodo singolo</a></h3>
+<p>Portate Kubernetes sulle vostre workstation con Microk8s, un singolo pacchetto di Kubernetes upstream che si installa su 42 versioni di Linux.</p>
+<p><a href="https://microk8s.io/?utm_source=rtp">Ottieni un sistema K8s completo e funzionante in pochi secondi ›</a></p>
+    </div>
+    
+  </div>
+
+</section>
+
+
+  
+
+
+
+
+
+
+
+      
+    </main><!-- /.inner-wrapper -->
+  </div><!-- /.wrapper -->
+
+  <!-- footer content goes here -->
+  
+    
+
+
+
+<footer class="p-footer p-strip u-clearfix">
+  <div class="u-fixed-width p-footer__container">
+    <p class="u-hide--medium u-hide--large link-to-top"><a href="#"><small>Back to top</small></a></p>
+    <nav aria-label="Footer navigation" id="main-navigation" class="p-footer__nav u-clearfix row u-no-padding--left u-no-padding--right">
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/openstack">OpenStack</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/openstack-footer-nav">OpenStack</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/openstack-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/openstack/what-is-openstack">What is OpenStack</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/install">Install</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/support">Support</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/ceph">Ceph</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/ceph-footer-nav">Ceph</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/ceph-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/ceph/what-is-ceph">What is Ceph</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/docs">Docs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/install">Install</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/managed">Managed</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/managed-footer-nav">Managed</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/managed-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/openstack/managed">OpenStack</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/managed">Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/managed">Ceph</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/managed/apps">Apps</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/observability/managed">Observability</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/kubernetes">Kubernetes</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/kubernetes-footer-nav">Kubernetes</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/kubernetes-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/kubernetes/what-is-kubernetes">What is Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/charmed-k8s">Charmed Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/install">Install</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/docs">Docs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/resources">Resources</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/ai">AI / ML</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/ai-footer-nav">AI / ML</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/ai-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/ai/mlops">MLOps</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/what-is-kubeflow">Kubeflow</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/mlflow">MLflow</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/roadshow">Roadshow</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/robotics">Robotics</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/robotics-footer-nav">Robotics</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/robotics-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/robotics/ros-esm">ROS ESM</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/what-is-ros">What is ROS</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/community">Community</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/cloud">Cloud</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/cloud-footer-nav">Cloud</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/cloud-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/cloud/cloud-computing">What is cloud computing</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/private-cloud">What is private cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/hybrid-cloud">What is hybrid cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/multi-cloud">What is multi-cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/public-cloud">Public cloud</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/internet-of-things">IoT</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/internet-of-things-footer-nav">IoT</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/internet-of-things-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/internet-of-things/appstore">App store</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/embedded">Embedded Linux</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/internet-of-things/edgex">EdgeX</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/internet-of-things/management">Management</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/raspberry-pi">Raspberry Pi</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/raspberry-pi-footer-nav">Raspberry Pi</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/raspberry-pi-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/raspberry-pi/desktop">Desktop</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/raspberry-pi/server">Server</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/core">Core</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/core-footer-nav">Core</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/core-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/core/services">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/stories">Success stories</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/tutorials?q=core">Tutorials</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/desktop">Desktop</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/desktop-footer-nav">Desktop</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/desktop-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/desktop/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/organisations">Organisations</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/developers">Developers</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/partners">Partners</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/flavours">Flavours</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/server">Server</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/server-footer-nav">Server</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/server-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/server/hyperscale">Hyperscale</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/server/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/security">Security</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/security-footer-nav">Security</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/security-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/security/esm">ESM</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/livepatch">Livepatch</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/certifications">Certifications &amp; Hardening</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/cves">CVEs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/notices">Notices</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/docker-images">Docker Images</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/download">Downloads</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/download-footer-nav">Downloads</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/download-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/download/desktop">Desktop</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/server">Server</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/iot">IoT</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/cloud">Cloud</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/observability">Observability</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/observability-footer-nav">Observability</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/observability-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/observability/what-is-observability">What is observability</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/observability/managed">Managed</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/appliance">Appliance</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/appliance-footer-nav">Appliance</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/appliance-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/appliance/about">About</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/portfolio">Portfolio</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/community">Community</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/hardware">Hardware</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/vm">Virtual machines</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom last-col">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/support">Support</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/support-footer-nav">Support</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/support-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/pro/dashboard">Your subscriptions</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pro/users">Account users</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/pro">Pricing</a></li>
+      
+      
+    
+      
+      
+        <li><a href="https://discourse.ubuntu.com/c/ubuntu-pro">Discourse</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/pricing">Pricing</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/pricing-footer-nav">Pricing</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/pricing-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/pricing/infra">Support</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/desktop">Desktops</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/devices">Devices</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          <li class="p-footer__item p-footer__item--spaced">
+            <h2 class="p-footer__title p-footer__title-text">
+              <span class="js-footer-accordion-cta" aria-controls="sectors-footer-nav">Sectors</span>
+            </h2>
+            <ul class="second-level-nav" id="sectors-footer-nav">
+              <li><a href="/automotive">Automotive</a></li>
+              <li><a href="/industrial">Industrial</a></li>
+              <li><a href="/gov">Government</a></li>
+              <li><a href="/telco">Telco</a></li>
+              <li><a href="/financial-services">Finance</a></li>
+            </ul>
+          </li>
+          <li>
+            <ul class="second-level-nav second-level-nav-small">
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/containers">Containers</a>
+</li>
+              
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/tutorials">Tutorials</a>
+</li>
+              
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/16-04">16-04</a>
+</li>
+              
+              <li class="p-footer-list-single-child">
+                <a href="/software-partnerships">Software partnerships</a>
+              </li>
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/landscape">Landscape</a>
+</li>
+              
+              <li class="p-footer-list-single-child">
+                <a href="/embedding">Canonical Embedding Programme</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <hr class="p-footer__divider" />
+    <div class="p-footer--secondary row">
+      <div class="col-7">
+        <nav aria-label="Resources navigation">
+          <ul class="p-inline-list">
+            <li class="u-hide--small p-inline-list__item">
+              <a class="p-button" href="/contact-us"><small class="u-no-padding--top">Contact us</small></a>
+            </li>
+            <li class="u-hide--medium u-hide--large p-inline-list__item">
+              <a class="p-link--soft" href="/contact-us"><small>Contact us</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/about"><small>About us</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/community"><small>Community</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="https://www.canonical.com/careers"><small>Careers</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/blog"><small>Blog</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/engage"><small>Resources</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/blog/press-centre"><small>Press centre</small></a>
+            </li>
+          </ul>
+        </nav>
+
+        <p class="p-footer--secondary__content"><small>&copy; 2023 Canonical Ltd. Ubuntu and Canonical are
+    registered trademarks of Canonical Ltd.</small></p>
+<nav class="p-footer--secondary__nav">
+  <ul class="p-inline-list--middot u-no-margin--bottom">
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="8" href="/legal"><small>Legal information</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="9" href="/legal/data-privacy"><small>Data privacy</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a href="" class="p-link--soft js-revoke-cookie-manager"><small>Manage your tracker settings</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" href="https://github.com/canonical/ubuntu.com/issues/new" id="report-a-bug">
+        <small>Report a bug on this site</small>
+      </a>
+    </li>
+  </ul>
+</nav>
+        </div>
+        <div class="p-footer__nav-col col-5">
+          <ul class="p-inline-list-icons">
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--twitter" title="Follow Ubuntu on Twitter" href="https://twitter.com/ubuntu"><svg
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 374.9999">
+                <defs>
+                  <style>
+                    .twitter-icon {
+                      fill: #666666;
+                    }
+                    .cls-2{
+                      fill: #e5e5e5;
+                    }
+                    
+                  </style>
+                </defs>
+                <g>
+                  <path class="twitter-icon" d="M 187.46875 7.09375 C 87.851562 7.09375 7.09375 87.851562 7.09375 187.46875 C 7.09375 287.085938 87.851562 367.84375 187.46875 367.84375 C 287.085938 367.84375 367.84375 287.085938 367.84375 187.46875 C 367.84375 87.851562 287.085938 7.09375 187.46875 7.09375 "></path>
+                </g>
+                <g class="cls-2" transform="translate(85, 75)"> 
+                  <svg xmlns="http://www.w3.org/2000/svg" x="-32" y="-30" height="280" width="280" viewBox="0 0 50 50">
+                    <path d="M 6.9199219 6 L 21.136719 26.726562 L 6.2285156 44 L 9.40625 44 L 22.544922 28.777344 L 32.986328 44 L 43 44 L 28.123047 22.3125 L 42.203125 6 L 39.027344 6 L 26.716797 20.261719 L 16.933594 6 L 6.9199219 6 z"></path>
+                  </svg>
+                </g>
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--facebook" title="Follow Ubuntu on Facebook" href="https://www.facebook.com/ubuntulinux/"><svg
+                xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32">
+                <defs>
+                  <style>
+                    .facebook-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <g>
+                  <path class="facebook-icon" d="M15.947 0C7.14 0 0 7.143 0 15.95 0 24.76 7.142 31.9 15.95 31.9s15.948-7.14 15.948-15.95c0-4.23-1.68-8.286-4.672-11.277C24.234 1.68 20.176 0 15.946 0z" />
+                </g>
+                <path class="cls-2" d="M18.632 5.102c-2.91 0-4.904 1.776-4.904 5.04v2.55h-3.293v3.814h3.293V26.87c1.353-.18 2.678-.53 3.942-1.045v-9.31h3.285l.492-3.812h-3.784v-2.18c0-1.104.357-2.238 1.894-1.855h2.02V5.252c-.978-.103-1.96-.154-2.943-.15h-.002z" />
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--linkedin" title="Find Canonical on LinkedIn" href="https://www.linkedin.com/company/234280"><svg
+                xmlns="http://www.w3.org/2000/svg" viewbox="0 0 33 33">
+                <defs>
+                  <style>
+                    .linkedin-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <g>
+                  <path class="linkedin-icon" d="M16.26 0C7.28 0 0 7.28 0 16.26s7.28 16.262 16.26 16.262 16.262-7.28 16.262-16.26C32.522 7.28 25.242 0 16.262 0z" />
+                </g>
+                <path class="cls-2" d="M7 8.512v16.38c0 .758.63 1.37 1.404 1.37h16.192c.775 0 1.404-.612 1.404-1.37V8.512c0-.755-.63-1.37-1.404-1.37H8.404C7.63 7.143 7 7.757 7 8.513zm5.76 14.636H9.89v-8.634h2.87v8.634zm-1.435-9.812h-.02c-.962 0-1.585-.663-1.585-1.492 0-.847.642-1.492 1.624-1.492s1.586.645 1.604 1.492c0 .83-.623 1.492-1.623 1.492zm3.022 9.812s.038-7.824 0-8.634h2.87v1.252h-.02c.38-.59 1.058-1.454 2.607-1.454 1.888 0 3.303 1.234 3.303 3.885v4.95h-2.87V18.53c0-1.162-.415-1.953-1.453-1.953-.793 0-1.265.534-1.472 1.05-.076.184-.095.44-.095.7v4.82h-2.87z" />
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--rss" title="Use the Ubuntu Blog rss feed" href="/blog/feed"><svg width="2rem" height="2rem" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                  <style>
+                    .rss-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #E5E5E5;
+                    }
+                  </style>
+                </defs>
+                <g class="rss-icon">
+                  <circle cx="20" cy="20" r="20"></circle>
+                </g>
+                <g class="cls-2" transform="translate(10.000000, 8.000000)">
+                  <circle cx="3" cy="18.875" r="3"></circle>
+                  <path d="M14.5,21.875 L10.25,21.875 C10.25,16.2140813 5.66091869,11.625 3.55271368e-15,11.625 L3.55271368e-15,7.375 C8.00812887,7.375 14.5,13.8668711 14.5,21.875 Z"></path>
+                  <path d="M17.5,21.875 C17.5,12.2100169 9.66498312,4.375 7.10542736e-15,4.375 L7.10542736e-15,0 C12.0812289,0 21.875,9.7937711 21.875,21.875 L17.5,21.875 Z"></path>
+                </g>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      /* Add the page to the report a bug link */
+      var bugLink = document.querySelector('#report-a-bug');
+      bugLink.href += '?body=%0a%0a%0a---%0a*Reported%20from:%20' + location.href + '*';
+    </script>
+    <span class="u-off-screen"><a href="#">Go to the top of the page</a></span>
+  </div>
+</footer>
+
+
+    
+    
+    
+  
+</body>
+</html>

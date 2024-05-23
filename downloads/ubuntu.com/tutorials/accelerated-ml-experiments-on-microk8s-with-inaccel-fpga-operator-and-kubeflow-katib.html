@@ -1,0 +1,1273 @@
+<!doctype html>
+
+<html prefix="og: http://ogp.me/ns#" class="" lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Accelerated ML experiments on MicroK8s with InAccel FPGA Operator and Kubeflow Katib | Ubuntu</title>
+
+  <link rel="preconnect" href="https://res.cloudinary.com">
+
+  
+  <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+  <script src="/static/js/dist/main.js?v=d670c07" defer></script>
+  <script src="/static/js/src/infer-preferred-language.js?v=b69e09e"></script>
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=25147bc">
+  <link rel="stylesheet" type="text/css" media="print" href="/static/css/print.css?v=0980a57">
+  <script>performance.mark("Stylesheets finished")</script>
+
+  <link rel="canonical" href="https://ubuntu.com/tutorials/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib">
+
+  <link rel="shortcut icon" href="https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://assets.ubuntu.com/v1/17b68252-apple-touch-icon-180x180-precomposed-ubuntu.png">
+
+  
+
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/46ed6870-Ubuntu-L-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/3baab91b-Ubuntu-Th-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/6113b69a-Ubuntu-LI-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/0c7b8dc0-Ubuntu-R-subset.woff2" crossorigin>
+
+  <meta name="description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+
+  <meta name="facebook-domain-verification" content="zxp9j79g1gy2xenbu9ll964pttk5hu">
+  <meta name="twitter:account_id" content="4503599627481511">
+  <meta name="twitter:site" content="@ubuntu">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ubuntu.com/tutorials/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib">
+  <meta property="og:site_name" content="Ubuntu">
+  <meta name="copydoc" content="https://drive.google.com/drive/folders/0B4s80tIYQW4BMjNiMGFmNzQtNDkxZC00YmQ0LWJiZWUtNTk2YThlY2MzZmJh">
+  <meta name="google-site-verification" content="ddh2iq7ZuKf1LpkL_gtM_T7DkKDVD7ibq6Ceue4a_3M">
+
+  
+  <meta name="twitter:title" content="Accelerated ML experiments on MicroK8s with InAccel FPGA Operator and Kubeflow Katib | Ubuntu">
+  <meta property="og:title" content="Accelerated ML experiments on MicroK8s with InAccel FPGA Operator and Kubeflow Katib | Ubuntu">
+  
+  
+  <meta name="twitter:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  <meta property="og:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  
+
+  
+  <!-- Meta image: https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png -->
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png">
+  <meta property="og:image" content="https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png">
+  
+
+  
+
+          <!-- Google Analytics and Google Optimize -->
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-1018242-59', 'auto', {'allowLinker': true});
+        ga('require', 'GTM-N2MDH37');
+        ga('require', 'linker');
+        ga('linker:autoLink', ['conjure-up.io', 'login.ubuntu.com', 'www.ubuntu.com',
+        'ubuntu.com', 'insights.ubuntu.com', 'developer.ubuntu.com', 'cn.ubuntu.com',
+        'design.ubuntu.com', 'maas.io', 'canonical.com', 'landscape.canonical.com',
+        'pages.ubuntu.com', '/tutorials', 'docs.ubuntu.com']);
+        </script>
+        <!-- End Google Analytics and Google Optimize -->
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K92JCQ');</script>
+        <!-- End Google Tag Manager -->
+</head>
+
+<body class="">
+  <!-- google tag manager -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K92JCQ" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+  </noscript>
+  <!-- end google tag manager -->
+
+  
+    
+
+<header id="navigation" class="p-navigation">
+  
+  <div class="p-navigation__row">
+    <div class="p-navigation__banner">
+      <div class="p-navigation__logo">
+        <a class="p-navigation__item" href="/">
+          <svg class="p-navigation__image" width="107px" height="32px" viewBox="0 0 107 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Ubuntu</title><g id="ubuntu-logo"><path d="M100.470409,13.7615448 C96.9385448,13.7615448 94.0754031,10.8982838 94.0754031,7.36627238 C94.0754031,3.83426097 96.9385448,0.971 100.470409,0.971 C104.002273,0.971 106.865415,3.83426097 106.865415,7.36627238 C106.865415,10.8982838 104.002273,13.7615448 100.470409,13.7615448 Z M96.479398,6.59820047 C96.0559273,6.59820047 95.7123568,6.9417853 95.7123568,7.36727117 C95.7123568,7.78976066 96.0559273,8.13434429 96.479398,8.13434429 C96.9038674,8.13434429 97.2504342,7.78976066 97.2504342,7.36727117 C97.2504342,6.9417853 96.9038674,6.59820047 96.479398,6.59820047 Z M101.966539,10.0919788 C101.601995,10.3017254 101.475153,10.7731557 101.684891,11.1377152 C101.898624,11.5092663 102.369036,11.6341154 102.73358,11.4213725 C103.103118,11.2116259 103.22996,10.7401956 103.015228,10.3726397 C102.803493,10.0030862 102.334079,9.87823709 101.966539,10.0929776 L101.966539,10.0919788 Z M98.1493106,7.36727117 C98.1493106,6.6081884 98.5268386,5.93500183 99.104117,5.52949182 L98.5428187,4.58762991 C97.8686614,5.03708681 97.3682869,5.72425648 97.1605465,6.52828495 C97.4062394,6.72804357 97.5580496,7.02768151 97.5580496,7.36727117 C97.5580496,7.70386446 97.4062394,8.00649877 97.1605465,8.20425981 C97.3682869,9.00828828 97.8696601,9.69445915 98.5428187,10.1419185 L99.104117,9.20305294 C98.5268386,8.79754293 98.1493106,8.12435636 98.1493106,7.36727117 Z M100.392506,5.11998664 C101.568037,5.11998664 102.529835,6.02089804 102.62971,7.16951013 L103.726339,7.14953427 C103.671408,6.30555408 103.30187,5.54147734 102.73358,4.98714716 C102.438948,5.09501681 102.100372,5.08003492 101.809735,4.90924129 C101.518099,4.74144405 101.337325,4.4577868 101.286389,4.15015852 C101.001745,4.07225265 100.703118,4.03030334 100.392506,4.03030334 C99.8631682,4.03030334 99.3617949,4.15415369 98.9143542,4.37388818 L99.4486863,5.33073199 C99.735328,5.19589492 100.057925,5.12098543 100.392506,5.12098543 L100.392506,5.11998664 Z M100.392506,9.61155932 C100.056926,9.61155932 99.735328,9.53565105 99.4486863,9.40181277 L98.9143542,10.3586566 C99.3607962,10.5783911 99.8631682,10.7022414 100.392506,10.7022414 C100.704117,10.7022414 101.001745,10.6622897 101.286389,10.5823862 C101.336327,10.2727604 101.518099,9.98810433 101.809735,9.82130588 C102.103368,9.65350864 102.438948,9.63553036 102.73358,9.74839398 C103.302868,9.18607345 103.670409,8.42599188 103.726339,7.5810129 L102.62971,7.56503221 C102.529835,8.71064793 101.568037,9.61056053 100.392506,9.61056053 L100.392506,9.61155932 Z M101.966539,4.64156473 C102.334079,4.85430767 102.803493,4.72945853 103.015228,4.35990507 C103.22996,3.993348 103.103118,3.52091885 102.735578,3.30917471 C102.370035,3.09942815 101.899623,3.22427729 101.686888,3.59183316 C101.474154,3.95839024 101.600996,4.4288218 101.966539,4.64056594 L101.966539,4.64156473 Z M12.7910109,24.1489933 C12.1418224,24.3107977 11.2828961,24.4855865 10.2172282,24.6663681 C9.15056154,24.850146 7.91610464,24.942035 6.5178525,24.942035 C5.29737813,24.942035 4.27365781,24.7642498 3.43970028,24.4086795 C2.60774025,24.0541079 1.93857672,23.551715 1.4322097,22.9005019 C0.922846416,22.2512863 0.558302106,21.4842132 0.335580515,20.6032777 C0.109862669,19.7153506 0,18.7385309 0,17.6598343 L0,8.76857793 L2.83146059,8.76857793 L2.83146059,17.0515693 C2.83146059,18.9822364 3.13508106,20.3635673 3.746317,21.1945632 C4.35555543,22.0275567 5.38127325,22.4430546 6.82247172,22.4430546 C7.12609218,22.4430546 7.44169767,22.4330667 7.76629191,22.4110932 C8.09188491,22.3911174 8.39750288,22.3661475 8.67915081,22.3361837 C8.96279625,22.3062199 9.22247165,22.2762561 9.45617951,22.2462924 C9.68988736,22.214331 9.85568012,22.1813708 9.95955028,22.1384227 L9.95955028,8.76857793 L12.7910109,8.76857793 L12.7910109,24.1499921 L12.7910109,24.1489933 Z M19.7033702,9.46773311 C20.049937,9.24600104 20.5722841,9.01028586 21.2734076,8.76857793 C21.9725337,8.5258712 22.7785262,8.40202085 23.6943813,8.40202085 C24.8299618,8.40202085 25.8396996,8.60777223 26.7235947,9.01128466 C27.6084886,9.41679466 28.3535572,9.98710554 28.9637944,10.7192209 C29.5700366,11.4483399 30.0324586,12.3212851 30.3470653,13.3360589 C30.6636695,14.3518315 30.8204735,15.469481 30.8204735,16.6880086 C30.8204735,17.9664638 30.6327082,19.1180723 30.2551802,20.1438328 C29.8786508,21.1685946 29.3463163,22.0365458 28.6571777,22.7466877 C27.9660416,23.459826 27.1350804,24.005167 26.1583014,24.3917 C25.1865161,24.7782329 24.0908857,24.971 22.8694126,24.971 C21.5490631,24.971 20.3825213,24.8781122 19.366791,24.6953331 C18.3520594,24.512554 17.5191006,24.328776 16.8699121,24.1459969 L16.8699121,1.45940984 L19.7023715,0.971998793 L19.7023715,9.46773311 L19.700374,9.46773311 L19.7033702,9.46773311 Z M20.9078646,22.3661475 C21.4242191,22.4390594 22.0664163,22.4730184 22.8404488,22.4730184 C24.3605486,22.4730184 25.5820217,21.9686279 26.4938819,20.9648408 C27.4077395,19.9590561 27.8651677,18.5327795 27.8651677,16.686011 C27.8651677,15.8739922 27.7852676,15.1129119 27.6214724,14.4007724 C27.4586759,13.6896317 27.1940067,13.0763727 26.8294624,12.557999 C26.4639193,12.0386266 25.9905111,11.636113 25.4152302,11.3394714 C24.8339568,11.0438287 24.1388258,10.8970061 23.3278395,10.8970061 C22.5548058,10.8970061 21.8456923,11.0298456 21.195505,11.2915294 C20.5463165,11.5582071 20.0469408,11.8308776 19.7023715,12.1155337 L19.7023715,22.1354263 C19.9880144,22.2203237 20.3885138,22.296232 20.9078646,22.3661475 Z M46.6257165,24.1489933 C45.976528,24.3107977 45.1176017,24.4855865 44.0529326,24.6663681 C42.9872647,24.850146 41.7528078,24.942035 40.3505606,24.942035 C39.1340813,24.942035 38.1083635,24.7642498 37.2764034,24.4086795 C36.4444434,24.0541079 35.7742811,23.551715 35.2689128,22.9005019 C34.7575521,22.2512863 34.3940065,21.4842132 34.1702862,20.6032777 C33.9475646,19.7173482 33.8367032,18.7395297 33.8367032,17.6618319 L33.8367032,8.77057551 L36.6681637,8.77057551 L36.6681637,17.0535669 C36.6681637,18.984234 36.9717842,20.3655649 37.5810226,21.1965608 C38.1902611,22.0295542 39.2149802,22.4450522 40.6571774,22.4450522 C40.9617966,22.4450522 41.2784008,22.4350643 41.6029951,22.4130908 C41.9275893,22.3931149 42.2322085,22.3681451 42.5168527,22.3381813 C42.7994994,22.3082175 43.0591748,22.2782537 43.2938814,22.2482899 C43.5255918,22.2153298 43.693382,22.1823696 43.7962534,22.1384227 L43.7962534,8.77057551 L46.6287128,8.77057551 L46.6287128,24.1519896 L46.6267153,24.1519896 L46.6257165,24.1489933 Z M50.7066153,9.22602518 C51.3558038,9.06222311 52.2177263,8.89142948 53.2953793,8.70665275 C54.3710347,8.52686999 55.6084878,8.43398223 57.010735,8.43398223 C58.2711594,8.43398223 59.3148547,8.61176741 60.1468148,8.96633897 C60.9807723,9.32190932 61.6449421,9.8183095 62.1423203,10.4585359 C62.6396986,11.0977635 62.9912591,11.8648366 63.1940057,12.7557601 C63.3957535,13.6526763 63.4976262,14.6354887 63.4976262,15.7121877 L63.4976262,24.6054417 L60.6641681,24.6054417 L60.6641681,16.3214515 C60.6641681,15.3456307 60.5982505,14.513636 60.467414,13.8244687 C60.3355788,13.1313063 60.117851,12.5759773 59.812233,12.1494927 C59.5096113,11.7200116 59.1011219,11.4123833 58.5937561,11.220615 C58.0873891,11.0238528 57.4551794,10.9289675 56.7061157,10.9289675 C56.4014965,10.9289675 56.0868898,10.9419518 55.764293,10.9619276 C55.4387,10.9819035 55.1280883,11.0078721 54.8354541,11.0378359 C54.5358287,11.0677997 54.2761533,11.1037563 54.0414466,11.143708 C53.8057413,11.1836597 53.6389498,11.2156211 53.5380759,11.2335994 L53.5380759,24.6044429 L50.7066153,24.6044429 L50.7066153,9.22602518 Z M70.0444424,8.76857793 L76.0449416,8.76857793 L76.0449416,11.143708 L70.0444424,11.143708 L70.0444424,18.4548737 C70.0444424,19.2439202 70.106365,19.9031237 70.2292115,20.4175021 C70.3490617,20.9368746 70.5328319,21.3443822 70.7765273,21.6380273 C71.0202227,21.9296749 71.3258407,22.1374239 71.6893862,22.262273 C72.0549293,22.3841258 72.4813962,22.4440534 72.9677882,22.4440534 C73.8396983,22.4440534 74.5298356,22.3471705 75.0401976,22.1544034 C75.5465646,21.9606375 75.8921327,21.8248017 76.0739054,21.7419018 L76.6831439,24.0591019 C76.3994984,24.2009305 75.8961277,24.3827108 75.1750291,24.6054417 C74.455928,24.8301702 73.6389492,24.9430338 72.7250916,24.9430338 C71.6484374,24.9430338 70.7595485,24.8061991 70.058425,24.5305322 C69.3592989,24.2548653 68.796003,23.8453601 68.3705349,23.2970227 C67.9430692,22.7496841 67.6434438,22.0744999 67.4716585,21.2724691 C67.2978757,20.4684406 67.2119831,19.5405618 67.2119831,18.4858362 L67.2119831,4.35191473 L70.0424449,3.8625061 L70.0424449,8.77057551 L70.0444424,8.77057551 L70.0444424,8.76857793 Z M91.4556778,24.1489933 C90.803493,24.3107977 89.947563,24.4855865 88.8788988,24.6663681 C87.8142297,24.850146 86.5817703,24.942035 85.1835182,24.942035 C83.9630438,24.942035 82.9393235,24.7642498 82.1073634,24.4086795 C81.2714084,24.0541079 80.6022449,23.551715 80.0958779,22.9005019 C79.5865146,22.2512863 79.2239678,21.4842132 78.9972512,20.6032777 C78.7775258,19.7173482 78.6626694,18.7395297 78.6626694,17.6618319 L78.6626694,8.77057551 L81.4991238,8.77057551 L81.4991238,17.0535669 C81.4991238,18.984234 81.8027442,20.3655649 82.4109839,21.1965608 C83.0202223,22.0295542 84.0459402,22.4450522 85.4871386,22.4450522 C85.7917578,22.4450522 86.1063646,22.4350643 86.4319576,22.4130908 C86.7535556,22.3931149 87.0591735,22.3681451 87.3438177,22.3381813 C87.6274632,22.3082175 87.8891361,22.2782537 88.1198477,22.2482899 C88.3535555,22.2153298 88.5223445,22.1823696 88.6242172,22.1384227 L88.6242172,8.77057551 L91.4576753,8.77057551 L91.4576753,24.1519896 L91.4556778,24.1519896 L91.4556778,24.1489933 Z" fill="#FFFFFF" fill-rule="nonzero"></path></g></svg>
+          <script>performance.mark("Logo rendered")</script>
+        </a>
+
+        
+        <h5 class="p-navigation--secondary__logo u-hide--nav-threshold-up">
+          <a class="p-navigation--secondary__banner" href="/tutorials">
+            Tutorials
+          </a>
+        </h5>
+        
+
+        
+        <h5 class="p-navigation--secondary__logo u-hide--nav-threshold-up">
+          <a class="p-navigation--secondary__banner" href="/tutorials">
+            Tutorials
+          </a>
+        </h5>
+        
+      </div>
+      <div class="u-hide u-show--small js-account--small"></div>
+    </div>
+    <nav aria-label="Main navigation" class="p-navigation__nav">
+      <ul class="p-navigation__items u-hide js-show-nav" role="menu">
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="enterprise" onmouseover="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#enterprise-content" onfocus="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content');">Enterprise</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="developer" onmouseover="fetchDropdown('/templates/navigation-developer-h', 'developer-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#developer-content" onfocus="fetchDropdown('/templates/navigation-developer-h', 'developer-content');">Developer</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="community" onmouseover="fetchDropdown('/templates/navigation-community-h', 'community-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#community-content" onfocus="fetchDropdown('/templates/navigation-community-h', 'community-content');">Community</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="download" onmouseover="fetchDropdown('/templates/navigation-download-h', 'download-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#download-content" onfocus="fetchDropdown('/templates/navigation-download-h', 'download-content');">Download</a>
+        </li>
+      </ul>
+      <noscript>
+        <ul class="p-navigation__items" role="menu">
+          
+
+
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/openstack">OpenStack</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/kubernetes">Kubernetes</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/desktop">Desktop</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/internet-of-things">IoT</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/support">Support</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/download">Downloads</a></li>
+
+        </ul>
+      </noscript>
+      <ul class="p-navigation__items u-hide--small">
+        <li class="p-navigation__item" id="link-4">
+          <a href="/search" class="js-search-button p-navigation__link-anchor" style="padding-right: 1rem;">
+            <span class="u-hide u-show--large">Search</span> <i class="p-icon--search is-light">Search</i>
+          </a>
+        </li>
+        <li class="p-navigation__user js-account" id="canonical-login"></li>
+      </ul>
+      <div class="p-navigation__search u-show--small u-hide" style="z-index: 39;">
+        <form action="/search" class="p-search-box" id="ubuntu-global-search-form">
+          <input type="search" class="p-search-box__input" name="q" placeholder="Search our sites" required="" aria-label="Search our sites">
+          <button type="reset" class="p-search-box__reset"><i class="p-icon--close">Close</i></button>
+          <button type="submit" class="p-search-box__button"><i class="p-icon--search">Search</i></button>
+        </form>
+      </div>
+    </nav>
+  </div>
+  
+</header>
+<div class="dropdown-window-overlay fade-animation"></div>
+<div class="dropdown-window slide-animation">
+  <div class="u-hide" id="enterprise-content"></div>
+  <div class="u-hide" id="developer-content">  </div>
+  <div class="u-hide" id="community-content"></div>
+  <div class="u-hide" id="download-content"></div>
+</div>
+
+
+<nav aria-label="Sub navigation" class="p-navigation--secondary">
+  <div class="row">
+    <div class="col-12 u-equal-height">
+      <a class="p-navigation--secondary__banner u-hide--nav-threshold-down" href="/tutorials">
+        <h5 class="p-navigation--secondary__logo">
+          Tutorials
+        </h5>
+      </a>
+      
+      <ul class="breadcrumbs--secondary">
+        
+          
+        
+          
+            
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link p-link--soft" href="/tutorials/tutorial-guidelines#1-overview" >How to write a tutorial</a>
+            </li>
+            
+          
+        
+
+        
+          
+        
+          
+        
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+
+
+
+<script>
+  var nav = document.querySelector('.js-show-nav');
+  var hash = window.location.hash;
+  nav.classList.remove('u-hide');
+
+  // If the page loads with a preselected hash load and open the menu
+  if (hash) {
+    try {
+      var selected = nav.querySelector(hash);
+    } catch(error) {
+      console.warn("Hash " + hash + " not found in topnav");
+    }
+    if (selected) {
+      selected.onmouseover();
+    }
+  }
+
+  function fetchDropdown(url, id) {
+    var div = document.getElementById(id);
+    var req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.send();
+    req.addEventListener('load', function() {
+      div.innerHTML = this.responseText;
+    });
+  }
+
+  function initSearch() {
+    var searchButton = document.querySelector('.js-search-button');
+    var searchReset = document.querySelector('.p-search-box__reset');
+    if (searchButton) {
+      searchButton.addEventListener('click', openSearch);
+    }
+
+    if (searchReset) {
+      searchReset.addEventListener('click', closeSearch);
+    }
+  }
+  initSearch();
+
+  function openSearch(e) {
+    e.preventDefault();
+    var navigation = document.querySelector('.p-navigation__nav');
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var banner = document.querySelector(".p-navigation__banner");
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    var searchInput = document.querySelector('.p-search-box__input');
+    var searchActive = !search.classList.contains('u-hide');
+    search.classList.remove('u-hide');
+    searchButton.classList.add('u-hide');
+    banner.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    navigationItems.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    dropdownWindow.style="z-index: 37;"
+    dropdownWindowOverlay.classList.remove("fade-animation");
+    navigation.classList.add('has-active-search');
+    searchInput.focus();
+    dropdownWindowOverlay.addEventListener('click', closeSearch);
+    document.addEventListener('keyup', keyPressHandler);
+  }
+
+  function closeSearch() {
+    var navigation = document.querySelector('.p-navigation__nav');
+    var banner = document.querySelector(".p-navigation__banner")
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    search.classList.add('u-hide');
+    banner.style= "opacity: 1;"
+    dropdownWindow.style="z-index: 39;"
+    navigationItems.style= "opacity: 1;"
+    dropdownWindowOverlay.classList.add("fade-animation");
+    navigation.classList.remove('has-active-search');
+    searchButton.classList.remove('u-hide');
+    document.removeEventListener('keyup', keyPressHandler);
+    dropdownWindowOverlay.removeEventListener('click', closeSearch);
+  }
+
+  function keyPressHandler (e) {
+    console.log(e);
+    if (e.key === "Escape") {
+      closeSearch();
+    }
+  }
+</script>
+  
+
+  <div class="wrapper u-no-margin--top">
+    <div id="success" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">Your submission was sent successfully! <a href="#" onclick="location.href = document.referrer; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unsubscribed" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">You have successfully unsubscribed! <a href="#" onclick="location.href = ''; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="main-content" class="inner-wrapper">
+      
+      
+      
+<script src="/static/js/dist/tutorials.js?v=2a938b6" defer></script>
+
+
+<div class="p-strip">
+  <div class="row">
+    <div class="col-7 col-start-large-5">
+      <h1 class="p-heading--2">Accelerated ML experiments on MicroK8s with InAccel FPGA Operator and Kubeflow Katib</h1>
+    </div>
+  </div>
+</div>
+
+<div class="l-tutorial row">
+  <aside class="l-tutorial__sidebar col-4">
+    <button type="button" class="l-tutorial__nav-toggle p-icon--menu u-hide u-show--small" aria-controls="menu-tutorial" aria-expanded="false">
+      Toggle tutorial menu
+    </button>
+    <ol class="l-tutorial__nav p-stepped-list u-hide--small" id="menu-tutorial">
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#1-overview">
+              Overview
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#2-aws-f1-configuration">
+              AWS F1 configuration
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#3-install-microk8s-on-ubuntu">
+              Install MicroK8s on Ubuntu
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#4-inaccel-fpga-operator">
+              InAccel FPGA Operator
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#5-getting-started-with-kubeflow-katib">
+              Getting Started with Kubeflow Katib
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#6-accelerated-xgboost-experiments-with-kubeflow-katib-hyperparameter-tuning">
+              Accelerated XGBoost experiments with Kubeflow Katib Hyperparameter tuning
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#7-thats-all-folks">
+              That’s all folks!
+            </a>
+          </p>
+        </li>
+      
+    </ol>
+  </aside>
+  <div class="l-tutorial__content col-8">
+    
+    <section class="l-tutorial-section" id="1-overview">
+      <h2 class="p-heading--3">1. Overview</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<h3>
+<a class="anchor" href="#what-is-microk8s-2" name="what-is-microk8s-2"></a>What is MicroK8s?</h3>
+<p><a href="https://microk8s.io" rel="noopener nofollow ugc">MicroK8s</a> is the simplest production-grade upstream Kubernetes.</p>
+<h3>
+<a class="anchor" href="#what-is-inaccel-fpga-operator-3" name="what-is-inaccel-fpga-operator-3"></a>What is InAccel FPGA Operator?</h3>
+<p><a href="https://artifacthub.io/packages/helm/inaccel/fpga-operator" rel="noopener nofollow ugc">InAccel FPGA Operator</a> is a cloud-native method to standardize and automate the deployment of all the necessary components for provisioning FPGA-enabled Kubernetes systems. FPGA Operator delivers a universal accelerator orchestration and monitoring layer, to automate scalability and lifecycle management of containerized FPGA applications on any Kubernetes cluster.</p>
+<p>The FPGA operator allows cluster admins to manage their remote FPGA-powered servers the same way they manage CPU-based systems, but also regular users to target particular FPGA types and explicitly consume FPGA resources in their workloads. This makes it easy to bring up a fleet of remote systems and run accelerated applications without additional technical expertise on the ground.</p>
+<h3>
+<a class="anchor" href="#what-is-kubeflow-katib-4" name="what-is-kubeflow-katib-4"></a>What is Kubeflow Katib?</h3>
+<p><a href="https://kubeflow.org/docs/components/katib" rel="noopener nofollow ugc">Kubeflow Katib</a> is a Kubernetes-native project for automated machine learning (AutoML). Katib supports hyperparameter tuning, early stopping and neural architecture search (NAS).</p>
+<p>Katib is the project which is agnostic to machine learning (ML) frameworks. It can tune hyperparameters of applications written in any language of the users’ choice and natively supports many ML frameworks, such as TensorFlow, MXNet, PyTorch, XGBoost, and others.</p>
+<p>Hyperparameters are the variables that control the model training process. They include:</p>
+<ul>
+<li>
+<p>The learning rate.</p>
+</li>
+<li>
+<p>The number of layers in a neural network.</p>
+</li>
+<li>
+<p>The number of nodes in each layer.</p>
+</li>
+</ul>
+<h3>
+<a class="anchor" href="#what-youll-learn-5" name="what-youll-learn-5"></a>What you’ll learn</h3>
+<ul>
+<li>
+<p>Deploy and configure instances with MicroK8s on <a href="https://aws.amazon.com/ec2/instance-types/f1" rel="noopener nofollow ugc">AWS F1</a></p>
+</li>
+<li>
+<p>Install InAccel FPGA Operator</p>
+</li>
+<li>
+<p>Install and configure Kubeflow Katib using <a href="https://charmhub.io/?q=katib" rel="noopener nofollow ugc">Charmhub</a></p>
+</li>
+<li>
+<p>Run FPGA accelerated hyperparameter tuning examples using the Katib user interface (UI)</p>
+</li>
+</ul>
+<h3 id="poll_3">
+<a class="anchor" href="#what-youll-need-6" name="what-youll-need-6"></a>What you’ll need</h3>
+<ul>
+<li>
+<p>Account credentials for <a href="https://console.aws.amazon.com" rel="noopener nofollow ugc">AWS</a></p>
+</li>
+<li>
+<p>Some basic command-line knowledge</p>
+</li>
+</ul>
+<hr/>
+<h4>
+<a class="anchor" href="#what-best-describes-your-expertise-in-fpga-acceleration-7" name="what-best-describes-your-expertise-in-fpga-acceleration-7"></a>What best describes your expertise in FPGA acceleration?</h4>
+<div class="poll" data-poll-name="poll_1" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="d35ddc3ce1fa357fbab55bade4277282" id="d35ddc3ce1fa357fbab55bade4277282" name="poll_1" type="radio"><label for="d35ddc3ce1fa357fbab55bade4277282">Beginner</label></input>
+<input data-poll-option-id="c751d83ce6126aa24297e19371c61ffa" id="c751d83ce6126aa24297e19371c61ffa" name="poll_1" type="radio"><label for="c751d83ce6126aa24297e19371c61ffa">Intermediate</label></input>
+<input data-poll-option-id="c52c58edad806b79491f1cedb84f7ea8" id="c52c58edad806b79491f1cedb84f7ea8" name="poll_1" type="radio"><label for="c52c58edad806b79491f1cedb84f7ea8">Advanced</label></input>
+<input data-poll-option-id="49f8cb50c649ed718366d721dbe5b678" id="49f8cb50c649ed718366d721dbe5b678" name="poll_1" type="radio"><label for="49f8cb50c649ed718366d721dbe5b678">Expert</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+<h4>
+<a class="anchor" href="#what-is-your-primary-job-role-in-your-organization-8" name="what-is-your-primary-job-role-in-your-organization-8"></a>What is your primary job role in your organization?</h4>
+<div class="poll" data-poll-name="poll_2" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="0659395f587972a1bf2c660582351201" id="0659395f587972a1bf2c660582351201" name="poll_2" type="radio"><label for="0659395f587972a1bf2c660582351201">Data Scientist</label></input>
+<input data-poll-option-id="dbd51d8cc8b30e40a49f7dd0358026e6" id="dbd51d8cc8b30e40a49f7dd0358026e6" name="poll_2" type="radio"><label for="dbd51d8cc8b30e40a49f7dd0358026e6">DevOps Engineer</label></input>
+<input data-poll-option-id="d73178f7ab59531474d9ebab1d85d945" id="d73178f7ab59531474d9ebab1d85d945" name="poll_2" type="radio"><label for="d73178f7ab59531474d9ebab1d85d945">FPGA Developer</label></input>
+<input data-poll-option-id="4d5ce997ab21013ec676a9ed5461ef94" id="4d5ce997ab21013ec676a9ed5461ef94" name="poll_2" type="radio"><label for="4d5ce997ab21013ec676a9ed5461ef94">IT Manager or ​Executive</label></input>
+<input data-poll-option-id="153b4b81214fc563901b4547989cf898" id="153b4b81214fc563901b4547989cf898" name="poll_2" type="radio"><label for="153b4b81214fc563901b4547989cf898">System Administrator</label></input>
+<input data-poll-option-id="d1f20f989bb5db1d22fa1dd5541de291" id="d1f20f989bb5db1d22fa1dd5541de291" name="poll_2" type="radio"><label for="d1f20f989bb5db1d22fa1dd5541de291">Other Business Role</label></input>
+<input data-poll-option-id="64e6d383e41e16c58941f2e17734f8d5" id="64e6d383e41e16c58941f2e17734f8d5" name="poll_2" type="radio"><label for="64e6d383e41e16c58941f2e17734f8d5">Other Technical Role</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+<h4>
+<a class="anchor" href="#how-will-you-use-this-tutorial-9" name="how-will-you-use-this-tutorial-9"></a>How will you use this tutorial?</h4>
+<div class="poll" data-poll-name="poll_3" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="2b49a1bf6cc17a62c1981e0ad78e5cff" id="2b49a1bf6cc17a62c1981e0ad78e5cff" name="poll_3" type="radio"><label for="2b49a1bf6cc17a62c1981e0ad78e5cff">Only read through it</label></input>
+<input data-poll-option-id="91ae26f1b5e9e977d93efcdc6deb3e41" id="91ae26f1b5e9e977d93efcdc6deb3e41" name="poll_3" type="radio"><label for="91ae26f1b5e9e977d93efcdc6deb3e41">Read it and complete the exercises</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib/26992">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                19
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <button class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" disabled style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </button>
+            
+
+            
+              <a href="#2-aws-f1-configuration" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="2-aws-f1-configuration">
+      <h2 class="p-heading--3">2. AWS F1 configuration</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>To interact with AWS services using commands in your command-line shell, you will need <code>aws</code> and <code>jq</code> CLI tools. Install them by running:</p>
+<pre><code class="lang-bash">sudo apt-get update
+sudo apt-get install awscli jq
+</code></pre>
+<h3>
+<a class="anchor" href="#add-credentials-11" name="add-credentials-11"></a>Add credentials</h3>
+<p>With AWS you have the option of adding credentials using the following environment variables that may already be present (and set) on your client system:</p>
+<p><code>AWS_ACCESS_KEY_ID</code>, <code>AWS_DEFAULT_REGION</code>, <code>AWS_SECRET_ACCESS_KEY</code></p>
+<h3>
+<a class="anchor" href="#launch-an-fpga-instance-12" name="launch-an-fpga-instance-12"></a>Launch an FPGA instance</h3>
+<p>To launch an Amazon EC2 F1 instance, use the <code>aws ec2 run-instances</code> command.</p>
+<pre><code class="lang-bash">aws ec2 run-instances \
+    --block-device-mapping DeviceName=/dev/sda1,Ebs={VolumeSize=32} \
+    --image-id resolve:ssm:/aws/service/canonical/ubuntu/server/bionic/stable/current/amd64/hvm/ebs-gp2/ami-id \
+    --instance-type f1.2xlarge \
+    --key-name &lt;KeyName&gt; \
+| jq -r '.Instances[0].InstanceId'
+</code></pre>
+<h3>
+<a class="anchor" href="#list-your-instance-13" name="list-your-instance-13"></a>List your instance</h3>
+<p>You can use the AWS CLI to list your instance and view information about it. The following example shows how to use the <code>aws ec2 describe-instances</code> command to output the <code>PublicIpAddress</code> of your instance.</p>
+<pre><code class="lang-bash">aws ec2 describe-instances \
+    --instance-ids &lt;InstanceId&gt; \
+| jq -r '.Reservations[0].Instances[0].PublicIpAddress'
+</code></pre>
+<h3>
+<a class="anchor" href="#connect-to-your-instance-14" name="connect-to-your-instance-14"></a>Connect to your instance</h3>
+<pre><code class="lang-bash">ssh -L 8080:localhost:8080 -o StrictHostKeyChecking=no ubuntu@&lt;PublicIpAddress&gt;
+</code></pre>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib/26992">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                16
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#1-overview" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#3-install-microk8s-on-ubuntu" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="3-install-microk8s-on-ubuntu">
+      <h2 class="p-heading--3">3. Install MicroK8s on Ubuntu</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>The following steps describe how to create, configure and launch a single-node Kubernetes cluster on an Ubuntu Linux system.</p>
+<html><body><div class="p-notification--caution"><div class="p-notification__response">
+<p class="u-no-padding--top u-no-margin--bottom">You need MicroK8s version &gt;= 1.23 to enable and run InAccel addon.</p>
+</div></div></body></html>
+<ol>
+<li>
+<p>Install MicroK8s by running the following command:</p>
+<pre><code class="lang-bash">sudo snap install microk8s --classic
+</code></pre>
+</li>
+<li>
+<p>Add your user to the <code>microk8s</code> group.</p>
+<pre><code class="lang-bash">sudo usermod -aG microk8s $USER
+</code></pre>
+</li>
+<li>
+<p>Run the following command to activate the changes to groups:</p>
+<pre><code class="lang-bash">newgrp microk8s
+</code></pre>
+</li>
+<li>
+<p>Check the status while Kubernetes starts.</p>
+<pre><code class="lang-bash">microk8s status --wait-ready
+</code></pre>
+</li>
+</ol>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib/26992">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                14
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#2-aws-f1-configuration" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#4-inaccel-fpga-operator" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="4-inaccel-fpga-operator">
+      <h2 class="p-heading--3">4. InAccel FPGA Operator</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>The FPGA Operator allows administrators of Kubernetes clusters to manage FPGA nodes just like CPU nodes in the cluster. Instead of provisioning a special OS image for FPGA nodes, administrators can rely on a standard OS image for both CPU and FPGA nodes and then rely on the FPGA Operator to provision the required software components for FPGAs.</p>
+<p>InAccel FPGA Operator is already built into MicroK8s as a community add-on. This means once you install MicroK8s, you can enable InAccel straight away.</p>
+<pre><code class="lang-bash">microk8s enable community # MicroK8s version &gt;= 1.24
+microk8s enable inaccel --wait
+</code></pre>
+<p>Note that the FPGA Operator is specifically useful for scenarios where the Kubernetes cluster needs to scale quickly - for example provisioning additional FPGA nodes on the cloud and managing the lifecycle of the underlying software components.</p>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib/26992">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                13
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#3-install-microk8s-on-ubuntu" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#5-getting-started-with-kubeflow-katib" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="5-getting-started-with-kubeflow-katib">
+      <h2 class="p-heading--3">5. Getting Started with Kubeflow Katib</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<h3>
+<a class="anchor" href="#prerequisites-18" name="prerequisites-18"></a>Prerequisites</h3>
+<p>Your Kubernetes cluster must have dynamic volume provisioning for the Katib DB component. The local storage service can be enabled by running the <code>microk8s enable</code> command:</p>
+<pre><code class="lang-bash">microk8s enable storage
+</code></pre>
+<h3>
+<a class="anchor" href="#installing-charmed-katib-19" name="installing-charmed-katib-19"></a>Installing Charmed Katib</h3>
+<p>These are the steps you need to install and deploy Katib with Charmed Operators and Juju on MicroK8s:</p>
+<ol>
+<li>
+<p>Install the Juju client.</p>
+<p><a href="https://juju.is" rel="noopener nofollow ugc">Juju</a> is an operation Lifecycle manager (OLM) for clouds, bare metal or Kubernetes. We will be using it to deploy and manage the components which make up Kubeflow Katib.</p>
+<p>As with MicroK8s, Juju is installed from a snap package:</p>
+<pre><code class="lang-bash">sudo snap install juju --classic
+</code></pre>
+</li>
+<li>
+<p>Create a Juju controller.</p>
+<p>As Juju already has a built-in knowledge of MicroK8s and how it works, there is no additional set up or configuration needed. All we need to do is run the command to deploy a Juju controller to the Kubernetes we set up with MicroK8s:</p>
+<pre><code class="lang-bash">juju bootstrap microk8s
+</code></pre>
+<p>The controller is Juju’s agent, running on Kubernetes, which can be used to deploy and control the components of Katib. You can read more about controllers in the <a href="https://juju.is/docs/olm/controllers" rel="noopener nofollow ugc">Juju documentation</a>.</p>
+</li>
+<li>
+<p>Create a new model.</p>
+<p>A model in Juju is a blank canvas where your operators will be deployed, and it holds a 1:1 relationship with a Kubernetes namespace.</p>
+<p>You need to create a model and give it the name <strong>katib</strong>, with the <code>juju add-model</code> command:</p>
+<pre><code class="lang-bash">juju add-model katib
+</code></pre>
+</li>
+<li>
+<p>Deploy the Katib bundle.</p>
+<p>Run the following command to deploy Katib with the main components:</p>
+<pre><code class="lang-bash">juju deploy katib
+</code></pre>
+<p>Juju will now fetch the applications and begin deploying them to the MicroK8s Kubernetes.</p>
+</li>
+<li>
+<p>Create a namespace for running experiments, with Katib <a href="https://kubeflow.org/docs/components/katib/experiment/#metrics-collector" rel="noopener nofollow ugc">Metrics Collector</a> enabled:</p>
+<pre><code class="lang-bash">microk8s kubectl create namespace kubeflow
+microk8s kubectl label namespace kubeflow katib-metricscollector-injection=enabled katib.kubeflow.org/metrics-collector-injection=enabled
+</code></pre>
+</li>
+</ol>
+<h3>
+<a class="anchor" href="#katib-components-20" name="katib-components-20"></a>Katib components</h3>
+<p>Run the following command to verify that Katib components are running:</p>
+<pre><code class="lang-bash">watch microk8s kubectl get --namespace katib pods
+</code></pre>
+<h3>
+<a class="anchor" href="#accessing-the-katib-ui-21" name="accessing-the-katib-ui-21"></a>Accessing the Katib UI</h3>
+<p>You can use the Katib user interface (UI) to submit experiments and to monitor your results. The Katib home page looks like this:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/zql6rNpHyEMoHXB3a40ZJ0vHv2g.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/f/f84655ace3f6feeaffcf3cedd5dac6c8f7c4a060.png" rel="noopener nofollow ugc" title="Katib UI"><img alt="Katib UI" data-base62-sha1="zql6rNpHyEMoHXB3a40ZJ0vHv2g" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/f/f84655ace3f6feeaffcf3cedd5dac6c8f7c4a060_2_10x10.png" height="148" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/f/f84655ace3f6feeaffcf3cedd5dac6c8f7c4a060.png" width="800"/></a></div>
+<p>You can set port-forwarding for the Katib UI service:</p>
+<pre><code class="lang-bash">microk8s kubectl port-forward --namespace katib svc/katib-ui 8080:8080 --address 0.0.0.0
+</code></pre>
+<p>Then you can access the Katib UI at this URL:</p>
+<p><a class="onebox" href="http://localhost:8080/katib" rel="noopener nofollow ugc" target="_blank">http://localhost:8080/katib</a></p>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib/26992">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                8
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#4-inaccel-fpga-operator" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#6-accelerated-xgboost-experiments-with-kubeflow-katib-hyperparameter-tuning" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="6-accelerated-xgboost-experiments-with-kubeflow-katib-hyperparameter-tuning">
+      <h2 class="p-heading--3">6. Accelerated XGBoost experiments with Kubeflow Katib Hyperparameter tuning</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p><strong>XGBoost</strong> is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable. It implements machine learning algorithms under the Gradient Boosting framework and provides a parallel tree boosting that solves many data science problems in a fast and accurate way.</p>
+<p><strong>Hyperparameter tuning</strong> is the process of optimizing the hyperparameter values to maximize the predictive accuracy of a model. It is a dark art in machine learning, the optimal parameters of a model can depend on many scenarios. So it is impossible to create a comprehensive guide for doing so. If you don’t use Katib or a similar system for hyperparameter tuning, you need to run many training jobs yourself, manually adjusting the hyperparameters to find the optimal values.</p>
+<h3>
+<a class="anchor" href="#running-a-katib-experiment-23" name="running-a-katib-experiment-23"></a>Running a Katib experiment</h3>
+<p>The steps to configure and <a href="https://www.kubeflow.org/docs/components/katib/experiment" rel="noopener nofollow ugc">run a hyperparameter tuning experiment</a> in Katib are:</p>
+<ol>
+<li>
+<p>Package your training code in a Docker container image and make the image available in a registry.</p>
+</li>
+<li>
+<p>Define the experiment in a YAML configuration file. The YAML file defines the range of potential values (the search space) for the parameters that you want to optimize, the objective metric to use when determining optimal values, the search algorithm to use during optimization, and other configurations.</p>
+</li>
+<li>
+<p>Run the experiment from the Katib UI, either by supplying the entire YAML file containing the configuration for the experiment or by entering the configuration values into the form.</p>
+</li>
+</ol>
+<p>As a reference, you can use the YAML file of the <a href="https://github.com/kubeflow/katib/blob/master/examples/v1beta1/fpga/xgboost-example.yaml" rel="noopener nofollow ugc">fpga xgboost example</a>.</p>
+<h3>
+<a class="anchor" href="#image-classification-on-street-view-house-numbers-svhn-dataset-24" name="image-classification-on-street-view-house-numbers-svhn-dataset-24"></a>Image classification on Street View House Numbers (SVHN) dataset</h3>
+<p><img alt="House Numbers 32x32" data-base62-sha1="yFVS4tYhhKiOtzAZ5WRTMykoV2e" height="170" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/f/f307657d8fb63e3e17af25a6a150b02fa105322e.jpeg" width="680"/><br/>
+<em>Source: <a href="http://ufldl.stanford.edu/housenumbers" rel="noopener nofollow ugc">http://ufldl.stanford.edu/housenumbers</a></em></p>
+<p><strong>SVHN</strong> is a real-world image dataset obtained from house numbers in Google Street View images. It can be seen as similar in flavor to MNIST (e.g., 32-by-32 images centered around a single digit), but incorporates an order of magnitude more labeled data (over 600,000 digit images) and comes from a significantly harder, unsolved, real world problem (recognizing digits and numbers in natural scene images).</p>
+<h3>
+<a class="anchor" href="#create-xgboost-svhn-experiments-25" name="create-xgboost-svhn-experiments-25"></a>Create XGBoost SVHN Experiments</h3>
+<p>Click <strong>NEW EXPERIMENT</strong> on the Katib home page. You should be able to view tabs offering you the following options:</p>
+<ol>
+<li>
+<p><strong>Metadata</strong>. The experiment code name, e.g. <strong>xgb-svhn-fpga</strong>.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/lwJ5jJr0AhZJukriMQWggyVYCEr.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/9/96e0b8e5b70bc44b1eca2941e2410eac667103d3.png" rel="noopener nofollow ugc" title="Experiment Metadata"><img alt="Experiment Metadata" data-base62-sha1="lwJ5jJr0AhZJukriMQWggyVYCEr" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/96e0b8e5b70bc44b1eca2941e2410eac667103d3_2_10x10.png" height="165" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/96e0b8e5b70bc44b1eca2941e2410eac667103d3_2_800x165.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/96e0b8e5b70bc44b1eca2941e2410eac667103d3_2_800x165.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/96e0b8e5b70bc44b1eca2941e2410eac667103d3_2_1200x247.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/9/96e0b8e5b70bc44b1eca2941e2410eac667103d3.png 2x" width="800"/></a></div>
+</li>
+<li>
+<p><strong>Trial Thresholds</strong>. Use the <strong>Parallel Trials</strong> to limit the number of hyperparameter sets that Katib should train in parallel.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/2aPpM5DfdJb43EDpRTbrq0QkRB8.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/0/0f3dba9ce75b54fd502bab1544212033b372c572.png" rel="noopener nofollow ugc" title="Experiment Trial Thresholds"><img alt="Experiment Trial Thresholds" data-base62-sha1="2aPpM5DfdJb43EDpRTbrq0QkRB8" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/0/0f3dba9ce75b54fd502bab1544212033b372c572_2_10x10.png" height="257" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/0/0f3dba9ce75b54fd502bab1544212033b372c572_2_800x257.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/0/0f3dba9ce75b54fd502bab1544212033b372c572_2_800x257.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/0/0f3dba9ce75b54fd502bab1544212033b372c572_2_1200x385.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/0/0f3dba9ce75b54fd502bab1544212033b372c572.png 2x" width="800"/></a></div>
+</li>
+<li>
+<p><strong>Objective</strong>. The metric that you want to optimize. A common objective is to maximize the model’s accuracy in the validation pass of the training job. Use the <strong>Additional metrics</strong> to monitor how the hyperparameters work with the model (e.g. if/how they affect the train time).</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/ckHXseCscijpA5FR6D6oaqezCk5.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/5/56715f0193e00db527af816e7cde82e6ff370b7d.png" rel="noopener nofollow ugc" title="Experiment Objective"><img alt="Experiment Objective" data-base62-sha1="ckHXseCscijpA5FR6D6oaqezCk5" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56715f0193e00db527af816e7cde82e6ff370b7d_2_10x10.png" height="295" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56715f0193e00db527af816e7cde82e6ff370b7d_2_800x295.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56715f0193e00db527af816e7cde82e6ff370b7d_2_800x295.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56715f0193e00db527af816e7cde82e6ff370b7d_2_1200x442.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/5/56715f0193e00db527af816e7cde82e6ff370b7d.png 2x" width="800"/></a></div>
+</li>
+<li>
+<p><strong>Hyper Parameters</strong>. The range of potential values (the search space) for the parameters that you want to optimize. In this section, you define the name and the distribution of every hyperparameter that you need to search. For example, you may provide a minimum and maximum value or a list of allowed values for each hyperparameter. Katib generates hyperparameter combinations in the range.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/lGyMHDYRrqMnmTjIR17W3h1hwWq.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/9/97fd4c2c9888a3ec0fec3bd99502769ed42d47ce.png" rel="noopener nofollow ugc" title="Experiment Hyper Parameters"><img alt="Experiment Hyper Parameters" data-base62-sha1="lGyMHDYRrqMnmTjIR17W3h1hwWq" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/97fd4c2c9888a3ec0fec3bd99502769ed42d47ce_2_10x10.png" height="264" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/97fd4c2c9888a3ec0fec3bd99502769ed42d47ce_2_800x264.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/97fd4c2c9888a3ec0fec3bd99502769ed42d47ce_2_800x264.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/97fd4c2c9888a3ec0fec3bd99502769ed42d47ce_2_1200x396.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/9/97fd4c2c9888a3ec0fec3bd99502769ed42d47ce.png 2x" width="800"/></a></div>
+</li>
+<li>
+<p><strong>Trial Template</strong>. The template that defines the trial. You have to package your ML training code into a Docker image, as described above. Your training container can receive hyperparameters as command-line arguments or as environment variables.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/2Wt8zaP7nfZQrKYTsEjyN9IVI3H.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/1/14a05e6fedeb442075272b3db8a907b38ea31aad.png" rel="noopener nofollow ugc" title="Experiment Trial Template"><img alt="Experiment Trial Template" data-base62-sha1="2Wt8zaP7nfZQrKYTsEjyN9IVI3H" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/1/14a05e6fedeb442075272b3db8a907b38ea31aad_2_10x10.png" height="626" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/1/14a05e6fedeb442075272b3db8a907b38ea31aad_2_800x626.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/1/14a05e6fedeb442075272b3db8a907b38ea31aad_2_800x626.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/1/14a05e6fedeb442075272b3db8a907b38ea31aad_2_1200x939.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/1/14a05e6fedeb442075272b3db8a907b38ea31aad.png 2x" width="800"/></a></div>
+<ul>
+<li>
+<p><strong>FPGA accelerated</strong> Trial Job:</p>
+<pre><code class="lang-auto">apiVersion: batch/v1
+kind: Job
+spec:
+  template:
+    metadata:
+      labels:
+        inaccel/fpga: enabled
+      annotations:
+        inaccel/cli: |
+          bitstream install --mode others https://store.inaccel.com/artifactory/bitstreams/xilinx/aws-vu9p-f1/dynamic-shell/aws/com/inaccel/xgboost/0.1/2exact
+    spec:
+      containers:
+        - name: training-container
+          image: "docker.io/inaccel/jupyter:lab"
+          command:
+            - python3
+            - XGBoost/parameter-tuning.py
+          args:
+            - "--name=SVHN"
+            - "--test-size=0.35"
+            - "--tree-method=fpga_exact"
+            - "--max-depth=10"
+            - "--alpha=${trialParameters.alpha}"
+            - "--eta=${trialParameters.eta}"
+            - "--subsample=${trialParameters.subsample}"
+          resources:
+            limits:
+              xilinx/aws-vu9p-f1: 1
+      restartPolicy: Never
+</code></pre>
+</li>
+<li>
+<p><strong>CPU-only</strong> Trial Job:</p>
+<pre><code class="lang-auto">apiVersion: batch/v1
+kind: Job
+spec:
+  template:
+    spec:
+      containers:
+        - name: training-container
+          image: "docker.io/inaccel/jupyter:lab"
+          command:
+            - python3
+            - XGBoost/parameter-tuning.py
+          args:
+            - "--name=SVHN"
+            - "--test-size=0.35"
+            - "--max-depth=10"
+            - "--alpha=${trialParameters.alpha}"
+            - "--eta=${trialParameters.eta}"
+            - "--subsample=${trialParameters.subsample}"
+      restartPolicy: Never
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h3>
+<a class="anchor" href="#view-the-results-of-the-experiments-in-the-katib-ui-26" name="view-the-results-of-the-experiments-in-the-katib-ui-26"></a>View the results of the experiments in the Katib UI</h3>
+<ol>
+<li>
+<p>Open the Katib UI as described previously.</p>
+</li>
+<li>
+<p>You should be able to view your list of experiments. Click the name of the XGBoost SVHN experiment.</p>
+</li>
+<li>
+<p>There should be a graph showing the level of validation accuracy and train time for various combinations of the hyperparameter values (alpha, eta, and subsample):</p>
+<ul>
+<li>
+<p><strong>FPGA accelerated</strong> Experiment Overview:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/shTF0Npv2O7h5hnyrQZ5MuXdLzW.jpeg?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/c/c642cd476c76adfe8530ad4fbbdfc93fa8398b78.jpeg" rel="noopener nofollow ugc" title="FPGA Experiment"><img alt="FPGA Experiment" data-base62-sha1="shTF0Npv2O7h5hnyrQZ5MuXdLzW" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/c642cd476c76adfe8530ad4fbbdfc93fa8398b78_2_10x10.png" height="739" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/c642cd476c76adfe8530ad4fbbdfc93fa8398b78_2_800x739.jpeg" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/c642cd476c76adfe8530ad4fbbdfc93fa8398b78_2_800x739.jpeg, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/c642cd476c76adfe8530ad4fbbdfc93fa8398b78_2_1200x1108.jpeg 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/c/c642cd476c76adfe8530ad4fbbdfc93fa8398b78.jpeg 2x" width="800"/></a></div>
+</li>
+<li>
+<p><strong>CPU-only</strong> Experiment Overview:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/iN249oxxqmSdGc3WuSsG7eqsPis.jpeg?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/8/83b2128803da5cf2436c3ab91eb10ea96d78a204.jpeg" rel="noopener nofollow ugc" title="CPU Experiment"><img alt="CPU Experiment" data-base62-sha1="iN249oxxqmSdGc3WuSsG7eqsPis" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/83b2128803da5cf2436c3ab91eb10ea96d78a204_2_10x10.png" height="739" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/83b2128803da5cf2436c3ab91eb10ea96d78a204_2_800x739.jpeg" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/83b2128803da5cf2436c3ab91eb10ea96d78a204_2_800x739.jpeg, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/83b2128803da5cf2436c3ab91eb10ea96d78a204_2_1200x1108.jpeg 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/8/83b2128803da5cf2436c3ab91eb10ea96d78a204.jpeg 2x" width="800"/></a></div>
+</li>
+</ul>
+<p>Comparing the FPGA accelerated experiment with the equivalent CPU-only one, you will notice that the accuracy of the best model is similar in both implementations.</p>
+<p>However, the performance of the 8-core Intel Xeon CPU of the AWS F1 instance is significantly (~6 times) worse than its single (1) Xilinx VU9P FPGA, in this XGBoost model training use case.</p>
+</li>
+</ol>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib/26992">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                1
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#5-getting-started-with-kubeflow-katib" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#7-thats-all-folks" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="7-thats-all-folks">
+      <h2 class="p-heading--3">7. That’s all folks!</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>Congratulations! You have made it!</p>
+<p>Until next time, <code>exit</code> and stop your FPGA instance:</p>
+<pre><code class="lang-bash">aws ec2 stop-instances \
+    --instance-ids &lt;InstanceId&gt; \
+| jq -r '.StoppingInstances[0].CurrentState.Name'
+</code></pre>
+<h3>
+<a class="anchor" href="#where-to-go-from-here-28" name="where-to-go-from-here-28"></a>Where to go from here?</h3>
+<p><strong>Learn more</strong> about <a href="https://inaccel.com" rel="noopener nofollow ugc">InAccel</a> and our mission to enable multi-accelerator application models and create a platform to manage it all.</p>
+<p><strong>Explore</strong> the InAccel <a href="https://docs.inaccel.com" rel="noopener nofollow ugc">documentation</a> that has everything you need if you want to look more into <strong>FPGA acceleration</strong> for your projects.</p>
+<p>Alternatively, if you need commercial support for your FPGA deployments, contact <a href="https://inaccel.com/contact" rel="noopener nofollow ugc">us</a> to <strong>get all your questions answered</strong>.</p>
+      </article>
+
+      
+      <div class="l-tutorial__feedback-options">
+        <p>Was this tutorial useful?</p>
+        <ul class="p-inline-list">
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/aca5f600-Helpful-yes.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/aca5f600-Helpful-yes.svg 2x"
+      alt="Positive response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="positive"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/784c0dc9-Helpful-yes-green.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/784c0dc9-Helpful-yes-green.svg 2x"
+      alt="positive"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="positive"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/5dacff00-Helpful-unsure.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/5dacff00-Helpful-unsure.svg 2x"
+      alt="Neutral response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="neutral"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/b601b52c-Helpful-unsure-orange.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/b601b52c-Helpful-unsure-orange.svg 2x"
+      alt="Neutral response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="neutral"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/4ff77e8e-Helpful-no.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/4ff77e8e-Helpful-no.svg 2x"
+      alt="Negative response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="negative"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/b45bf2a3-Helpful-no-red.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/b45bf2a3-Helpful-no-red.svg 2x"
+      alt="Negative response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="negative"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="l-tutorial__feedback-result p-notification--positive u-hide">
+        <div class="p-notification__content">
+          <p class="p-notification__message">Thank you for your feedback.</p>
+        </div>
+      </div>
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/accelerated-ml-experiments-on-microk8s-with-inaccel-fpga-operator-and-kubeflow-katib/26992">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                0
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#6-accelerated-xgboost-experiments-with-kubeflow-katib-hyperparameter-tuning" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <button class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom" disabled>
+                <i class="p-icon--chevron-down">Next step</i>
+              </button>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+  </div>
+</div>
+
+<script>
+  if (window.location.hash == "#0") {
+    window.location.hash == "#welcome";
+  }
+</script>
+
+<script>
+  (function() {
+    var polls = document.querySelectorAll('.poll');
+
+    [].forEach.call(polls, function(poll) {
+      var answers = poll.querySelectorAll('[type="radio"]');
+      var pollId = poll.getAttribute('data-poll-name');
+
+      [].forEach.call(answers, function(answer) {
+        answer.addEventListener('change', function(e) {
+          var answerLabel = document.querySelector('label[for="' + e.target.id + '"]');
+          var eventLabel = answerLabel.innerText;
+          var eventAction = document.getElementById(pollId).innerText;
+
+          dataLayer.push({
+            'event' : 'GAEvent',
+            'eventCategory' : 'survey',
+            'eventAction' : eventAction,
+            'eventLabel' : eventLabel,
+            'eventValue' : undefined
+          });
+        });
+      });
+    });
+  })();
+</script>
+
+
+      
+    </main><!-- /.inner-wrapper -->
+  </div><!-- /.wrapper -->
+
+  <!-- footer content goes here -->
+  
+    <div class="p-footer p-strip">
+  <div class="u-fixed-width">
+    <div class="p-footer--secondary row">
+      <div class="col-7">
+        <p class="p-footer--secondary__content"><small>&copy; 2023 Canonical Ltd. Ubuntu and Canonical are
+    registered trademarks of Canonical Ltd.</small></p>
+<nav class="p-footer--secondary__nav">
+  <ul class="p-inline-list--middot u-no-margin--bottom">
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="8" href="/legal"><small>Legal information</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="9" href="/legal/data-privacy"><small>Data privacy</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a href="" class="p-link--soft js-revoke-cookie-manager"><small>Manage your tracker settings</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" href="https://github.com/canonical/ubuntu.com/issues/new" id="report-a-bug">
+        <small>Report a bug on this site</small>
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </div>
+</div>
+  
+</body>
+</html>

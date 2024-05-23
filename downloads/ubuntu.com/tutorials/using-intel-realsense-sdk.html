@@ -1,0 +1,1061 @@
+<!doctype html>
+
+<html prefix="og: http://ogp.me/ns#" class="" lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Using Intel RealSense SDK on the desktop | Ubuntu</title>
+
+  <link rel="preconnect" href="https://res.cloudinary.com">
+
+  
+  <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+  <script src="/static/js/dist/main.js?v=d670c07" defer></script>
+  <script src="/static/js/src/infer-preferred-language.js?v=b69e09e"></script>
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=25147bc">
+  <link rel="stylesheet" type="text/css" media="print" href="/static/css/print.css?v=0980a57">
+  <script>performance.mark("Stylesheets finished")</script>
+
+  <link rel="canonical" href="https://ubuntu.com/tutorials/using-intel-realsense-sdk">
+
+  <link rel="shortcut icon" href="https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://assets.ubuntu.com/v1/17b68252-apple-touch-icon-180x180-precomposed-ubuntu.png">
+
+  
+
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/46ed6870-Ubuntu-L-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/3baab91b-Ubuntu-Th-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/6113b69a-Ubuntu-LI-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/0c7b8dc0-Ubuntu-R-subset.woff2" crossorigin>
+
+  <meta name="description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+
+  <meta name="facebook-domain-verification" content="zxp9j79g1gy2xenbu9ll964pttk5hu">
+  <meta name="twitter:account_id" content="4503599627481511">
+  <meta name="twitter:site" content="@ubuntu">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ubuntu.com/tutorials/using-intel-realsense-sdk">
+  <meta property="og:site_name" content="Ubuntu">
+  <meta name="copydoc" content="https://drive.google.com/drive/folders/0B4s80tIYQW4BMjNiMGFmNzQtNDkxZC00YmQ0LWJiZWUtNTk2YThlY2MzZmJh">
+  <meta name="google-site-verification" content="ddh2iq7ZuKf1LpkL_gtM_T7DkKDVD7ibq6Ceue4a_3M">
+
+  
+  <meta name="twitter:title" content="Using Intel RealSense SDK on the desktop | Ubuntu">
+  <meta property="og:title" content="Using Intel RealSense SDK on the desktop | Ubuntu">
+  
+  
+  <meta name="twitter:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  <meta property="og:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  
+
+  
+  <!-- Meta image: https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png -->
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png">
+  <meta property="og:image" content="https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png">
+  
+
+  
+
+          <!-- Google Analytics and Google Optimize -->
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-1018242-59', 'auto', {'allowLinker': true});
+        ga('require', 'GTM-N2MDH37');
+        ga('require', 'linker');
+        ga('linker:autoLink', ['conjure-up.io', 'login.ubuntu.com', 'www.ubuntu.com',
+        'ubuntu.com', 'insights.ubuntu.com', 'developer.ubuntu.com', 'cn.ubuntu.com',
+        'design.ubuntu.com', 'maas.io', 'canonical.com', 'landscape.canonical.com',
+        'pages.ubuntu.com', '/tutorials', 'docs.ubuntu.com']);
+        </script>
+        <!-- End Google Analytics and Google Optimize -->
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K92JCQ');</script>
+        <!-- End Google Tag Manager -->
+</head>
+
+<body class="">
+  <!-- google tag manager -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K92JCQ" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+  </noscript>
+  <!-- end google tag manager -->
+
+  
+    
+
+<header id="navigation" class="p-navigation">
+  
+  <div class="p-navigation__row">
+    <div class="p-navigation__banner">
+      <div class="p-navigation__logo">
+        <a class="p-navigation__item" href="/">
+          <svg class="p-navigation__image" width="107px" height="32px" viewBox="0 0 107 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Ubuntu</title><g id="ubuntu-logo"><path d="M100.470409,13.7615448 C96.9385448,13.7615448 94.0754031,10.8982838 94.0754031,7.36627238 C94.0754031,3.83426097 96.9385448,0.971 100.470409,0.971 C104.002273,0.971 106.865415,3.83426097 106.865415,7.36627238 C106.865415,10.8982838 104.002273,13.7615448 100.470409,13.7615448 Z M96.479398,6.59820047 C96.0559273,6.59820047 95.7123568,6.9417853 95.7123568,7.36727117 C95.7123568,7.78976066 96.0559273,8.13434429 96.479398,8.13434429 C96.9038674,8.13434429 97.2504342,7.78976066 97.2504342,7.36727117 C97.2504342,6.9417853 96.9038674,6.59820047 96.479398,6.59820047 Z M101.966539,10.0919788 C101.601995,10.3017254 101.475153,10.7731557 101.684891,11.1377152 C101.898624,11.5092663 102.369036,11.6341154 102.73358,11.4213725 C103.103118,11.2116259 103.22996,10.7401956 103.015228,10.3726397 C102.803493,10.0030862 102.334079,9.87823709 101.966539,10.0929776 L101.966539,10.0919788 Z M98.1493106,7.36727117 C98.1493106,6.6081884 98.5268386,5.93500183 99.104117,5.52949182 L98.5428187,4.58762991 C97.8686614,5.03708681 97.3682869,5.72425648 97.1605465,6.52828495 C97.4062394,6.72804357 97.5580496,7.02768151 97.5580496,7.36727117 C97.5580496,7.70386446 97.4062394,8.00649877 97.1605465,8.20425981 C97.3682869,9.00828828 97.8696601,9.69445915 98.5428187,10.1419185 L99.104117,9.20305294 C98.5268386,8.79754293 98.1493106,8.12435636 98.1493106,7.36727117 Z M100.392506,5.11998664 C101.568037,5.11998664 102.529835,6.02089804 102.62971,7.16951013 L103.726339,7.14953427 C103.671408,6.30555408 103.30187,5.54147734 102.73358,4.98714716 C102.438948,5.09501681 102.100372,5.08003492 101.809735,4.90924129 C101.518099,4.74144405 101.337325,4.4577868 101.286389,4.15015852 C101.001745,4.07225265 100.703118,4.03030334 100.392506,4.03030334 C99.8631682,4.03030334 99.3617949,4.15415369 98.9143542,4.37388818 L99.4486863,5.33073199 C99.735328,5.19589492 100.057925,5.12098543 100.392506,5.12098543 L100.392506,5.11998664 Z M100.392506,9.61155932 C100.056926,9.61155932 99.735328,9.53565105 99.4486863,9.40181277 L98.9143542,10.3586566 C99.3607962,10.5783911 99.8631682,10.7022414 100.392506,10.7022414 C100.704117,10.7022414 101.001745,10.6622897 101.286389,10.5823862 C101.336327,10.2727604 101.518099,9.98810433 101.809735,9.82130588 C102.103368,9.65350864 102.438948,9.63553036 102.73358,9.74839398 C103.302868,9.18607345 103.670409,8.42599188 103.726339,7.5810129 L102.62971,7.56503221 C102.529835,8.71064793 101.568037,9.61056053 100.392506,9.61056053 L100.392506,9.61155932 Z M101.966539,4.64156473 C102.334079,4.85430767 102.803493,4.72945853 103.015228,4.35990507 C103.22996,3.993348 103.103118,3.52091885 102.735578,3.30917471 C102.370035,3.09942815 101.899623,3.22427729 101.686888,3.59183316 C101.474154,3.95839024 101.600996,4.4288218 101.966539,4.64056594 L101.966539,4.64156473 Z M12.7910109,24.1489933 C12.1418224,24.3107977 11.2828961,24.4855865 10.2172282,24.6663681 C9.15056154,24.850146 7.91610464,24.942035 6.5178525,24.942035 C5.29737813,24.942035 4.27365781,24.7642498 3.43970028,24.4086795 C2.60774025,24.0541079 1.93857672,23.551715 1.4322097,22.9005019 C0.922846416,22.2512863 0.558302106,21.4842132 0.335580515,20.6032777 C0.109862669,19.7153506 0,18.7385309 0,17.6598343 L0,8.76857793 L2.83146059,8.76857793 L2.83146059,17.0515693 C2.83146059,18.9822364 3.13508106,20.3635673 3.746317,21.1945632 C4.35555543,22.0275567 5.38127325,22.4430546 6.82247172,22.4430546 C7.12609218,22.4430546 7.44169767,22.4330667 7.76629191,22.4110932 C8.09188491,22.3911174 8.39750288,22.3661475 8.67915081,22.3361837 C8.96279625,22.3062199 9.22247165,22.2762561 9.45617951,22.2462924 C9.68988736,22.214331 9.85568012,22.1813708 9.95955028,22.1384227 L9.95955028,8.76857793 L12.7910109,8.76857793 L12.7910109,24.1499921 L12.7910109,24.1489933 Z M19.7033702,9.46773311 C20.049937,9.24600104 20.5722841,9.01028586 21.2734076,8.76857793 C21.9725337,8.5258712 22.7785262,8.40202085 23.6943813,8.40202085 C24.8299618,8.40202085 25.8396996,8.60777223 26.7235947,9.01128466 C27.6084886,9.41679466 28.3535572,9.98710554 28.9637944,10.7192209 C29.5700366,11.4483399 30.0324586,12.3212851 30.3470653,13.3360589 C30.6636695,14.3518315 30.8204735,15.469481 30.8204735,16.6880086 C30.8204735,17.9664638 30.6327082,19.1180723 30.2551802,20.1438328 C29.8786508,21.1685946 29.3463163,22.0365458 28.6571777,22.7466877 C27.9660416,23.459826 27.1350804,24.005167 26.1583014,24.3917 C25.1865161,24.7782329 24.0908857,24.971 22.8694126,24.971 C21.5490631,24.971 20.3825213,24.8781122 19.366791,24.6953331 C18.3520594,24.512554 17.5191006,24.328776 16.8699121,24.1459969 L16.8699121,1.45940984 L19.7023715,0.971998793 L19.7023715,9.46773311 L19.700374,9.46773311 L19.7033702,9.46773311 Z M20.9078646,22.3661475 C21.4242191,22.4390594 22.0664163,22.4730184 22.8404488,22.4730184 C24.3605486,22.4730184 25.5820217,21.9686279 26.4938819,20.9648408 C27.4077395,19.9590561 27.8651677,18.5327795 27.8651677,16.686011 C27.8651677,15.8739922 27.7852676,15.1129119 27.6214724,14.4007724 C27.4586759,13.6896317 27.1940067,13.0763727 26.8294624,12.557999 C26.4639193,12.0386266 25.9905111,11.636113 25.4152302,11.3394714 C24.8339568,11.0438287 24.1388258,10.8970061 23.3278395,10.8970061 C22.5548058,10.8970061 21.8456923,11.0298456 21.195505,11.2915294 C20.5463165,11.5582071 20.0469408,11.8308776 19.7023715,12.1155337 L19.7023715,22.1354263 C19.9880144,22.2203237 20.3885138,22.296232 20.9078646,22.3661475 Z M46.6257165,24.1489933 C45.976528,24.3107977 45.1176017,24.4855865 44.0529326,24.6663681 C42.9872647,24.850146 41.7528078,24.942035 40.3505606,24.942035 C39.1340813,24.942035 38.1083635,24.7642498 37.2764034,24.4086795 C36.4444434,24.0541079 35.7742811,23.551715 35.2689128,22.9005019 C34.7575521,22.2512863 34.3940065,21.4842132 34.1702862,20.6032777 C33.9475646,19.7173482 33.8367032,18.7395297 33.8367032,17.6618319 L33.8367032,8.77057551 L36.6681637,8.77057551 L36.6681637,17.0535669 C36.6681637,18.984234 36.9717842,20.3655649 37.5810226,21.1965608 C38.1902611,22.0295542 39.2149802,22.4450522 40.6571774,22.4450522 C40.9617966,22.4450522 41.2784008,22.4350643 41.6029951,22.4130908 C41.9275893,22.3931149 42.2322085,22.3681451 42.5168527,22.3381813 C42.7994994,22.3082175 43.0591748,22.2782537 43.2938814,22.2482899 C43.5255918,22.2153298 43.693382,22.1823696 43.7962534,22.1384227 L43.7962534,8.77057551 L46.6287128,8.77057551 L46.6287128,24.1519896 L46.6267153,24.1519896 L46.6257165,24.1489933 Z M50.7066153,9.22602518 C51.3558038,9.06222311 52.2177263,8.89142948 53.2953793,8.70665275 C54.3710347,8.52686999 55.6084878,8.43398223 57.010735,8.43398223 C58.2711594,8.43398223 59.3148547,8.61176741 60.1468148,8.96633897 C60.9807723,9.32190932 61.6449421,9.8183095 62.1423203,10.4585359 C62.6396986,11.0977635 62.9912591,11.8648366 63.1940057,12.7557601 C63.3957535,13.6526763 63.4976262,14.6354887 63.4976262,15.7121877 L63.4976262,24.6054417 L60.6641681,24.6054417 L60.6641681,16.3214515 C60.6641681,15.3456307 60.5982505,14.513636 60.467414,13.8244687 C60.3355788,13.1313063 60.117851,12.5759773 59.812233,12.1494927 C59.5096113,11.7200116 59.1011219,11.4123833 58.5937561,11.220615 C58.0873891,11.0238528 57.4551794,10.9289675 56.7061157,10.9289675 C56.4014965,10.9289675 56.0868898,10.9419518 55.764293,10.9619276 C55.4387,10.9819035 55.1280883,11.0078721 54.8354541,11.0378359 C54.5358287,11.0677997 54.2761533,11.1037563 54.0414466,11.143708 C53.8057413,11.1836597 53.6389498,11.2156211 53.5380759,11.2335994 L53.5380759,24.6044429 L50.7066153,24.6044429 L50.7066153,9.22602518 Z M70.0444424,8.76857793 L76.0449416,8.76857793 L76.0449416,11.143708 L70.0444424,11.143708 L70.0444424,18.4548737 C70.0444424,19.2439202 70.106365,19.9031237 70.2292115,20.4175021 C70.3490617,20.9368746 70.5328319,21.3443822 70.7765273,21.6380273 C71.0202227,21.9296749 71.3258407,22.1374239 71.6893862,22.262273 C72.0549293,22.3841258 72.4813962,22.4440534 72.9677882,22.4440534 C73.8396983,22.4440534 74.5298356,22.3471705 75.0401976,22.1544034 C75.5465646,21.9606375 75.8921327,21.8248017 76.0739054,21.7419018 L76.6831439,24.0591019 C76.3994984,24.2009305 75.8961277,24.3827108 75.1750291,24.6054417 C74.455928,24.8301702 73.6389492,24.9430338 72.7250916,24.9430338 C71.6484374,24.9430338 70.7595485,24.8061991 70.058425,24.5305322 C69.3592989,24.2548653 68.796003,23.8453601 68.3705349,23.2970227 C67.9430692,22.7496841 67.6434438,22.0744999 67.4716585,21.2724691 C67.2978757,20.4684406 67.2119831,19.5405618 67.2119831,18.4858362 L67.2119831,4.35191473 L70.0424449,3.8625061 L70.0424449,8.77057551 L70.0444424,8.77057551 L70.0444424,8.76857793 Z M91.4556778,24.1489933 C90.803493,24.3107977 89.947563,24.4855865 88.8788988,24.6663681 C87.8142297,24.850146 86.5817703,24.942035 85.1835182,24.942035 C83.9630438,24.942035 82.9393235,24.7642498 82.1073634,24.4086795 C81.2714084,24.0541079 80.6022449,23.551715 80.0958779,22.9005019 C79.5865146,22.2512863 79.2239678,21.4842132 78.9972512,20.6032777 C78.7775258,19.7173482 78.6626694,18.7395297 78.6626694,17.6618319 L78.6626694,8.77057551 L81.4991238,8.77057551 L81.4991238,17.0535669 C81.4991238,18.984234 81.8027442,20.3655649 82.4109839,21.1965608 C83.0202223,22.0295542 84.0459402,22.4450522 85.4871386,22.4450522 C85.7917578,22.4450522 86.1063646,22.4350643 86.4319576,22.4130908 C86.7535556,22.3931149 87.0591735,22.3681451 87.3438177,22.3381813 C87.6274632,22.3082175 87.8891361,22.2782537 88.1198477,22.2482899 C88.3535555,22.2153298 88.5223445,22.1823696 88.6242172,22.1384227 L88.6242172,8.77057551 L91.4576753,8.77057551 L91.4576753,24.1519896 L91.4556778,24.1519896 L91.4556778,24.1489933 Z" fill="#FFFFFF" fill-rule="nonzero"></path></g></svg>
+          <script>performance.mark("Logo rendered")</script>
+        </a>
+
+        
+        <h5 class="p-navigation--secondary__logo u-hide--nav-threshold-up">
+          <a class="p-navigation--secondary__banner" href="/tutorials">
+            Tutorials
+          </a>
+        </h5>
+        
+
+        
+        <h5 class="p-navigation--secondary__logo u-hide--nav-threshold-up">
+          <a class="p-navigation--secondary__banner" href="/tutorials">
+            Tutorials
+          </a>
+        </h5>
+        
+      </div>
+      <div class="u-hide u-show--small js-account--small"></div>
+    </div>
+    <nav aria-label="Main navigation" class="p-navigation__nav">
+      <ul class="p-navigation__items u-hide js-show-nav" role="menu">
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="enterprise" onmouseover="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#enterprise-content" onfocus="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content');">Enterprise</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="developer" onmouseover="fetchDropdown('/templates/navigation-developer-h', 'developer-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#developer-content" onfocus="fetchDropdown('/templates/navigation-developer-h', 'developer-content');">Developer</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="community" onmouseover="fetchDropdown('/templates/navigation-community-h', 'community-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#community-content" onfocus="fetchDropdown('/templates/navigation-community-h', 'community-content');">Community</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="download" onmouseover="fetchDropdown('/templates/navigation-download-h', 'download-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#download-content" onfocus="fetchDropdown('/templates/navigation-download-h', 'download-content');">Download</a>
+        </li>
+      </ul>
+      <noscript>
+        <ul class="p-navigation__items" role="menu">
+          
+
+
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/openstack">OpenStack</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/kubernetes">Kubernetes</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/desktop">Desktop</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/internet-of-things">IoT</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/support">Support</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/download">Downloads</a></li>
+
+        </ul>
+      </noscript>
+      <ul class="p-navigation__items u-hide--small">
+        <li class="p-navigation__item" id="link-4">
+          <a href="/search" class="js-search-button p-navigation__link-anchor" style="padding-right: 1rem;">
+            <span class="u-hide u-show--large">Search</span> <i class="p-icon--search is-light">Search</i>
+          </a>
+        </li>
+        <li class="p-navigation__user js-account" id="canonical-login"></li>
+      </ul>
+      <div class="p-navigation__search u-show--small u-hide" style="z-index: 39;">
+        <form action="/search" class="p-search-box" id="ubuntu-global-search-form">
+          <input type="search" class="p-search-box__input" name="q" placeholder="Search our sites" required="" aria-label="Search our sites">
+          <button type="reset" class="p-search-box__reset"><i class="p-icon--close">Close</i></button>
+          <button type="submit" class="p-search-box__button"><i class="p-icon--search">Search</i></button>
+        </form>
+      </div>
+    </nav>
+  </div>
+  
+</header>
+<div class="dropdown-window-overlay fade-animation"></div>
+<div class="dropdown-window slide-animation">
+  <div class="u-hide" id="enterprise-content"></div>
+  <div class="u-hide" id="developer-content">  </div>
+  <div class="u-hide" id="community-content"></div>
+  <div class="u-hide" id="download-content"></div>
+</div>
+
+
+<nav aria-label="Sub navigation" class="p-navigation--secondary">
+  <div class="row">
+    <div class="col-12 u-equal-height">
+      <a class="p-navigation--secondary__banner u-hide--nav-threshold-down" href="/tutorials">
+        <h5 class="p-navigation--secondary__logo">
+          Tutorials
+        </h5>
+      </a>
+      
+      <ul class="breadcrumbs--secondary">
+        
+          
+        
+          
+            
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link p-link--soft" href="/tutorials/tutorial-guidelines#1-overview" >How to write a tutorial</a>
+            </li>
+            
+          
+        
+
+        
+          
+        
+          
+        
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+
+
+
+<script>
+  var nav = document.querySelector('.js-show-nav');
+  var hash = window.location.hash;
+  nav.classList.remove('u-hide');
+
+  // If the page loads with a preselected hash load and open the menu
+  if (hash) {
+    try {
+      var selected = nav.querySelector(hash);
+    } catch(error) {
+      console.warn("Hash " + hash + " not found in topnav");
+    }
+    if (selected) {
+      selected.onmouseover();
+    }
+  }
+
+  function fetchDropdown(url, id) {
+    var div = document.getElementById(id);
+    var req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.send();
+    req.addEventListener('load', function() {
+      div.innerHTML = this.responseText;
+    });
+  }
+
+  function initSearch() {
+    var searchButton = document.querySelector('.js-search-button');
+    var searchReset = document.querySelector('.p-search-box__reset');
+    if (searchButton) {
+      searchButton.addEventListener('click', openSearch);
+    }
+
+    if (searchReset) {
+      searchReset.addEventListener('click', closeSearch);
+    }
+  }
+  initSearch();
+
+  function openSearch(e) {
+    e.preventDefault();
+    var navigation = document.querySelector('.p-navigation__nav');
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var banner = document.querySelector(".p-navigation__banner");
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    var searchInput = document.querySelector('.p-search-box__input');
+    var searchActive = !search.classList.contains('u-hide');
+    search.classList.remove('u-hide');
+    searchButton.classList.add('u-hide');
+    banner.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    navigationItems.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    dropdownWindow.style="z-index: 37;"
+    dropdownWindowOverlay.classList.remove("fade-animation");
+    navigation.classList.add('has-active-search');
+    searchInput.focus();
+    dropdownWindowOverlay.addEventListener('click', closeSearch);
+    document.addEventListener('keyup', keyPressHandler);
+  }
+
+  function closeSearch() {
+    var navigation = document.querySelector('.p-navigation__nav');
+    var banner = document.querySelector(".p-navigation__banner")
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    search.classList.add('u-hide');
+    banner.style= "opacity: 1;"
+    dropdownWindow.style="z-index: 39;"
+    navigationItems.style= "opacity: 1;"
+    dropdownWindowOverlay.classList.add("fade-animation");
+    navigation.classList.remove('has-active-search');
+    searchButton.classList.remove('u-hide');
+    document.removeEventListener('keyup', keyPressHandler);
+    dropdownWindowOverlay.removeEventListener('click', closeSearch);
+  }
+
+  function keyPressHandler (e) {
+    console.log(e);
+    if (e.key === "Escape") {
+      closeSearch();
+    }
+  }
+</script>
+  
+
+  <div class="wrapper u-no-margin--top">
+    <div id="success" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">Your submission was sent successfully! <a href="#" onclick="location.href = document.referrer; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unsubscribed" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">You have successfully unsubscribed! <a href="#" onclick="location.href = ''; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="main-content" class="inner-wrapper">
+      
+      
+      
+<script src="/static/js/dist/tutorials.js?v=2a938b6" defer></script>
+
+
+<div class="p-strip">
+  <div class="row">
+    <div class="col-7 col-start-large-5">
+      <h1 class="p-heading--2">Using Intel RealSense SDK on the desktop</h1>
+    </div>
+  </div>
+</div>
+
+<div class="l-tutorial row">
+  <aside class="l-tutorial__sidebar col-4">
+    <button type="button" class="l-tutorial__nav-toggle p-icon--menu u-hide u-show--small" aria-controls="menu-tutorial" aria-expanded="false">
+      Toggle tutorial menu
+    </button>
+    <ol class="l-tutorial__nav p-stepped-list u-hide--small" id="menu-tutorial">
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#1-overview">
+              Overview
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#2-getting-started">
+              Getting started
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#3-building-the-sdk">
+              Building the SDK
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#4-available-samples">
+              Available samples
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#5-thats-all-folks">
+              That’s all folks!
+            </a>
+          </p>
+        </li>
+      
+    </ol>
+  </aside>
+  <div class="l-tutorial__content col-8">
+    
+    <section class="l-tutorial-section" id="1-overview">
+      <h2 class="p-heading--3">1. Overview</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>We are going to illustrate how to build some <a href="http://www.intel.fr/content/www/fr/fr/architecture-and-technology/realsense-overview.html">Intel RealSense</a> SDK samples on an Ubuntu Core image using the classic snap. You will be able to hook up on your <a href="https://software.intel.com/en-us/iot/hardware/joule/dev-kit">Intel Joule</a> and build the samples, explore some of the code and try them!</p>
+<h3>What you’ll learn</h3>
+<ul>
+<li>What compose the Intel RealSense SDK.</li>
+<li>How to use the classic snap as a traditional ubuntu environment for developing.</li>
+<li>How to setup the SDK and build existing samples.</li>
+</ul>
+<h3>What you’ll need</h3>
+<ul>
+<li>An Intel Joule device, with Ubuntu classic LTS installed on it.</li>
+<li>A realsense camera (ZR300 was tested).</li>
+<li>Some very basic knowledge of command line use.</li>
+</ul>
+<h3 id="poll_1">How will you use this tutorial?</h3>
+<div class="poll" data-poll-name="poll_1" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="2b49a1bf6cc17a62c1981e0ad78e5cff" id="2b49a1bf6cc17a62c1981e0ad78e5cff" name="poll_1" type="radio"><label for="2b49a1bf6cc17a62c1981e0ad78e5cff">Only read through it</label></input>
+<input data-poll-option-id="91ae26f1b5e9e977d93efcdc6deb3e41" id="91ae26f1b5e9e977d93efcdc6deb3e41" name="poll_1" type="radio"><label for="91ae26f1b5e9e977d93efcdc6deb3e41">Read it and complete the exercises</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+<h3 id="poll_2">What is your current level of experience?</h3>
+<div class="poll" data-poll-name="poll_2" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="db8c7082f4201d000c5956af9b940911" id="db8c7082f4201d000c5956af9b940911" name="poll_2" type="radio"><label for="db8c7082f4201d000c5956af9b940911">Novice</label></input>
+<input data-poll-option-id="c751d83ce6126aa24297e19371c61ffa" id="c751d83ce6126aa24297e19371c61ffa" name="poll_2" type="radio"><label for="c751d83ce6126aa24297e19371c61ffa">Intermediate</label></input>
+<input data-poll-option-id="e8d9abfbd2598207024717890d106b3a" id="e8d9abfbd2598207024717890d106b3a" name="poll_2" type="radio"><label for="e8d9abfbd2598207024717890d106b3a">Proficient</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/using-intel-realsense-sdk-on-the-desktop/13988">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                3
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <button class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" disabled style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </button>
+            
+
+            
+              <a href="#2-getting-started" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="2-getting-started">
+      <h2 class="p-heading--3">2. Getting started</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>If you are on Ubuntu 16.04 LTS or Ubuntu 16.10, getting all the required tools is very easy.</p>
+<html><body><div class="p-notification"><div class="p-notification__response"><p class="u-no-padding--top u-no-margin--bottom">Note: other GNU/Linux distributions are currently in the process of building packages for snapcraft.</p>
+</div></div></body></html>
+<h3>Downloading the SDK</h3>
+<p>You will be provided with a link to a tar.bz2 file containing the SDK and all samples, we are going to detail its content here, but let’s download and extract the content first!</p>
+<p>Now simply run (inside the classic snap):</p>
+<pre><code class="lang-nohighlight">$ sudo apt update
+$ sudo apt install curl
+$ curl -o realsense_sdk_beta3.tar.bz2 &lt;download_link&gt;
+</code></pre>
+<p>This will download the SDK and you will get a progress bar confirming it so. Once done, let’s extract its content:</p>
+<pre><code class="lang-nohighlight">$ tar xf realsense_sdk_beta3.tar.bz2
+</code></pre>
+<p>Now that we have the SDK extracted, let’s look in detail to its content and build it!</p>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/using-intel-realsense-sdk-on-the-desktop/13988">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                1
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#1-overview" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#3-building-the-sdk" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="3-building-the-sdk">
+      <h2 class="p-heading--3">3. Building the SDK</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<h3>Starting building</h3>
+<p>As building the whole SDK and dependencies is quite a long process, let’s start building it right away before looking at its content.</p>
+<pre><code class="lang-nohighlight">$ cd realsense_sdk_beta3
+$ sudo ./install_script.sh
+</code></pre>
+<p>This process will take a very long time, let’s use that opportunity to open a second ssh connection to the board, and ensure that you will get your Intel RealSense camera recognized:</p>
+<html><body><div class="p-notification"><div class="p-notification__response"><p class="u-no-padding--top u-no-margin--bottom">Note: this is the only change that needs to be done outside the classic snap, as we need system services like udev to know about it.</p>
+</div></div></body></html>
+<p>You can now unplug and plug back your Intel RealSense camera. It will be detected by the system.</p>
+<h3>RealSense SDK Content</h3>
+<p>While the build is proceeding, let’s look at the files extracted from the bz2 archive:</p>
+<pre><code class="lang-nohighlight">~/realsense_sdk_beta3$ ls
+README.md
+beignet-1.2.1-source.tar.gz
+build
+install_script.sh
+librealsense_persontracking_20161220.tar.gz
+librealsense_slam_20161221.tar.bz2
+librealsense_v1.11.2.tar.gz
+opencv_3.1.0.tar.gz
+realsense_object_recognition20161208.tar.bz2
+realsense_samples-v0.6.2.tar.gz
+realsense_sdk_07_12_2016WW50.tar.gz
+release_notes
+zr300_firmware_update_prq_2.zip
+</code></pre>
+<p>In addition to the README.md, install script, release note, ZR300 firmware and build directory, you see various projects embedded. Let’s detail them in build dependency order:</p>
+<h4>beignet1.2.1-source.tar.gz</h4>
+<p>Beignet is an open source implementation of the OpenCL specification - a generic compute oriented API. This code base contains the code to run OpenCL programs on Intel GPUs which basically defines and implements the OpenCL host functions required to initialize the device, create the command queues, the kernels and the programs and run them on the GPU. The code base also contains the compiler part of the stack which is included in backend/.</p>
+<h4>opencv_3.1.0.tar.gz</h4>
+<p>OpenCV (Open Source Computer Vision) is a library of programming functions mainly aimed at real-time computer vision. It has C++, C, Python and Java interfaces and supports Windows, Linux, Mac OS, iOS and Android. OpenCV was designed for computational efficiency and with a strong focus on real-time applications. Written in optimized C/C++, the library can take advantage of multi-core processing. Enabled with OpenCL, it can take advantage of the hardware acceleration of the underlying heterogeneous compute platform</p>
+<h4>librealsense_v1.11.2.tar.gz</h4>
+<p>This project is a cross-platform library (Linux, Windows, Mac) for capturing data from the Intel® RealSense™ F200, SR300, R200, LR200 and the ZR300 cameras. This effort was initiated to better support researchers, creative coders, and app developers in domains such as robotics, virtual reality, and the internet of things. Several often-requested features of RealSense™ devices are implemented in this project, including multi-camera capture.</p>
+<p>The following features are available in this release:</p>
+<ul>
+<li>
+<strong>Native streams</strong>: depth, color, infrared and fisheye.</li>
+<li>
+<strong>Synthetic streams</strong>: rectified images, depth aligned to color and vice versa, etc.</li>
+<li>
+<strong>Intrinsic/extrinsic calibration</strong>information.</li>
+<li>Majority of <strong>hardware-specific functionality</strong> for individual camera generations (UVC XU controls).</li>
+<li>
+<strong>Multi-camera capture</strong>across heterogeneous camera architectures (e.g. mix R200 and F200 in same application)</li>
+<li>
+<strong>Motion-tracking</strong> sensors acquisition (ZR300 only)</li>
+</ul>
+<p>This project contains a certain number of samples, where you can get raw data from the camera. Those are built from the general build script. We’ll detail some of them in the next step.</p>
+<h4>librealsense_persontracking_20161220.tar.gz</h4>
+<p>Intel® RealSense™ Person Library provides the ability to sense and recognize people, understand what they do, and interact with them.</p>
+<p>The following features are available in this release:</p>
+<ul>
+<li>
+<strong>Person Detection</strong>: Detects people in a scene. Provides their location through a bounding rectangle.</li>
+<li>
+<strong>Person Tracking</strong>: Follows people within a space. Provides the person’s Center of Mass (COM) and handles occlusions and cases in which the person exits the field of view (FOV).</li>
+<li>
+<strong>Person Recognition</strong>: Identifies a person by ID. Supports databases of up to 30 registered users.</li>
+<li>
+<strong>Body Tracking</strong>: Tracks body part movements. Provides six points of interest on the body (head, chest, shoulders, and extremities of the hands). Body tracking is supported up to a distance of 2.8m from the camera.</li>
+<li>
+<strong>Body Gestures</strong>: Understands pre-defined body movements. Supports a pointing gesture (including the pointing vector) and a wave gesture.</li>
+<li>
+<strong>Face Tracking</strong>: Tracks face movements. Provides the face direction in values of yaw, pitch, and roll.</li>
+</ul>
+<h4>realsense_object_recognition20161208.tar.bz2</h4>
+<p>Intel® RealSense™ Object Library enables machines to understand what they are viewing and provides meaning to computer vision made possible by Intel RealSense cameras. This ability facilitates more dynamic human machine interaction. Intel® RealSense™ Object Library uses a CNN-based architecture that utilizes depth to efficiently and accurately classify and localize objects. This middleware includes features for recognizing, localizing, and tracking objects from a pre-defined library.</p>
+<p>The following features are available in this release:</p>
+<ul>
+<li>
+<strong>Object Recognition (OR)</strong>: Identifies a single object in the scene based on pre-trained classifiers in a pre-defined ROI.</li>
+<li>
+<strong>Object Localization (OD)</strong>: Identifies and locates multiple objects in a scene.</li>
+<li>
+<strong>3D Object Position</strong>: Provides the x,y,z world coordinates of the center of the object. The more exact the bounding box, the more exact this value will be. This is only available in instances where depth is available and will not be provided as a direct output of localization.</li>
+<li>
+<strong>Object Tracking</strong>: Enables the camera to keep track of objects that have been previously localized.</li>
+</ul>
+<h4>librealsense_slam_20161221.tar.bz2</h4>
+<p>Intel® RealSense™ SLAM Library provides Simultaneous Localization and Mapping capabilities.</p>
+<p>The following features are available in this release:</p>
+<ul>
+<li>
+<strong>Real-time 6 degrees of freedom</strong> (6DoF) camera tracking.</li>
+<li>Learning an area by associating its appearance with 6DoF coordinates, so enabling re-localization.</li>
+<li>
+<strong>Real-time construction of a 2D occupancy map</strong> of a captured environment.</li>
+</ul>
+<p>SLAM is tailored for, although not limited to, robots: Autonomous robot navigation requires the ability to build a high precision map of the surrounding environment and enable the robot to locate itself in the map for path planning and routing purposes.</p>
+<p>SLAM uses the visual-inertial sensor of the RealSense camera to estimate odometry and concurrently builds a map. The constructed map can be used by applications to detect obstacles, label locations, and plan paths.</p>
+<h4>realsense_sdk_07_12_2016WW50.tar.gz</h4>
+<p>The Intel® RealSense™ SDK for Linux provides libraries, tools, and samples to develop applications using Intel® RealSense™ cameras, over the Intel librealsense API.</p>
+<p>The SDK provides functionality of record and playback of camera streams for test and validation.</p>
+<p>The SDK includes libraries which support the camera stream projection of streams into a common world-space viewpoint, and libraries which enable the use of multiple middleware modules simultaneously for common multi-modal scenarios.</p>
+<p>It features:</p>
+<ul>
+<li>
+<strong>Record and Play</strong>:
+<ul>
+<li>
+<strong>Record</strong>: The record module provides a utility to create a file, which can be used by the playback module to create a video source. The record module provides the same camera API as defined by the SDK (<strong>librealsense</strong>) and the record API to configure recording parameters such as output file and state (pause and resume). The record module loads librealsense to access the camera device and execute the set requests and reads, while writing the configuration and changes to the file.</li>
+<li>
+<strong>Playback</strong>: The playback module provides a utility to create a video source from a file. The playback module provides the same camera API as defined by the SDK (<strong>librealsense</strong>), and the playback API to configure recording parameters such as input file, playback mode, seek, and playback state (pause and resume). The playback module supports files that were recorded using the Linux SDK recorder and the Windows RSSDK recorder (up to version 2016 R2).</li>
+</ul>
+</li>
+<li>
+<strong>Frame data container</strong>: The SDK provides an image container for raw image access and basic image processing services, such as format conversion, mirror, rotation, and more. It caches the processing output to optimize multiple requests of the same operation. The image container includes image metadata, which may be used by any pipeline component to attach additional data or computer vision (CV) module processing output to be used by other pipeline components. The SDK uses a correlated samples container to provide access to camera images and motion sensor samples from the relevant streams, which are time-synchronized. The correlated samples container includes all relevant raw buffers, metadata, and information required to access the attached images.</li>
+<li>
+<strong>Spatial correlation and projection</strong>: The Spatial Correlation and Projection library provides utilities for spatial mapping:
+<ul>
+<li>Map between color or depth image pixel coordinates and real world coordinates</li>
+<li>Correlate depth and color images and align them in space</li>
+</ul>
+</li>
+<li>
+<strong>Pipeline</strong>: The pipeline is a class, which abstracts the details of how the cognitive data is produced by the computer vision modules. The application can focus on consuming the computer vision output, leaving the camera configuration and streaming details for the pipeline to handle.</li>
+<li>
+<strong>Samples</strong>:
+<ul>
+<li>
+<strong>Projection</strong>: The sample demonstrates how to use the different spatial correlation and projection functions, from live camera and recorded file</li>
+<li>
+<strong>Record and Playback</strong>: The sample demonstrates how to record and play back a file while the application is streaming, with and without an active CV module, with minimal changes to the application, compared to live streaming.</li>
+<li>
+<strong>Video module, asynchronized</strong>: The sample demonstrates an application usage of a Computer Vision module, which implements asynchronous sample processing.</li>
+<li>
+<strong>Video module, synchronized</strong>: The sample demonstrates an application usage of a Computer Vision module, which implements synchronous samples processing.</li>
+<li>
+<strong>Fatal error recovery</strong>: The sample demonstrates how the application can recover from a fatal error in one of the SDK components (CV module or core module), without having to terminate.</li>
+</ul>
+</li>
+<li>
+<strong>Tools</strong>:
+<ul>
+<li>
+<strong>Capture tool</strong>: Provides a GUI to view camera streams, create a new file from a live camera, and play a file in the supported formats. The tool provides options to render the camera or file images.</li>
+<li>
+<strong>Projection tool</strong>: Provides simple visualization of the projection functions output, to allow human eye detection of major offsets in the projection computation.</li>
+<li>
+<strong>System Info tool</strong>: Presents system data such as Linux name, Linux kernel version, CPU information, and more.</li>
+</ul>
+</li>
+<li>
+<strong>Utilities</strong>:
+<ul>
+<li>
+<strong>Log</strong>: The SDK provides a logging library, which can be used by the SDK components and the application to log meaningful events.</li>
+<li>
+<strong>Time Sync utility</strong>: Provides methods to synchronize multiple streams of images and motion samples based on the samples time-stamp or sample number.</li>
+<li>
+<strong>SDK Data Path utility</strong>: The SDK provides a utility to locate SDK files in the system. The utility is used by Computer Vision modules, which need to locate data files in the system that are constant for all applications (not application- or algorithm-instance specific).</li>
+<li>
+<strong>FPS counter</strong>: Measures the actual FPS in a specific period. You can use this utility to check the actual FPS in all software stack layers in your applications, to analyze FPS latency in those layers.</li>
+</ul>
+</li>
+</ul>
+<h4>realsense_samples-v0.6.2.tar.gz</h4>
+<p>We are going to detail the available samples in the next section!</p>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/using-intel-realsense-sdk-on-the-desktop/13988">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                31
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#2-getting-started" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#4-available-samples" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="4-available-samples">
+      <h2 class="p-heading--3">4. Available samples</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<h3>Preliminary notes</h3>
+<p>On ubuntu desktop, you can run any examples you want (graphical and non graphical). Most of the samples are rendering some graphical UI. Those have the <strong>rs_</strong> prefix for realsense SDK and <strong>cpp_</strong> prefix for those using librealsense (the bare protocole).</p>
+<p>Ubuntu Core, on itself, doesn’t have any graphical server by default. Consequently, you can’t run most of the samples rendering some graphical UI. However, there are a lot of samples with a <strong>_web</strong> appendix. They are spawning a web interface that you can access to the network, showing you real time data and capture from the camera.</p>
+<p>You can focus and experiment on both kind of examples.</p>
+<h3>Running your first sample</h3>
+<p>Here is an example with <strong>rs_pt_tutorial_1_web</strong>:</p>
+<pre><code class="lang-nohighlight">$ rs_pt_tutorial_1_web
+
+enabling: stream:DEPTH, 320x240x30, format:Z16
+
+enabling: stream:COLOR, 320x240x30, format:RGB8
+Device open failed, aborting...
+Device open failed, aborting...
+cl_get_gt_device(): error, unknown device: ffffffff
+
+web folder path: /usr/share/librealsense/samples/rs_pt_tutorial_1_web_browser
+
+Server: waiting for client to connect...
+
+Best host: 192.168.0.29 of ifa type: wlan0
+ &gt;&gt;&gt; point your browser to: http://192.168.0.29:8000/view.html
+</code></pre>
+<p>Then, point your browser to <code>http://localhost:8000/view.html</code> (or a remote IP if you are trying to browser from a different machine) and you will get something like:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/mlvk87wUEJ5W7gzLnhcwIybRopW.jpeg?dl=1" href="//ubuntucommunity.s3.dualstack.us-east-2.amazonaws.com/original/2X/9/9c9e26efc67a179adcfc6d34e6000bfcc757b170.jpeg" title="IMAGE"><img alt="IMAGE" data-base62-sha1="mlvk87wUEJ5W7gzLnhcwIybRopW" data-small-upload="//ubuntucommunity.s3.dualstack.us-east-2.amazonaws.com/optimized/2X/9/9c9e26efc67a179adcfc6d34e6000bfcc757b170_2_10x10.png" height="379" src="//ubuntucommunity.s3.dualstack.us-east-2.amazonaws.com/optimized/2X/9/9c9e26efc67a179adcfc6d34e6000bfcc757b170_2_690x379.jpeg" srcset="//ubuntucommunity.s3.dualstack.us-east-2.amazonaws.com/optimized/2X/9/9c9e26efc67a179adcfc6d34e6000bfcc757b170_2_690x379.jpeg, //ubuntucommunity.s3.dualstack.us-east-2.amazonaws.com/optimized/2X/9/9c9e26efc67a179adcfc6d34e6000bfcc757b170_2_1035x568.jpeg 1.5x, //ubuntucommunity.s3.dualstack.us-east-2.amazonaws.com/optimized/2X/9/9c9e26efc67a179adcfc6d34e6000bfcc757b170_2_1380x758.jpeg 2x" width="690"/></a></div>
+<p>The corresponding code is in <code>~/realsense_sdk_beta3/build/realsense_samples-0.6.2/samples/pt_tutorial_1_web/cpp/main.cpp</code></p>
+<p>You can spend some times here to study the various SDK examples in the same samples/ directory and execute them one after another. All corresponding commands will be prepended with <strong>rs_</strong>. librealsense samples are prepended with <strong>cpp_</strong> and their code is in <code>realsense_sdk_beta3/build/librealsense-1.11.2/examples/</code>.</p>
+<h3>RealSense sample description</h3>
+<p>To guide you through the samples, here is some description of the existing SDK samples: - <strong>rs_or_tutorial_1</strong>: This console app demonstrates the use of librealsense, Object Library, and the Linux SDK Framework, along with the RealSense camera’s depth and color sensors to identify objects in the scene. Each object identified is printed on the command line along with the confidence value for the object. Objects must take up ~50% of the screen to be recognized. - <strong>rs_or_tutorial_2</strong>: This console app builds on the rs_or_tutorial_1 app and demonstrates how to utilize the object localization and 3D localization functionality of the Object Library module. All items with &gt;= 90% confidence will be identified, along with their bounding rectangle coordinates in the console… - <strong>rs_or_tutorial_3</strong>: This console app builds on the rs_or_tutorial_2 app and demonstrates how to add the Object Tracking functionality of the Object Library module, with localization and 3D localization. Objects for tracking can be as small as 1% of the screen. - <strong>rs_or_tutorial_1_web</strong>: This GUI app builds on the rs_or_tutorial_1 app and displays the live color preview from the camera within a browser and shows a table with a label for the object along with its confidence value. - <strong>rs_or_tutorial_2_web</strong>: This GUI app builds on the rs_or_tutorial_2 app and displays the live color preview from the camera within a browser and draws rectangles on the color images in the region where objects are recognized. This GUI also includes a table that shows a label for the object along with its confidence value and the 3D (x,y,z) coordinates of the object. - <strong>rs_or_tutorial_3_web</strong>: This GUI app builds on the rs_or_tutorial_3 app and displays the live color preview from the camera within a browser and draws rectangles on the color images in the region where objects are recognized and keeps track of the objects. This GUI also includes a table that shows a label for the object along with its confidence value and the 2D (x,y) coordinates of the object. - <strong>rs_or_tutorial_1_gui</strong>: This GUI/console app builds on the rs_or_tutorial_1, and demonstrates the use of librealsense, object recognition in Object Library, and the Linux SDK Framework along with the RealSense camera’s depth and color sensors to identify objects in the scene. Each object identified will be listed on the command line and on a pop-up window along with the confidence value for the object. - <strong>rs_or_tutorial_2_gui</strong>: This GUI/console app builds on the rs_or_tutorial_2 app, and demonstrates how to utilize object localization and 3D localization. A GUI is displayed in a pop-up window along with output in the console. Recognized objects will be highlighted with a bounding box, label, and confidence level drawn in a live video stream. Other information is displayed for each recognized object in a table in the pop-up window and in the console. - <strong>rs_or_tutorial_3_gui</strong>: This GUI/console app builds on the rs_or_tutorial_3 app, and demonstrates how to add object tracking functionality with localization and 3D localization. Tracked objects can be as small as 1% of the screen. The coordinates of the tracked object(s) are displayed in a pop-up window and the console. Tracked objects are shown by a labeled bounding rectangle drawn over a live video stream. The user can trigger the localization function using the mouse. - <strong>rs_or_tutorial_4_gui</strong>: This GUI/console app builds on the rs_or_tutorial_3 app, and demonstrates how to add object tracking functionality. The coordinates of the tracked object(s) are displayed in pop-up window and the console. Tracked objects are shown the pop-up window by a labeled bounding rectangle drawn over a live video stream. The user will choose the tracked object using the mouse. - <strong>rs_pt_tutorial_1</strong>: This sample app demonstrates the use of libRealSense, Person Library, and the Linux SDK Framework to use the ZR300 camera’s depth and color sensors to detect people in the scene. The number of people detected in the scene will be displayed as a quantity in the console. - <strong>rs_pt_tutorial_2</strong>: This sample app demonstrates how to analyze someone’s posture. When a person is in the FOV, the app should display the following information once every second: his head direction (yaw, pitch, roll values) and his body direction (front/side/back values). - <strong>rs_pt_tutorial_3</strong>: This sample app demonstrates how to get the body tracking points and detect a pointing gesture. The app will display 6 body points, a “Pointing Detected” alert when the gesture is performed, and the pointing vector. - <strong>rs_pt_tutorial_1_web</strong>: This GUI app builds on the rs_pt_tutorial_1 app and displays the live color preview from the camera within a browser and draw rectangles around the person(s) detected in the camera frame and draws a color dot indicating the center of mass for the detected person in the image. There is also a table as part of the GUI that shows the person id, center of mass world coordinates (x,y,z) and the cumulative count of persons detected. - <strong>rs_pt_tutorial_2_web</strong>: This GUI app builds on the rs_pt_tutorial_2 app and displays the live color preview from the camera within a browser and draws rectangle around the head of a person detected in the camera frame. There is also a table as part of the GUI that shows the person id, head pose information, and the person orientation (front, left, right, etc.) with confidence score. - <strong>rs_pt_tutorial_3_web</strong>: This GUI app builds on the rs_pt_tutorial_3 app and displays the live color preview from the camera within a browser and draws rectangle around the person detected in the camera frame. Also draws an arrow to indicate the direction of the pointing gesture. There is also a table as part of the GUI that shows the person id, gesture origin (x,y,z) and gesture direction. - <strong>rs_or_pt_tutorial_1</strong>: This console app demonstrates the use of libRealSense, Object Library, and Person Library, using the ZR300 camera identify objects and persons. The name of the object, along with the confidence value will be printed in the console. Person information like person id and the 2D box coordinates will be printed in the console. - <strong>rs_or_pt_tutorial_1_web</strong>: This GUI app builds on the rs_or_pt_tutorial_1 app and displays the live color preview from the camera within a browser and draw rectangles around the person(s) and object(s) detected in the camera frame. There is also a table as part of the GUI that shows the person id, center of mass world coordinates(x,y,z) along with object label, object center world coordinates and confidence score. - <strong>rs_slam_or_pt_tutorial_1</strong>: This console app demonstrates the use of libRealSense, SLAM, Object Library, and Person Library, using the ZR300 camera to print out the current camera module position and identified objects and identified persons. The name of the object along with the confidence value will be printed in the console for identified objects. Person information like person id and the 2D box coordinates will be printed in the console. - <strong>rs_slam_or_pt_tutorial_1_web</strong>: This GUI app builds on the rs_slam_or_pt_tutorial_1 app and displays live fisheye and color preview, occupancy map, input and tracking fps for fisheye, depth, gyro and accelerometer frames, within a browser. Draws rectangles around recognized objects and persons in the color preview. - <strong>rs_slam_tutorial_1</strong>: This app demonstrates the use of librealsense and SLAM Library. The librealsense library streams depth, fish eye, and IMU data from the ZR300 camera which are used as input to the SLAM Library library. The SLAM Library outputs the camera pose (position and orientation) and occupancy map. The occupancy map is a 2D map of the surroundings that shows which areas are occupied by obstacles to navigation. It also illustrates how to save a ROS compatible occupancy PNG file and meta data .yaml file. - <strong>rs_slam_tutorial_1_web</strong>: This GUI app builds on the rs_slam_tutorial_1 app and displays live fisheye preview, occupancy map, input and tracking fps for fisheye, depth, gyro and accelerometer frames, within a browser.</p>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/using-intel-realsense-sdk-on-the-desktop/13988">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                1
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#3-building-the-sdk" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#5-thats-all-folks" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="5-thats-all-folks">
+      <h2 class="p-heading--3">5. That’s all folks!</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>Congratulations! You have played with the Intel RealSense SDK, installed and enabled it on your Ubuntu Core image in the Joule. You now have as well some samples and looked at some code on using the SDK.</p>
+<p>You should by now be familiar with the various parts composing the SDK, what each of them is responsible for and some basic ideas on how to use them. You also know what features the Intel RealSense supports and have some samples on how to utilize them.</p>
+<h3>Next steps</h3>
+<ul>
+<li>Learn some more advanced techniques on how to use your snap system looking for our others tutorials!</li>
+<li>Join the <a href="http://snapcraft.io">snapcraft.io</a> community on the <a href="https://forum.snapcraft.io/">snapcraft forum</a>.</li>
+</ul>
+<h3>Further readings</h3>
+<ul>
+<li>The <a href="http://www.intel.fr/content/www/fr/fr/architecture-and-technology/realsense-overview.html">Intel RealSense</a> website is a good one to learn more about this technology.</li>
+<li>Check how you can <a href="http://snapcraft.io/community/">contact us and the broader community</a>.</li>
+</ul>
+      </article>
+
+      
+      <div class="l-tutorial__feedback-options">
+        <p>Was this tutorial useful?</p>
+        <ul class="p-inline-list">
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/aca5f600-Helpful-yes.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/aca5f600-Helpful-yes.svg 2x"
+      alt="Positive response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="positive"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/784c0dc9-Helpful-yes-green.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/784c0dc9-Helpful-yes-green.svg 2x"
+      alt="positive"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="positive"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/5dacff00-Helpful-unsure.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/5dacff00-Helpful-unsure.svg 2x"
+      alt="Neutral response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="neutral"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/b601b52c-Helpful-unsure-orange.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/b601b52c-Helpful-unsure-orange.svg 2x"
+      alt="Neutral response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="neutral"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/4ff77e8e-Helpful-no.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/4ff77e8e-Helpful-no.svg 2x"
+      alt="Negative response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="negative"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/b45bf2a3-Helpful-no-red.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/b45bf2a3-Helpful-no-red.svg 2x"
+      alt="Negative response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="negative"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="l-tutorial__feedback-result p-notification--positive u-hide">
+        <div class="p-notification__content">
+          <p class="p-notification__message">Thank you for your feedback.</p>
+        </div>
+      </div>
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/using-intel-realsense-sdk-on-the-desktop/13988">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                0
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#4-available-samples" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <button class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom" disabled>
+                <i class="p-icon--chevron-down">Next step</i>
+              </button>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+  </div>
+</div>
+
+<script>
+  if (window.location.hash == "#0") {
+    window.location.hash == "#welcome";
+  }
+</script>
+
+<script>
+  (function() {
+    var polls = document.querySelectorAll('.poll');
+
+    [].forEach.call(polls, function(poll) {
+      var answers = poll.querySelectorAll('[type="radio"]');
+      var pollId = poll.getAttribute('data-poll-name');
+
+      [].forEach.call(answers, function(answer) {
+        answer.addEventListener('change', function(e) {
+          var answerLabel = document.querySelector('label[for="' + e.target.id + '"]');
+          var eventLabel = answerLabel.innerText;
+          var eventAction = document.getElementById(pollId).innerText;
+
+          dataLayer.push({
+            'event' : 'GAEvent',
+            'eventCategory' : 'survey',
+            'eventAction' : eventAction,
+            'eventLabel' : eventLabel,
+            'eventValue' : undefined
+          });
+        });
+      });
+    });
+  })();
+</script>
+
+
+      
+    </main><!-- /.inner-wrapper -->
+  </div><!-- /.wrapper -->
+
+  <!-- footer content goes here -->
+  
+    <div class="p-footer p-strip">
+  <div class="u-fixed-width">
+    <div class="p-footer--secondary row">
+      <div class="col-7">
+        <p class="p-footer--secondary__content"><small>&copy; 2023 Canonical Ltd. Ubuntu and Canonical are
+    registered trademarks of Canonical Ltd.</small></p>
+<nav class="p-footer--secondary__nav">
+  <ul class="p-inline-list--middot u-no-margin--bottom">
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="8" href="/legal"><small>Legal information</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="9" href="/legal/data-privacy"><small>Data privacy</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a href="" class="p-link--soft js-revoke-cookie-manager"><small>Manage your tracker settings</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" href="https://github.com/canonical/ubuntu.com/issues/new" id="report-a-bug">
+        <small>Report a bug on this site</small>
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </div>
+</div>
+  
+</body>
+</html>

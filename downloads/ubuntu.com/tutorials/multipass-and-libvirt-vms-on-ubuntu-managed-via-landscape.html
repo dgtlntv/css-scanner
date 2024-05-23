@@ -1,0 +1,1455 @@
+<!doctype html>
+
+<html prefix="og: http://ogp.me/ns#" class="" lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Multipass and libvirt VMs on Ubuntu, managed via Landscape | Ubuntu</title>
+
+  <link rel="preconnect" href="https://res.cloudinary.com">
+
+  
+  <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+  <script src="/static/js/dist/main.js?v=d670c07" defer></script>
+  <script src="/static/js/src/infer-preferred-language.js?v=b69e09e"></script>
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=25147bc">
+  <link rel="stylesheet" type="text/css" media="print" href="/static/css/print.css?v=0980a57">
+  <script>performance.mark("Stylesheets finished")</script>
+
+  <link rel="canonical" href="https://ubuntu.com/tutorials/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape">
+
+  <link rel="shortcut icon" href="https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://assets.ubuntu.com/v1/17b68252-apple-touch-icon-180x180-precomposed-ubuntu.png">
+
+  
+
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/46ed6870-Ubuntu-L-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/3baab91b-Ubuntu-Th-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/6113b69a-Ubuntu-LI-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/0c7b8dc0-Ubuntu-R-subset.woff2" crossorigin>
+
+  <meta name="description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+
+  <meta name="facebook-domain-verification" content="zxp9j79g1gy2xenbu9ll964pttk5hu">
+  <meta name="twitter:account_id" content="4503599627481511">
+  <meta name="twitter:site" content="@ubuntu">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ubuntu.com/tutorials/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape">
+  <meta property="og:site_name" content="Ubuntu">
+  <meta name="copydoc" content="https://drive.google.com/drive/folders/0B4s80tIYQW4BMjNiMGFmNzQtNDkxZC00YmQ0LWJiZWUtNTk2YThlY2MzZmJh">
+  <meta name="google-site-verification" content="ddh2iq7ZuKf1LpkL_gtM_T7DkKDVD7ibq6Ceue4a_3M">
+
+  
+  <meta name="twitter:title" content="Multipass and libvirt VMs on Ubuntu, managed via Landscape | Ubuntu">
+  <meta property="og:title" content="Multipass and libvirt VMs on Ubuntu, managed via Landscape | Ubuntu">
+  
+  
+  <meta name="twitter:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  <meta property="og:description" content="Ubuntu is an open source software operating system that runs from the desktop, to the cloud, to all your internet connected things.">
+  
+
+  
+  <!-- Meta image: https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png -->
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png">
+  <meta property="og:image" content="https://assets.ubuntu.com/v1/ebdfffbf-Aubergine_suru_background.png">
+  
+
+  
+
+          <!-- Google Analytics and Google Optimize -->
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-1018242-59', 'auto', {'allowLinker': true});
+        ga('require', 'GTM-N2MDH37');
+        ga('require', 'linker');
+        ga('linker:autoLink', ['conjure-up.io', 'login.ubuntu.com', 'www.ubuntu.com',
+        'ubuntu.com', 'insights.ubuntu.com', 'developer.ubuntu.com', 'cn.ubuntu.com',
+        'design.ubuntu.com', 'maas.io', 'canonical.com', 'landscape.canonical.com',
+        'pages.ubuntu.com', '/tutorials', 'docs.ubuntu.com']);
+        </script>
+        <!-- End Google Analytics and Google Optimize -->
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K92JCQ');</script>
+        <!-- End Google Tag Manager -->
+</head>
+
+<body class="">
+  <!-- google tag manager -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K92JCQ" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+  </noscript>
+  <!-- end google tag manager -->
+
+  
+    
+
+<header id="navigation" class="p-navigation">
+  
+  <div class="p-navigation__row">
+    <div class="p-navigation__banner">
+      <div class="p-navigation__logo">
+        <a class="p-navigation__item" href="/">
+          <svg class="p-navigation__image" width="107px" height="32px" viewBox="0 0 107 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Ubuntu</title><g id="ubuntu-logo"><path d="M100.470409,13.7615448 C96.9385448,13.7615448 94.0754031,10.8982838 94.0754031,7.36627238 C94.0754031,3.83426097 96.9385448,0.971 100.470409,0.971 C104.002273,0.971 106.865415,3.83426097 106.865415,7.36627238 C106.865415,10.8982838 104.002273,13.7615448 100.470409,13.7615448 Z M96.479398,6.59820047 C96.0559273,6.59820047 95.7123568,6.9417853 95.7123568,7.36727117 C95.7123568,7.78976066 96.0559273,8.13434429 96.479398,8.13434429 C96.9038674,8.13434429 97.2504342,7.78976066 97.2504342,7.36727117 C97.2504342,6.9417853 96.9038674,6.59820047 96.479398,6.59820047 Z M101.966539,10.0919788 C101.601995,10.3017254 101.475153,10.7731557 101.684891,11.1377152 C101.898624,11.5092663 102.369036,11.6341154 102.73358,11.4213725 C103.103118,11.2116259 103.22996,10.7401956 103.015228,10.3726397 C102.803493,10.0030862 102.334079,9.87823709 101.966539,10.0929776 L101.966539,10.0919788 Z M98.1493106,7.36727117 C98.1493106,6.6081884 98.5268386,5.93500183 99.104117,5.52949182 L98.5428187,4.58762991 C97.8686614,5.03708681 97.3682869,5.72425648 97.1605465,6.52828495 C97.4062394,6.72804357 97.5580496,7.02768151 97.5580496,7.36727117 C97.5580496,7.70386446 97.4062394,8.00649877 97.1605465,8.20425981 C97.3682869,9.00828828 97.8696601,9.69445915 98.5428187,10.1419185 L99.104117,9.20305294 C98.5268386,8.79754293 98.1493106,8.12435636 98.1493106,7.36727117 Z M100.392506,5.11998664 C101.568037,5.11998664 102.529835,6.02089804 102.62971,7.16951013 L103.726339,7.14953427 C103.671408,6.30555408 103.30187,5.54147734 102.73358,4.98714716 C102.438948,5.09501681 102.100372,5.08003492 101.809735,4.90924129 C101.518099,4.74144405 101.337325,4.4577868 101.286389,4.15015852 C101.001745,4.07225265 100.703118,4.03030334 100.392506,4.03030334 C99.8631682,4.03030334 99.3617949,4.15415369 98.9143542,4.37388818 L99.4486863,5.33073199 C99.735328,5.19589492 100.057925,5.12098543 100.392506,5.12098543 L100.392506,5.11998664 Z M100.392506,9.61155932 C100.056926,9.61155932 99.735328,9.53565105 99.4486863,9.40181277 L98.9143542,10.3586566 C99.3607962,10.5783911 99.8631682,10.7022414 100.392506,10.7022414 C100.704117,10.7022414 101.001745,10.6622897 101.286389,10.5823862 C101.336327,10.2727604 101.518099,9.98810433 101.809735,9.82130588 C102.103368,9.65350864 102.438948,9.63553036 102.73358,9.74839398 C103.302868,9.18607345 103.670409,8.42599188 103.726339,7.5810129 L102.62971,7.56503221 C102.529835,8.71064793 101.568037,9.61056053 100.392506,9.61056053 L100.392506,9.61155932 Z M101.966539,4.64156473 C102.334079,4.85430767 102.803493,4.72945853 103.015228,4.35990507 C103.22996,3.993348 103.103118,3.52091885 102.735578,3.30917471 C102.370035,3.09942815 101.899623,3.22427729 101.686888,3.59183316 C101.474154,3.95839024 101.600996,4.4288218 101.966539,4.64056594 L101.966539,4.64156473 Z M12.7910109,24.1489933 C12.1418224,24.3107977 11.2828961,24.4855865 10.2172282,24.6663681 C9.15056154,24.850146 7.91610464,24.942035 6.5178525,24.942035 C5.29737813,24.942035 4.27365781,24.7642498 3.43970028,24.4086795 C2.60774025,24.0541079 1.93857672,23.551715 1.4322097,22.9005019 C0.922846416,22.2512863 0.558302106,21.4842132 0.335580515,20.6032777 C0.109862669,19.7153506 0,18.7385309 0,17.6598343 L0,8.76857793 L2.83146059,8.76857793 L2.83146059,17.0515693 C2.83146059,18.9822364 3.13508106,20.3635673 3.746317,21.1945632 C4.35555543,22.0275567 5.38127325,22.4430546 6.82247172,22.4430546 C7.12609218,22.4430546 7.44169767,22.4330667 7.76629191,22.4110932 C8.09188491,22.3911174 8.39750288,22.3661475 8.67915081,22.3361837 C8.96279625,22.3062199 9.22247165,22.2762561 9.45617951,22.2462924 C9.68988736,22.214331 9.85568012,22.1813708 9.95955028,22.1384227 L9.95955028,8.76857793 L12.7910109,8.76857793 L12.7910109,24.1499921 L12.7910109,24.1489933 Z M19.7033702,9.46773311 C20.049937,9.24600104 20.5722841,9.01028586 21.2734076,8.76857793 C21.9725337,8.5258712 22.7785262,8.40202085 23.6943813,8.40202085 C24.8299618,8.40202085 25.8396996,8.60777223 26.7235947,9.01128466 C27.6084886,9.41679466 28.3535572,9.98710554 28.9637944,10.7192209 C29.5700366,11.4483399 30.0324586,12.3212851 30.3470653,13.3360589 C30.6636695,14.3518315 30.8204735,15.469481 30.8204735,16.6880086 C30.8204735,17.9664638 30.6327082,19.1180723 30.2551802,20.1438328 C29.8786508,21.1685946 29.3463163,22.0365458 28.6571777,22.7466877 C27.9660416,23.459826 27.1350804,24.005167 26.1583014,24.3917 C25.1865161,24.7782329 24.0908857,24.971 22.8694126,24.971 C21.5490631,24.971 20.3825213,24.8781122 19.366791,24.6953331 C18.3520594,24.512554 17.5191006,24.328776 16.8699121,24.1459969 L16.8699121,1.45940984 L19.7023715,0.971998793 L19.7023715,9.46773311 L19.700374,9.46773311 L19.7033702,9.46773311 Z M20.9078646,22.3661475 C21.4242191,22.4390594 22.0664163,22.4730184 22.8404488,22.4730184 C24.3605486,22.4730184 25.5820217,21.9686279 26.4938819,20.9648408 C27.4077395,19.9590561 27.8651677,18.5327795 27.8651677,16.686011 C27.8651677,15.8739922 27.7852676,15.1129119 27.6214724,14.4007724 C27.4586759,13.6896317 27.1940067,13.0763727 26.8294624,12.557999 C26.4639193,12.0386266 25.9905111,11.636113 25.4152302,11.3394714 C24.8339568,11.0438287 24.1388258,10.8970061 23.3278395,10.8970061 C22.5548058,10.8970061 21.8456923,11.0298456 21.195505,11.2915294 C20.5463165,11.5582071 20.0469408,11.8308776 19.7023715,12.1155337 L19.7023715,22.1354263 C19.9880144,22.2203237 20.3885138,22.296232 20.9078646,22.3661475 Z M46.6257165,24.1489933 C45.976528,24.3107977 45.1176017,24.4855865 44.0529326,24.6663681 C42.9872647,24.850146 41.7528078,24.942035 40.3505606,24.942035 C39.1340813,24.942035 38.1083635,24.7642498 37.2764034,24.4086795 C36.4444434,24.0541079 35.7742811,23.551715 35.2689128,22.9005019 C34.7575521,22.2512863 34.3940065,21.4842132 34.1702862,20.6032777 C33.9475646,19.7173482 33.8367032,18.7395297 33.8367032,17.6618319 L33.8367032,8.77057551 L36.6681637,8.77057551 L36.6681637,17.0535669 C36.6681637,18.984234 36.9717842,20.3655649 37.5810226,21.1965608 C38.1902611,22.0295542 39.2149802,22.4450522 40.6571774,22.4450522 C40.9617966,22.4450522 41.2784008,22.4350643 41.6029951,22.4130908 C41.9275893,22.3931149 42.2322085,22.3681451 42.5168527,22.3381813 C42.7994994,22.3082175 43.0591748,22.2782537 43.2938814,22.2482899 C43.5255918,22.2153298 43.693382,22.1823696 43.7962534,22.1384227 L43.7962534,8.77057551 L46.6287128,8.77057551 L46.6287128,24.1519896 L46.6267153,24.1519896 L46.6257165,24.1489933 Z M50.7066153,9.22602518 C51.3558038,9.06222311 52.2177263,8.89142948 53.2953793,8.70665275 C54.3710347,8.52686999 55.6084878,8.43398223 57.010735,8.43398223 C58.2711594,8.43398223 59.3148547,8.61176741 60.1468148,8.96633897 C60.9807723,9.32190932 61.6449421,9.8183095 62.1423203,10.4585359 C62.6396986,11.0977635 62.9912591,11.8648366 63.1940057,12.7557601 C63.3957535,13.6526763 63.4976262,14.6354887 63.4976262,15.7121877 L63.4976262,24.6054417 L60.6641681,24.6054417 L60.6641681,16.3214515 C60.6641681,15.3456307 60.5982505,14.513636 60.467414,13.8244687 C60.3355788,13.1313063 60.117851,12.5759773 59.812233,12.1494927 C59.5096113,11.7200116 59.1011219,11.4123833 58.5937561,11.220615 C58.0873891,11.0238528 57.4551794,10.9289675 56.7061157,10.9289675 C56.4014965,10.9289675 56.0868898,10.9419518 55.764293,10.9619276 C55.4387,10.9819035 55.1280883,11.0078721 54.8354541,11.0378359 C54.5358287,11.0677997 54.2761533,11.1037563 54.0414466,11.143708 C53.8057413,11.1836597 53.6389498,11.2156211 53.5380759,11.2335994 L53.5380759,24.6044429 L50.7066153,24.6044429 L50.7066153,9.22602518 Z M70.0444424,8.76857793 L76.0449416,8.76857793 L76.0449416,11.143708 L70.0444424,11.143708 L70.0444424,18.4548737 C70.0444424,19.2439202 70.106365,19.9031237 70.2292115,20.4175021 C70.3490617,20.9368746 70.5328319,21.3443822 70.7765273,21.6380273 C71.0202227,21.9296749 71.3258407,22.1374239 71.6893862,22.262273 C72.0549293,22.3841258 72.4813962,22.4440534 72.9677882,22.4440534 C73.8396983,22.4440534 74.5298356,22.3471705 75.0401976,22.1544034 C75.5465646,21.9606375 75.8921327,21.8248017 76.0739054,21.7419018 L76.6831439,24.0591019 C76.3994984,24.2009305 75.8961277,24.3827108 75.1750291,24.6054417 C74.455928,24.8301702 73.6389492,24.9430338 72.7250916,24.9430338 C71.6484374,24.9430338 70.7595485,24.8061991 70.058425,24.5305322 C69.3592989,24.2548653 68.796003,23.8453601 68.3705349,23.2970227 C67.9430692,22.7496841 67.6434438,22.0744999 67.4716585,21.2724691 C67.2978757,20.4684406 67.2119831,19.5405618 67.2119831,18.4858362 L67.2119831,4.35191473 L70.0424449,3.8625061 L70.0424449,8.77057551 L70.0444424,8.77057551 L70.0444424,8.76857793 Z M91.4556778,24.1489933 C90.803493,24.3107977 89.947563,24.4855865 88.8788988,24.6663681 C87.8142297,24.850146 86.5817703,24.942035 85.1835182,24.942035 C83.9630438,24.942035 82.9393235,24.7642498 82.1073634,24.4086795 C81.2714084,24.0541079 80.6022449,23.551715 80.0958779,22.9005019 C79.5865146,22.2512863 79.2239678,21.4842132 78.9972512,20.6032777 C78.7775258,19.7173482 78.6626694,18.7395297 78.6626694,17.6618319 L78.6626694,8.77057551 L81.4991238,8.77057551 L81.4991238,17.0535669 C81.4991238,18.984234 81.8027442,20.3655649 82.4109839,21.1965608 C83.0202223,22.0295542 84.0459402,22.4450522 85.4871386,22.4450522 C85.7917578,22.4450522 86.1063646,22.4350643 86.4319576,22.4130908 C86.7535556,22.3931149 87.0591735,22.3681451 87.3438177,22.3381813 C87.6274632,22.3082175 87.8891361,22.2782537 88.1198477,22.2482899 C88.3535555,22.2153298 88.5223445,22.1823696 88.6242172,22.1384227 L88.6242172,8.77057551 L91.4576753,8.77057551 L91.4576753,24.1519896 L91.4556778,24.1519896 L91.4556778,24.1489933 Z" fill="#FFFFFF" fill-rule="nonzero"></path></g></svg>
+          <script>performance.mark("Logo rendered")</script>
+        </a>
+
+        
+        <h5 class="p-navigation--secondary__logo u-hide--nav-threshold-up">
+          <a class="p-navigation--secondary__banner" href="/tutorials">
+            Tutorials
+          </a>
+        </h5>
+        
+
+        
+        <h5 class="p-navigation--secondary__logo u-hide--nav-threshold-up">
+          <a class="p-navigation--secondary__banner" href="/tutorials">
+            Tutorials
+          </a>
+        </h5>
+        
+      </div>
+      <div class="u-hide u-show--small js-account--small"></div>
+    </div>
+    <nav aria-label="Main navigation" class="p-navigation__nav">
+      <ul class="p-navigation__items u-hide js-show-nav" role="menu">
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="enterprise" onmouseover="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#enterprise-content" onfocus="fetchDropdown('/templates/navigation-enterprise-h', 'enterprise-content');">Enterprise</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="developer" onmouseover="fetchDropdown('/templates/navigation-developer-h', 'developer-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#developer-content" onfocus="fetchDropdown('/templates/navigation-developer-h', 'developer-content');">Developer</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="community" onmouseover="fetchDropdown('/templates/navigation-community-h', 'community-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#community-content" onfocus="fetchDropdown('/templates/navigation-community-h', 'community-content');">Community</a>
+        </li>
+        <li class="p-navigation__item p-navigation__dropdown-link" role="menuitem" id="download" onmouseover="fetchDropdown('/templates/navigation-download-h', 'download-content'); this.onmouseover = null;">
+          <a class="p-navigation__link-anchor" href="#download-content" onfocus="fetchDropdown('/templates/navigation-download-h', 'download-content');">Download</a>
+        </li>
+      </ul>
+      <noscript>
+        <ul class="p-navigation__items" role="menu">
+          
+
+
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/openstack">OpenStack</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/kubernetes">Kubernetes</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/desktop">Desktop</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/internet-of-things">IoT</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/support">Support</a></li>
+  <li class="p-navigation__dropdown-link--noscript" role="menuitem"><a class="p-navigation__link-anchor" href="/download">Downloads</a></li>
+
+        </ul>
+      </noscript>
+      <ul class="p-navigation__items u-hide--small">
+        <li class="p-navigation__item" id="link-4">
+          <a href="/search" class="js-search-button p-navigation__link-anchor" style="padding-right: 1rem;">
+            <span class="u-hide u-show--large">Search</span> <i class="p-icon--search is-light">Search</i>
+          </a>
+        </li>
+        <li class="p-navigation__user js-account" id="canonical-login"></li>
+      </ul>
+      <div class="p-navigation__search u-show--small u-hide" style="z-index: 39;">
+        <form action="/search" class="p-search-box" id="ubuntu-global-search-form">
+          <input type="search" class="p-search-box__input" name="q" placeholder="Search our sites" required="" aria-label="Search our sites">
+          <button type="reset" class="p-search-box__reset"><i class="p-icon--close">Close</i></button>
+          <button type="submit" class="p-search-box__button"><i class="p-icon--search">Search</i></button>
+        </form>
+      </div>
+    </nav>
+  </div>
+  
+</header>
+<div class="dropdown-window-overlay fade-animation"></div>
+<div class="dropdown-window slide-animation">
+  <div class="u-hide" id="enterprise-content"></div>
+  <div class="u-hide" id="developer-content">  </div>
+  <div class="u-hide" id="community-content"></div>
+  <div class="u-hide" id="download-content"></div>
+</div>
+
+
+<nav aria-label="Sub navigation" class="p-navigation--secondary">
+  <div class="row">
+    <div class="col-12 u-equal-height">
+      <a class="p-navigation--secondary__banner u-hide--nav-threshold-down" href="/tutorials">
+        <h5 class="p-navigation--secondary__logo">
+          Tutorials
+        </h5>
+      </a>
+      
+      <ul class="breadcrumbs--secondary">
+        
+          
+        
+          
+            
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link p-link--soft" href="/tutorials/tutorial-guidelines#1-overview" >How to write a tutorial</a>
+            </li>
+            
+          
+        
+
+        
+          
+        
+          
+        
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+
+
+
+<script>
+  var nav = document.querySelector('.js-show-nav');
+  var hash = window.location.hash;
+  nav.classList.remove('u-hide');
+
+  // If the page loads with a preselected hash load and open the menu
+  if (hash) {
+    try {
+      var selected = nav.querySelector(hash);
+    } catch(error) {
+      console.warn("Hash " + hash + " not found in topnav");
+    }
+    if (selected) {
+      selected.onmouseover();
+    }
+  }
+
+  function fetchDropdown(url, id) {
+    var div = document.getElementById(id);
+    var req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.send();
+    req.addEventListener('load', function() {
+      div.innerHTML = this.responseText;
+    });
+  }
+
+  function initSearch() {
+    var searchButton = document.querySelector('.js-search-button');
+    var searchReset = document.querySelector('.p-search-box__reset');
+    if (searchButton) {
+      searchButton.addEventListener('click', openSearch);
+    }
+
+    if (searchReset) {
+      searchReset.addEventListener('click', closeSearch);
+    }
+  }
+  initSearch();
+
+  function openSearch(e) {
+    e.preventDefault();
+    var navigation = document.querySelector('.p-navigation__nav');
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var banner = document.querySelector(".p-navigation__banner");
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    var searchInput = document.querySelector('.p-search-box__input');
+    var searchActive = !search.classList.contains('u-hide');
+    search.classList.remove('u-hide');
+    searchButton.classList.add('u-hide');
+    banner.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    navigationItems.style= "opacity: 0.4; transition: opacity 0.5s ease-in-out;"
+    dropdownWindow.style="z-index: 37;"
+    dropdownWindowOverlay.classList.remove("fade-animation");
+    navigation.classList.add('has-active-search');
+    searchInput.focus();
+    dropdownWindowOverlay.addEventListener('click', closeSearch);
+    document.addEventListener('keyup', keyPressHandler);
+  }
+
+  function closeSearch() {
+    var navigation = document.querySelector('.p-navigation__nav');
+    var banner = document.querySelector(".p-navigation__banner")
+    var dropdownWindow = document.querySelector(".dropdown-window");
+    var dropdownWindowOverlay = document.querySelector(".dropdown-window-overlay");
+    var navigationItems = document.querySelector('.p-navigation__items');
+    var searchButton = document.querySelector('.js-search-button');
+    var search = document.querySelector('.p-navigation__search');
+    search.classList.add('u-hide');
+    banner.style= "opacity: 1;"
+    dropdownWindow.style="z-index: 39;"
+    navigationItems.style= "opacity: 1;"
+    dropdownWindowOverlay.classList.add("fade-animation");
+    navigation.classList.remove('has-active-search');
+    searchButton.classList.remove('u-hide');
+    document.removeEventListener('keyup', keyPressHandler);
+    dropdownWindowOverlay.removeEventListener('click', closeSearch);
+  }
+
+  function keyPressHandler (e) {
+    console.log(e);
+    if (e.key === "Escape") {
+      closeSearch();
+    }
+  }
+</script>
+  
+
+  <div class="wrapper u-no-margin--top">
+    <div id="success" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">Your submission was sent successfully! <a href="#" onclick="location.href = document.referrer; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unsubscribed" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">You have successfully unsubscribed! <a href="#" onclick="location.href = ''; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="main-content" class="inner-wrapper">
+      
+      
+      
+<script src="/static/js/dist/tutorials.js?v=2a938b6" defer></script>
+
+
+<div class="p-strip">
+  <div class="row">
+    <div class="col-7 col-start-large-5">
+      <h1 class="p-heading--2">Multipass and libvirt VMs on Ubuntu, managed via Landscape</h1>
+    </div>
+  </div>
+</div>
+
+<div class="l-tutorial row">
+  <aside class="l-tutorial__sidebar col-4">
+    <button type="button" class="l-tutorial__nav-toggle p-icon--menu u-hide u-show--small" aria-controls="menu-tutorial" aria-expanded="false">
+      Toggle tutorial menu
+    </button>
+    <ol class="l-tutorial__nav p-stepped-list u-hide--small" id="menu-tutorial">
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#1-overview">
+              Overview
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#2-install-libvirt">
+              Install libvirt
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#3-install-multipass">
+              Install Multipass
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#4-install-landscape">
+              Install Landscape
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#5-register-a-multipass-vm-with-landscape">
+              Register a Multipass VM with Landscape
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#6-summary--next-steps">
+              Summary &amp; Next Steps
+            </a>
+          </p>
+        </li>
+      
+        <li class="p-stepped-list__item l-tutorial__nav-item">
+          <p class="p-stepped-list__title l-tutorial__nav-title u-no-margin--bottom">
+            <a class="l-tutorial__nav-link" href="#7-tell-us-your-thoughts">
+              Tell us your thoughts!
+            </a>
+          </p>
+        </li>
+      
+    </ol>
+  </aside>
+  <div class="l-tutorial__content col-8">
+    
+    <section class="l-tutorial-section" id="1-overview">
+      <h2 class="p-heading--3">1. Overview</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p><a href="https://multipass.run">Multipass</a> offers Ubuntu <strong>Virtual Machines (VMs)</strong> on demand, with a simple menu-based user interface in the system tray. Users interested in appliance images can be up and running with a curated catalogue of software, such as Adguard and Plex Media Server, in an isolated environment within their workstation. Developers benefit from being able to locally deploy cloud-style images, tuned for performance out-of-the-box, with a single <code>multipass launch</code> command. Sharing files and folders between the host machine and instances is equally simple, with a <code>multipass mount</code> command.</p>
+<p>If developers are not using a tool to uniformly administer their virtual machines and are performing updates on a machine-by-machine basis, the ease of deploying Ubuntu virtual machines with Multipass contributes to patch drift. To counter this, <a href="https://landscape.canonical.com">Landscape</a> delivers the benefits of profiles and policies that can be applied to groups of Ubuntu instances to maintain a consistent, predictable, and safe developer environment.</p>
+<h3>
+<a class="anchor" href="#what-youll-learn-2" name="what-youll-learn-2"></a>What you’ll learn</h3>
+<p>This tutorial will help you launch an Ubuntu VM within Multipass, set up Landscape in this isolated environment, and configure it to monitor and manage all the other Ubuntu VMs. Your VMs can be launched through Multipass or Virtual Machine Manager, through a point and click graphical user interface (GUI), or through a command line interface (CLI).</p>
+<h3>
+<a class="anchor" href="#what-youll-need-3" name="what-youll-need-3"></a>What you’ll need</h3>
+<p>The minimum workstation specifications to complete this tutorial successfully are:</p>
+<ul>
+<li>
+<strong>Ubuntu</strong> 18.04 LTS (Bionic Beaver) or higher</li>
+<li>
+<strong>8 GB of RAM</strong> <br/> The Landscape virtual machine will require 4 GB of RAM, and allocating more than 71% of the system RAM to a single VM is not advisable. There is a risk the host OS could be starved of RAM, when over provisioning memory.</li>
+<li>
+<strong>30 GB</strong> of free disk space</li>
+<li>
+<strong>Dual core CPU</strong> with Intel VT or AMD-V <br/> Assigning 2 virtual processors (vCPUs) to virtual machines on a dual core CPU will adversely impact performance. Conversely, if your workstation has multiple processors or a single quad core (or higher) CPU, allocating 2 vCPUs to the Landscape virtual machine is recommended.</li>
+<li>
+<strong>Virtualisation support</strong> enabled in the BIOS <br/> To verify virtualisation support, install cpu-checker and ensure the kvm-ok output reads “KVM acceleration can be used”:</li>
+</ul>
+<pre><code class="lang-bash">sudo apt install cpu-checker -y
+kvm-ok
+</code></pre>
+<p><img alt="screenshot of the kvm-ok command output" data-base62-sha1="1Rg8K7CHAuqqrS27jSb5vihLk9Q" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/0/0d076fe5d79716833fdd57cec93c2b73c965314a.png" width="690"/></p>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape/25654">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                50
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <button class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" disabled style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </button>
+            
+
+            
+              <a href="#2-install-libvirt" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="2-install-libvirt">
+      <h2 class="p-heading--3">2. Install libvirt</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>An Ubuntu instance for Landscape can be provisioned with a static IP address, when using libvirt.</p>
+<h3>
+<a class="anchor" href="#use-virt-manager-on-ubuntu-desktop-5" name="use-virt-manager-on-ubuntu-desktop-5"></a>Use virt-manager on Ubuntu Desktop</h3>
+<p>In this section, we will install Virtual Machine Manager on your Ubuntu workstation using the virt-manager package found in the universe repository.</p>
+<p>Virtual Machine Manager is a desktop application with a point-and-click user interface for managing virtual machines. Some benefits of pairing Virtual Machine Manager with Multipass include:</p>
+<ul>
+<li>Graphs which show CPU and RAM usage over time</li>
+<li>An alternative graphical interface to see the internals of the virtual machines, such as the mounted disks, attached network interfaces, memory allocations, and more</li>
+</ul>
+<p>Virt-manager and all of its associated libvirt package dependencies can be installed with this command:</p>
+<pre><code class="lang-bash">sudo apt install virt-manager -y
+</code></pre>
+<h3>
+<a class="anchor" href="#use-libvirt-daemon-system-on-ubuntu-server-6" name="use-libvirt-daemon-system-on-ubuntu-server-6"></a>Use libvirt-daemon-system on Ubuntu Server</h3>
+<p>Assuming your Ubuntu Server is not configured with a desktop environment (like Gnome), the libvirt daemon can be installed as a system service without the overhead of virt-manager’s graphical user interface. Install the <strong>libvirt-daemon-system</strong> package from the universe repository:</p>
+<pre><code class="lang-bash">sudo apt install libvirt-daemon-system -y
+</code></pre>
+<h3>
+<a class="anchor" href="#reboot-7" name="reboot-7"></a>Reboot</h3>
+<p>In order for certain libvirt processes to launch with the correct privileges, a system restart is required after this package is installed. For example, virsh net-list will require sudo to find the default network, unless a reboot is performed.</p>
+<p>Issue the reboot command in your terminal:</p>
+<pre><code class="lang-bash">sudo reboot
+</code></pre>
+<h3>
+<a class="anchor" href="#create-a-management-network-8" name="create-a-management-network-8"></a>Create a Management Network</h3>
+<p>In this section, the libvirt command line interface will be used on your Ubuntu workstation to configure virtual networks for future virtual machine installations.</p>
+<p>Upon restart, the default network will be visible through virsh without requiring sudo. You can list the networks managed by the libvirtd service with this command:</p>
+<pre><code class="lang-bash">virsh net-list
+</code></pre>
+<p>The default network will be shown:</p>
+<pre><code class="lang-nohighlight"> Name   State   Autostart   Persistent
+----------------------------------------
+ default   active   yes         yes
+</code></pre>
+<p>For simplicity, we will assign Landscape a static IP address. To achieve this, a dedicated management network will be defined with an XML file located at <strong>/tmp/management-network.xml</strong> with the following contents:</p>
+<pre><code class="lang-xml">&lt;network&gt;
+  &lt;name&gt;management&lt;/name&gt;
+  &lt;bridge name="virbrmgmt0"/&gt;
+  &lt;forward mode="nat"&gt;
+    &lt;nat&gt;
+      &lt;port start="1024" end="65535"/&gt;
+    &lt;/nat&gt;
+  &lt;/forward&gt;
+  &lt;ip address="192.168.33.1" netmask="255.255.255.0"&gt;
+    &lt;dhcp&gt;
+      &lt;range start="192.168.33.2" end="192.168.33.254"/&gt;
+    &lt;/dhcp&gt;
+  &lt;/ip&gt;
+&lt;/network&gt;
+</code></pre>
+<p>Copying and pasting this multiline cat statement into your terminal will create <strong>/tmp/management-network.xml</strong>, with the required contents:</p>
+<pre><code class="lang-bash">cat &lt;&lt;EOF &gt; /tmp/management-network.xml
+&lt;network&gt;
+  &lt;name&gt;management&lt;/name&gt;
+  &lt;bridge name="virbrmgmt0"/&gt;
+  &lt;forward mode="nat"&gt;
+    &lt;nat&gt;
+      &lt;port start="1024" end="65535"/&gt;
+    &lt;/nat&gt;
+  &lt;/forward&gt;
+  &lt;ip address="192.168.33.1" netmask="255.255.255.0"&gt;
+    &lt;dhcp&gt;
+      &lt;range start="192.168.33.2" end="192.168.33.254"/&gt;
+    &lt;/dhcp&gt;
+  &lt;/ip&gt;
+&lt;/network&gt;
+EOF
+</code></pre>
+<p>Create a new, persistent, virtual network using the settings from <strong>/tmp/management-network.xml</strong> with this command:</p>
+<pre><code class="lang-bash">virsh net-define --file /tmp/management-network.xml
+</code></pre>
+<p>You will get a confirmation:</p>
+<pre><code class="lang-nohighlight">Network management defined from /tmp/management-network.xml
+</code></pre>
+<p>This network will need to be started with the following command:</p>
+<pre><code class="lang-bash">virsh net-start --network management
+</code></pre>
+<p>You will get a confirmation:</p>
+<pre><code class="lang-nohighlight">Network management started
+</code></pre>
+<p>Instruct the libvirt daemon to start the network automatically upon reboot:</p>
+<pre><code class="lang-bash">virsh net-autostart --network management
+</code></pre>
+<p>You will get a confirmation:</p>
+<pre><code class="lang-nohighlight">Network management marked as autostarted
+</code></pre>
+<p>You can list the existing networks:</p>
+<pre><code class="lang-bash">virsh net-list --all
+</code></pre>
+<p>If they are running (active state), and configured to autostart, the network list should appear as follows:</p>
+<pre><code class="lang-nohighlight"> Name         State    Autostart   Persistent
+-----------------------------------------------
+ default      active   yes         yes
+ management   active   yes         yes
+</code></pre>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape/25654">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                43
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#1-overview" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#3-install-multipass" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="3-install-multipass">
+      <h2 class="p-heading--3">3. Install Multipass</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>In this section, we will install Multipass on your Ubuntu workstation using the snap package published by Canonical in the public Snap Store:</p>
+<pre><code class="lang-bash">sudo snap install multipass
+</code></pre>
+<p>We want more control over VMs after they are launched, so we will instruct Multipass to communicate with the libvirt daemon.</p>
+<h3>
+<a class="anchor" href="#snap-connect-on-ubuntu-desktop-10" name="snap-connect-on-ubuntu-desktop-10"></a>Snap Connect on Ubuntu Desktop</h3>
+<p>When logged into your Ubuntu Desktop directly, or connected via VNC or XRDP, you do not need to run this command with sudo:</p>
+<pre><code class="lang-bash">snap connect multipass:libvirt
+</code></pre>
+<p>A PolicyKit Authentication prompt will appear. Enter your password and proceed.</p>
+<p><img alt="screenshot of polkit authentication prompt" data-base62-sha1="pvtTP4qKyEFf0jAcBYUjji7JhEU" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/b/b2c564613fa464d06237005d29978e9e4af96c34.png" width="690"/></p>
+<p>If you do not enter your password and click <strong>Authenticate</strong> right away, you may see the following error message:</p>
+<pre><code class="lang-nohighlight">error: cannot communicate with server: timeout exceeded while waiting for a response
+</code></pre>
+<p>If you encounter this error, simply rerun the <code>snap connect multipass:libvirt</code> command, type in your password, and click Authenticate without any delays.</p>
+<p>If you have used SSH to connect to your Ubuntu desktop environment, and are performing the installation through an SSH connection, prefix the command with sudo:</p>
+<pre><code class="lang-bash">sudo snap connect multipass:libvirt
+</code></pre>
+<h3>
+<a class="anchor" href="#snap-connect-on-ubuntu-server-11" name="snap-connect-on-ubuntu-server-11"></a>Snap Connect on Ubuntu Server</h3>
+<p>An Ubuntu server environment requires prefixing the snap connect command with sudo:</p>
+<pre><code class="lang-bash">sudo snap connect multipass:libvirt
+</code></pre>
+<h3>
+<a class="anchor" href="#multipass-driver-configuration-12" name="multipass-driver-configuration-12"></a>Multipass driver configuration</h3>
+<p>Since this is a fresh installation of Multipass, there is no need to stop all instances. If you had Multipass previously installed, you can stop all instances with this command:</p>
+<pre><code class="lang-bash">multipass stop --all
+</code></pre>
+<p>Ensure the Multipass client passphrase is set, by running this command and typing a password at the prompt:</p>
+<pre><code class="lang-bash">multipass set local.passphrase
+</code></pre>
+<p>Next, ensure the Multipass client is authenticated with the Multipass service by running this command and retyping the password from the previous step:</p>
+<pre><code class="lang-bash">multipass authenticate
+</code></pre>
+<p>Now, instruct Multipass to use the libvirt driver:</p>
+<pre><code class="lang-bash">multipass set local.driver=libvirt
+</code></pre>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape/25654">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                36
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#2-install-libvirt" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#4-install-landscape" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="4-install-landscape">
+      <h2 class="p-heading--3">4. Install Landscape</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<h3>
+<a class="anchor" href="#provision-landscapes-server-14" name="provision-landscapes-server-14"></a>Provision Landscape’s Server</h3>
+<p>The commands to provision Landscape’s server are executed on your Ubuntu workstation.</p>
+<p>Landscape version 19.10, the current version as of this writing, requires Ubuntu 18.04 LTS (Bionic Beaver).</p>
+<p>If your CPU has 2 cores, or if you are performing nested virtualisation, launch a Multipass Bionic instance with only 1 vCPU:</p>
+<pre><code class="lang-bash">multipass launch focal --name=landscape --cpus=1 --mem=4G --disk=20G -vvv
+</code></pre>
+<p>If your CPU has 4 cores or more, you can launch a Multipass Bionic instance with 2 vCPUs:</p>
+<pre><code class="lang-bash">multipass launch focal --name=landscape --cpus=2 --mem=4G --disk=20G -vvv
+</code></pre>
+<h3>
+<a class="anchor" href="#install-landscape-server-quickstart-15" name="install-landscape-server-quickstart-15"></a>Install landscape-server-quickstart</h3>
+<p>Open a shell prompt on the Multipass Ubuntu virtual machine where Landscape will be installed by running this command in the Terminal:</p>
+<pre><code class="lang-bash">multipass shell landscape
+</code></pre>
+<p>Add the Landscape PPA repository:</p>
+<pre><code class="lang-bash">sudo add-apt-repository --update ppa:landscape/self-hosted-23.03 -y
+</code></pre>
+<p>You will see the following prompt:</p>
+<pre><code class="lang-nohighlight">Repository: 'deb https://ppa.launchpadcontent.net/landscape/self-hosted-23.03/ubuntu/ focal main'
+Description:
+Dependencies for Landscape Self-Hosted release version 23.03.
+More info: https://launchpad.net/~landscape/+archive/ubuntu/self-hosted-23.03
+Press [ENTER] to continue or Ctrl-c to cancel adding it.
+</code></pre>
+<p>Press <strong>Enter</strong> to proceed, and install Landscape using the quickstart method:</p>
+<pre><code class="lang-bash">sudo apt install landscape-server-quickstart -y
+</code></pre>
+<p>Postfix configuration extends beyond the scope of this tutorial. Selecting <strong>No Configuration</strong> is suitable at this time, because Postfix can be easily configured at a later time.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/wvgG9m683Jllmx0c7mA1j7FR7aU.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/e/e3ce7072f01894a8c0541b3130500b03524ae708.png" title="screenshot of postfix configuration"><img alt="screenshot of postfix configuration" data-base62-sha1="wvgG9m683Jllmx0c7mA1j7FR7aU" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/e/e3ce7072f01894a8c0541b3130500b03524ae708_2_10x10.png" height="553" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/e/e3ce7072f01894a8c0541b3130500b03524ae708_2_690x553.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/e/e3ce7072f01894a8c0541b3130500b03524ae708_2_690x553.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/e/e3ce7072f01894a8c0541b3130500b03524ae708_2_1035x829.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/e/e3ce7072f01894a8c0541b3130500b03524ae708_2_1380x1106.png 2x" width="690"/></a></div>
+<p>The installation process with 1 vCPU can take some time. Observing CPU and disk metrics in the System Monitor will help pass the time, because the progress bar will take several minutes to get past the 99% mark. A successful installation can be confirmed after the progress bar reaches 100%, and the following triggers are all processed:</p>
+<pre><code class="lang-nohighlight">Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Processing triggers for rsyslog (8.2001.0-1ubuntu1.3) ...
+Processing triggers for ufw (0.36-6ubuntu1) ...
+Processing triggers for systemd (245.4-4ubuntu3.22) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for dbus (1.12.16-2ubuntu2.3) ...
+</code></pre>
+<p>Issue the shutdown command to turn off the Landscape instance. You will return back to your workstation’s shell, where we will use libvirt’s command line tools to add the Landscape instance to the management network.</p>
+<pre><code class="lang-bash">sudo shutdown -h now
+</code></pre>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/lgzGUjaGxNLakBHWNedZF3unQeZ.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/9/950d533c13c90124a47a3859287ce279200162f9.png" title="screenshot of a completed landscape-server-quickstart install"><img alt="screenshot of a completed landscape-server-quickstart install" data-base62-sha1="lgzGUjaGxNLakBHWNedZF3unQeZ" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/950d533c13c90124a47a3859287ce279200162f9_2_10x10.png" height="553" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/950d533c13c90124a47a3859287ce279200162f9_2_690x553.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/950d533c13c90124a47a3859287ce279200162f9_2_690x553.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/950d533c13c90124a47a3859287ce279200162f9_2_1035x829.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/9/950d533c13c90124a47a3859287ce279200162f9_2_1380x1106.png 2x" width="690"/></a></div>
+<p>The subsequent steps require the Landscape virtual machine to be fully shut down. We do not want Landscape to obtain an IP address dynamically from the management network, because we want to associate a fixed IP address to the MAC address of Landscape’s network interface connected to the management network. Shutting down the Landscape virtual machine helps us avoid the hassle of revoking a dynamic IP address assignment.</p>
+<h3>
+<a class="anchor" href="#observing-the-vm-shutdown-on-ubuntu-desktop-16" name="observing-the-vm-shutdown-on-ubuntu-desktop-16"></a>Observing the VM shutdown on Ubuntu Desktop</h3>
+<p>You can observe the Landscape virtual machine’s state in the Virtual Machine Manager application. It should say “Shutoff” under the virtual machine’s name when viewing the list of virtual machines, and it will say “Guest is not running” if you look at the console window within Virtual Machine Manager.</p>
+<p><img alt="screenshot of virtual machine manager" data-base62-sha1="6r5Q7vMm8c45Q7e12xk9ZYfnnop" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/2/2d1d1a8f44f35898fc5d160ad9aabfc4351ed1bd.png" width="690"/></p>
+<p>The following steps for observing the VM shutdown on Ubuntu Server are also compatible with Ubuntu Desktop.</p>
+<h3>
+<a class="anchor" href="#observing-the-vm-shutdown-on-ubuntu-server-17" name="observing-the-vm-shutdown-on-ubuntu-server-17"></a>Observing the VM shutdown on Ubuntu Server</h3>
+<p>It is possible to see the output of the console as the virtual machine performs its shutdown routine, by running this command in a separate Terminal window, or a separate SSH session:</p>
+<pre><code class="lang-bash">virsh console landscape
+</code></pre>
+<p>The powered off state can be confirmed when the console prints out a “Starting Power-Off” and “Power down” message:</p>
+<pre><code class="lang-nohighlight">         Starting Power-Off...
+[  158.395261] reboot: Power down
+</code></pre>
+<p>If the machine has completely shut down, the virsh console command will produce the following error message:</p>
+<pre><code class="lang-nohighlight">error: The domain is not running
+</code></pre>
+<p>You can also observe the Landscape virtual machine’s state when listing all virtual machines:</p>
+<pre><code class="lang-bash">virsh list --all
+</code></pre>
+<p>It will produce an output similar to the following:</p>
+<pre><code class="lang-nohighlight"> Id   Name        State
+---------------------------
+ -    landscape   shut off
+</code></pre>
+<h3>
+<a class="anchor" href="#configure-the-landscape-network-interfaces-18" name="configure-the-landscape-network-interfaces-18"></a>Configure the Landscape Network Interfaces</h3>
+<p>Configuring the Landscape network interfaces is a two-part journey:</p>
+<ol>
+<li>The virtual network configuration is performed in the Terminal of your Ubuntu workstation, which is now acting as the host machine for your virtual machines.</li>
+<li>The network adapter configuration is performed in a shell prompt on your Landscape virtual machine.</li>
+</ol>
+<h4>
+<a class="anchor" href="#virtual-network-configuration-19" name="virtual-network-configuration-19"></a>Virtual Network Configuration</h4>
+<p>Out of the box, only one virtual ethernet adapter is attached on all Multipass instances. This network interface is connected to the default network, with DHCP enabled. This default network should not be removed or modified, as Multipass relies on this interface for administrative purposes. Instead of configuring virtual machines with an additional virtual ethernet adapter, and binding this adapter with a static IP address, the network configuration will be managed at the host layer. IP reservations for Multipass and libvirt virtual machines are achieved by mapping the MAC addresses of virtual ethernet adapters in virtual machines to specific IP addresses on the management network. The benefit of this approach is that all the network configurations are defined in a single place on the host machine, and not within each virtual machine. Furthermore, there is a clean command line interface to manipulate libvirt network configurations.</p>
+<p>First, let us list the unique hardware MAC address of the default virtual ethernet adapter on the Landscape instance, assigned by Multipass:</p>
+<pre><code class="lang-bash">virsh dumpxml landscape | grep -i '&lt;mac' | grep -oP "(?&lt;=').*?(?=')"
+</code></pre>
+<p>Next, we add a second adapter, and connect it to the management network:</p>
+<pre><code class="lang-bash">virsh attach-interface --domain landscape --source management --type network --model virtio --config
+</code></pre>
+<p>The following notification is printed when an interface has been successfully attached:</p>
+<pre><code class="lang-nohighlight">Interface attached successfully
+</code></pre>
+<p>Repeat the command to list MAC addresses for the network interfaces and confirm that two network interfaces exist on the Landscape instance:</p>
+<pre><code class="lang-bash">virsh dumpxml landscape | grep -i '&lt;mac' | grep -oP "(?&lt;=').*?(?=')"
+</code></pre>
+<html><body><div class="p-notification--caution"><div class="p-notification__response">
+<p class="u-no-padding--top u-no-margin--bottom"><strong>If you only see one MAC address</strong><br/>
+It is likely that the <code>virsh attach-interface</code> command was executed while the Landscape virtual machine was still running. If you’re cruising through these steps, you may have run the <code>virsh attach-interface</code> instruction while the shutdown process was still being performed.</p>
+</div></div></body></html>
+<p>You can verify whether the Landscape virtual machine has finished shutting down, and whether the adapter is present, through the graphical user interface of the Virtual Machine Manager application. There should be 2 NICs in the left column, and the second NIC’s network source will be “Virtual network ‘management’: NAT”. The MAC address of this second NIC will be visible in this application as well.</p>
+<p><img alt="screenshot of virtual machine manager, inspecting NIC MAC addresses" data-base62-sha1="wrP95fHPrDqXMZ65oDc02eKwV57" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/e/e36ac5f6dc058ac9562014b40ec31263c819f7c1.png" width="690"/></p>
+<p>The second MAC address in the list belongs to the new interface. Your MAC address will be unique to your workstation, and will not match the screenshot in this guide.</p>
+<p>This command prints out the MAC address for the second network interface on your Landscape virtual machine explicitly. If a second network interface does not exist, it will not print anything. (If a third network interface exists, it will be ignored, and only the second network interface’s MAC address will be displayed, because of the sed command at the end.)</p>
+<pre><code class="lang-bash">virsh dumpxml landscape | grep -i '&lt;mac' | grep -oP "(?&lt;=').*?(?=')" | sed -n 2p
+</code></pre>
+<p>Instruct the DHCP server operating the management network to look for the MAC address of this newly added second adapter, and always assign it 192.168.33.2. This command will bind the second NIC’s MAC address to the management network:</p>
+<pre><code class="lang-bash">virsh net-update management add ip-dhcp-host '&lt;host mac="'$(virsh dumpxml landscape | grep -i '&lt;mac' | grep -oP "(?&lt;=').*?(?=')" | sed -n 2p)'" ip="192.168.33.2"/&gt;' --live --config
+</code></pre>
+<p>The following notification is printed when the DHCP server responsible for the management network has accepted this new configuration:</p>
+<pre><code class="lang-nohighlight">Updated network management persistent config and live state
+</code></pre>
+<p>Confirm the new network interface on the Landscape server has been associated with a static IP address on the management network. This command filters the XML output of IP address assignments on the management network:</p>
+<pre><code class="lang-bash">virsh net-dumpxml management | egrep 'range|host\ mac'
+</code></pre>
+<p>The output should look like this, with the exception of the MAC address being unique to your system:</p>
+<pre><code class="lang-xml">&lt;range start='192.168.33.2' end='192.168.33.254'/&gt;
+&lt;host mac='52:54:00:99:90:6b' ip='192.168.33.2'/&gt;
+</code></pre>
+<p>Now that the virtual network interface has been connected to the management network, the Landscape instance must be made aware of this addition. Boot up the Landscape instance. You can either use:</p>
+<ol>
+<li>the Virtual Machine Manager application, but you still need to run multipass shell to connect once it boots up</li>
+<li>or you can rely on the multipass shell command to boot up the machine and subsequently connect to it.</li>
+</ol>
+<h4>
+<a class="anchor" href="#option-1-boot-up-via-the-virtual-manager-application-20" name="option-1-boot-up-via-the-virtual-manager-application-20"></a>Option 1: boot up via the Virtual Manager Application</h4>
+<p>The primary benefit of using the Virtual Manager Application is getting a windowed view of the console output.</p>
+<p>To start the Landscape virtual machine from within Virtual Machine Manager, click the button with the triangle/play icon:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/jifjBkieP6mKz8mSm3eAHwsFTD3.jpeg?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/8/873957e88feac5015f77d30afd3c72e7bd9c3389.jpeg" title="screenshot of virtual machine manager, power on the virtual machine"><img alt="screenshot of virtual machine manager, power on the virtual machine" data-base62-sha1="jifjBkieP6mKz8mSm3eAHwsFTD3" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/873957e88feac5015f77d30afd3c72e7bd9c3389_2_10x10.png" height="514" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/873957e88feac5015f77d30afd3c72e7bd9c3389_2_690x514.jpeg" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/873957e88feac5015f77d30afd3c72e7bd9c3389_2_690x514.jpeg, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/873957e88feac5015f77d30afd3c72e7bd9c3389_2_1035x771.jpeg 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/873957e88feac5015f77d30afd3c72e7bd9c3389_2_1380x1028.jpeg 2x" width="690"/></a></div>
+<p>You can observe the console output to determine when it is completely started up. When the machine is ready, you will see the login prompt:</p>
+<p><img alt="screenshot of virtual machine manager, confirm the virtual machine is done booting up" data-base62-sha1="9rZioZMGev8yleMa5myrDiWOT6z" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/4/423d827725e6c3c155e6a554454c46325ef8df83.png" width="690"/></p>
+<p>Do not try to log in from within Virtual Machine Manager here. Instead, open the Terminal application on your workstation, and use the <code>multipass shell</code> command to open a shell prompt to the virtual machine:</p>
+<pre><code class="lang-bash">multipass shell landscape
+</code></pre>
+<h4>
+<a class="anchor" href="#option-2-boot-up-via-multipass-shell-21" name="option-2-boot-up-via-multipass-shell-21"></a>Option 2: boot up via Multipass Shell</h4>
+<p>Open the Terminal application on your workstation, and use the multipass shell command to open a shell prompt to the virtual machine:</p>
+<pre><code class="lang-bash">multipass shell landscape
+</code></pre>
+<p>If you wish to observe the console output as the instance boots up, you can run this command in a separate Terminal window:</p>
+<pre><code class="lang-bash">virsh console landscape
+</code></pre>
+<p>You can exit from the virsh console anytime by pressing <strong>CTRL</strong> + <strong>]</strong></p>
+<h4>
+<a class="anchor" href="#network-adapter-configuration-22" name="network-adapter-configuration-22"></a>Network Adapter Configuration</h4>
+<p>Once the Landscape instance is fully booted up, and you have connected to its shell prompt, list the network adapters:</p>
+<pre><code class="lang-bash">ip a
+</code></pre>
+<p>This snippet from the ip a output shows that a new network adapter named “ens7” has been added, but not configured:</p>
+<pre><code class="lang-nohighlight">3: ens7: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether 52:54:00:bb:18:2c brd ff:ff:ff:ff:ff:ff
+</code></pre>
+<p>We need to configure the network on ens7 in a way that persists across reboots. This network configuration needs to be performed in a manner that is cloud-init friendly.</p>
+<p>Yq is a useful command line utility for updating YAML based configuration files through a terminal or shell script. Install yq as a snap with this command:</p>
+<pre><code class="lang-bash">sudo snap install yq
+</code></pre>
+<p>Yq manipulates the <strong>/etc/netplan/50-cloud-init.yaml</strong> file, adds the appropriate configurations for defining ens7, and writes the output to <strong>/etc/cloud/cloud.cfg.d/50-curtin-networking.cfg</strong>.</p>
+<pre><code class="lang-bash">
+sudo cat /etc/netplan/50-cloud-init.yaml | yq e '.network.ethernets.ens7.dhcp4 = true | .network.ethernets.ens7.match.macaddress = "'$(cat /sys/class/net/ens7/address)'" | .network.ethernets.ens7.set-name = "ens7"' - | sudo tee /etc/cloud/cloud.cfg.d/50-curtin-networking.cfg
+
+</code></pre>
+<p>This is a screenshot of my <strong>/etc/cloud/cloud.cfg.d/50-curtin-networking.cfg</strong> file.</p>
+<html><body><div class="p-notification--caution"><div class="p-notification__response">
+<p class="u-no-padding--top u-no-margin--bottom"><strong>Indentation provides semantic meaning in YAML files, and is important.</strong><br/>
+If you are manually editing the configuration file, remember to use spaces and not tabs.</p>
+</div></div></body></html>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/j0TURBepU1us7bfsYOlq1p527f7.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/8/85436791212f9f88c8bb2f2501dd4be14f68b025.png" title="screenshot of an ens7 netplan configuration"><img alt="screenshot of an ens7 netplan configuration" data-base62-sha1="j0TURBepU1us7bfsYOlq1p527f7" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/85436791212f9f88c8bb2f2501dd4be14f68b025_2_10x10.png" height="467" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/85436791212f9f88c8bb2f2501dd4be14f68b025_2_690x467.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/85436791212f9f88c8bb2f2501dd4be14f68b025_2_690x467.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/85436791212f9f88c8bb2f2501dd4be14f68b025_2_1035x700.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/8/85436791212f9f88c8bb2f2501dd4be14f68b025_2_1380x934.png 2x" width="690"/></a></div>
+<p>Upon saving this file, cloud-init should now be instructed to re-run all stages as it did on first boot. This command will abruptly disconnect the shell session on the Landscape instance:</p>
+<pre><code class="lang-bash">sudo cloud-init clean -r
+</code></pre>
+<p>Cloud-init will consume the changes in <strong>/etc/cloud/cloud.cfg.d/50-curtin-networking.cfg</strong> and propagate them to <strong>/etc/netplan/50-cloud-init.yaml</strong> on startup. This process will take some time. Watching the progress in the Virtual Machine Manager console will show you when the Landscape instance is done restarting, and ready.</p>
+<html><body><div class="p-notification"><div class="p-notification__response"><p class="u-no-padding--top u-no-margin--bottom"><strong>You will see one error related to Postfix towards the tail end of the startup process</strong><br/>
+We did not configure Postfix during the course of this tutorial. This warning can be safely ignored for now.</p>
+</div></div></body></html>
+<p>You can watch cloud-init perform its tasks through the console, by running this command in a separate Terminal window, or a separate SSH session:</p>
+<pre><code class="lang-bash">virsh console landscape
+</code></pre>
+<p>Alternatively, you can monitor the console through Virtual Machine Manager, if you installed that application earlier. This is a <a href="https://drive.google.com/file/d/1vvqVoZoyMH-zVMIjutbHK7dtm7y0wnWM/view?usp=sharing">short video of the cloud-init step</a>.</p>
+<p>Once you see the “landscape login:” prompt, you can proceed to the next step. If the screen seems frozen, press <strong>Enter</strong>, and if the system is idle and ready, the login prompt will appear.</p>
+<h3>
+<a class="anchor" href="#configure-access-to-landscape-23" name="configure-access-to-landscape-23"></a>Configure Access to Landscape</h3>
+<p>Landscape should be accessible via hostname from the host machine, and from other virtual machines. For simplicity, I have set the hostname to “landscape”.</p>
+<h4>
+<a class="anchor" href="#map-the-landscape-hostname-24" name="map-the-landscape-hostname-24"></a>Map the Landscape hostname</h4>
+<p>Allow your workstation to find the Landscape instance by its “landscape” hostname. Mapping the “landscape” hostname to 192.168.33.2 within <strong>/etc/hosts</strong> is achieved by running this command on your Ubuntu workstation:</p>
+<pre><code class="lang-bash">grep -qxF '192.168.33.2 landscape' /etc/hosts || sudo sed -i "3i192.168.33.2 landscape" /etc/hosts
+</code></pre>
+<p>The grep command’s parameters keep it quiet (<code>-q</code>), match the whole line (<code>-x</code>), and pattern match (<code>-F</code>). If the <strong>/etc/hosts</strong> file does not contain this entry for Landscape, it is inserted as a new third line within the file.</p>
+<h4>
+<a class="anchor" href="#set-up-landscapes-global-administrator-25" name="set-up-landscapes-global-administrator-25"></a>Set up Landscape’s Global Administrator</h4>
+<p>Configure Landscape via the web interface. Using Firefox, visit <code>https://landscape</code>.</p>
+<p>Disregard the “Warning: Potential Security Risk Ahead”. Click <strong>Advanced</strong> to expose a second prompt, and click <strong>Accept the Risk and Continue</strong>.</p>
+<p><img alt="screenshot of firefox complaining about the self signed certificate" data-base62-sha1="juNj0xeJTe62XBdXZQ6d3Vlr6eK" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/8/88a477c0ef11c6d691bab6a9fad0af7399929842.png" width="690"/></p>
+<p>When you arrive at the “Welcome to Landscape” screen, provide your name, email address, passphrase (password), and click <strong>Sign up</strong>.</p>
+<p><img alt="screenshot of landscape's welcome page" data-base62-sha1="q9HdiRhRXyheKegtOzhmE7csrJp" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/b/b7512357e398e249b187e17297e21b1f3ba3e96b.png" width="690"/></p>
+<p>In low memory systems, you may encounter an “Oops” screen, instead of a “Welcome to Landscape” screen. If this happens to you, your Landscape virtual machine needs to be restarted.</p>
+<p><img alt="screenshot of a landscape error page" data-base62-sha1="prYIm5cME9ntCOSN7lAT1Jfmyf9" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/b/b260059262b5fb7883cef1dd0303888ca7423d93.png" width="690"/></p>
+<p>To restart, connect to the Landscape shell:</p>
+<pre><code class="lang-bash">multipass shell landscape
+</code></pre>
+<p>Issue the reboot command within the Landscape virtual machine:</p>
+<pre><code class="lang-bash">sudo shutdown -r now
+</code></pre>
+<p>Once the Landscape virtual machine is fully rebooted, attempt to connect to the web interface once more.</p>
+<h4>
+<a class="anchor" href="#copy-landscapes-self-signed-certificate-26" name="copy-landscapes-self-signed-certificate-26"></a>Copy Landscape’s self signed certificate</h4>
+<p>There are helpful file system integrations between your Ubuntu workstation (the host) and the Multipass virtual machines. Use these integrations to place the <strong>/etc/ssl/certs/landscape_server_ca.crt</strong> file from Landscape Server somewhere accessible on your Ubuntu workstation. From this location on the host, we will be able to copy the landscape_server_ca.crt file to the appropriate locations on each Multipass virtual machine you start up.</p>
+<p>From within the Terminal application on your workstation, we will use Multipass to copy the <strong>/etc/ssl/certs/landscape_server_ca.crt</strong> file to your home directory on the host:</p>
+<pre><code class="lang-bash">multipass mount $HOME landscape
+</code></pre>
+<pre><code class="lang-bash">multipass transfer -vvvv landscape:/etc/ssl/certs/landscape_server_ca.crt $HOME
+</code></pre>
+<pre><code class="lang-bash">multipass umount landscape
+</code></pre>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape/25654">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                6
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#3-install-multipass" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#5-register-a-multipass-vm-with-landscape" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="5-register-a-multipass-vm-with-landscape">
+      <h2 class="p-heading--3">5. Register a Multipass VM with Landscape</h2>
+
+      <article class="l-tutorial-section__content">
+        
+
+<p>At this point, the Landscape instance is the only virtual machine on the management network. Adding other virtual machines is trivial, assuming they have been configured through Multipass or virt-manager.</p>
+<h3>
+<a class="anchor" href="#provisioning-a-virtual-machine-with-multipass-28" name="provisioning-a-virtual-machine-with-multipass-28"></a>Provisioning a virtual machine with Multipass</h3>
+<p>We follow the same steps, sans the static IP address assignment for all future virtual machines on the management network. The following steps walk you through creating a Multipass instance named “mp-vm-1”, and connect it to the management network.</p>
+<p>Create the virtual machine:</p>
+<pre><code class="lang-bash">multipass launch --name=mp-vm-1
+</code></pre>
+<p>Shut the virtual machine down, so that an additional network interface can be added:</p>
+<pre><code class="lang-bash">multipass stop mp-vm-1
+</code></pre>
+<p>Confirm the machine has fully shut down using the Virtual Machine Manager application, or by periodically checking via the command line:</p>
+<pre><code class="lang-bash">virsh list --all
+</code></pre>
+<p>The output will eventually be:</p>
+<pre><code class="lang-nohighlight"> Id   Name        State
+----------------------------
+ 2    landscape   running
+ -    mp-vm-1     shut off
+</code></pre>
+<p>Add a second adapter, and connect it to the management network:</p>
+<pre><code class="lang-bash">virsh attach-interface --domain mp-vm-1 --source management --type network --model virtio --config
+</code></pre>
+<p>The following notification is printed when an interface has been successfully attached:</p>
+<pre><code class="lang-nohighlight">Interface attached successfully
+</code></pre>
+<p>Open a shell prompt on mp-vm-1. This step may take some time, because the mp-vm-1 instance needs to boot up.</p>
+<pre><code class="lang-bash">multipass shell mp-vm-1
+</code></pre>
+<html><body><div class="p-notification--caution"><div class="p-notification__response">
+<p class="u-no-padding--top u-no-margin--bottom"><strong>If the system is low on free memory</strong><br/>
+Multipass may produce one of several “shell failed” errors when the host is low on memory.</p>
+</div></div></body></html>
+<p>The “shell failed” errors may look similar to this:</p>
+<pre><code class="lang-nohighlight">shell failed: ssh connection failed: 'No route to host'
+</code></pre>
+<p>If this happens repeatedly, shut down all the instances with <code>multipass stop --all</code> and then <code>multipass shell mp-vm-1</code> to launch mp-vm-1 on its own. You could also use Virtual Machine Manager to reduce the memory allocation for mp-vm-1 from 1GB to 512MB.</p>
+<p>Install yq as a snap on mp-vm-1 with this command:</p>
+<pre><code class="lang-bash">sudo snap install yq
+</code></pre>
+<p>Read the <strong>/etc/netplan/50-cloud-init.yaml</strong> file, add the appropriate configurations for defining ens7, and write the output to <strong>/etc/cloud/cloud.cfg.d/50-curtin-networking.cfg</strong> with cat, yq, and tee:</p>
+<pre><code class="lang-bash">sudo cat /etc/netplan/50-cloud-init.yaml | yq e '.network.ethernets.ens7.dhcp4 = true | .network.ethernets.ens7.match.macaddress = "'$(cat /sys/class/net/ens7/address)'" | .network.ethernets.ens7.set-name = "ens7"' - | sudo tee /etc/cloud/cloud.cfg.d/50-curtin-networking.cfg
+</code></pre>
+<p>Cloud-init should be instructed to re-run all stages as it did on first boot. This command will abruptly disconnect the shell session on the mp-vm-1 instance:</p>
+<pre><code class="lang-bash">sudo cloud-init clean -r
+</code></pre>
+<p>Cloud-init will consume the changes in <strong>/etc/cloud/cloud.cfg.d/50-curtin-networking.cfg</strong> and propagate them to <strong>/etc/netplan/50-cloud-init.yaml</strong> on startup. This process will take some time.</p>
+<p>You can watch cloud-init perform its tasks through the console, by running this command in a separate Terminal window, or a separate SSH session:</p>
+<pre><code class="lang-bash">virsh console mp-vm-1
+</code></pre>
+<p>Alternatively, you can monitor the console through Virtual Machine Manager, if you installed that application earlier.</p>
+<p>You will know the instance is ready when you see “mp-vm-1 login:” printed on the screen. Some cloud-init processes may continue printing messages to the screen, but once the login prompt is printed, the virtual machine is ready for you to proceed to the next step. If the screen seems frozen, press <strong>Enter</strong>, and if the system is idle and ready, the login prompt will appear.</p>
+<h3 id="poll_3">
+<a class="anchor" href="#enroll-the-vm-for-monitoring-and-management-with-landscape-29" name="enroll-the-vm-for-monitoring-and-management-with-landscape-29"></a>Enroll the VM for monitoring and management with Landscape</h3>
+<h4>
+<a class="anchor" href="#step-1-install-ssl-certificate-30" name="step-1-install-ssl-certificate-30"></a>Step 1: Install SSL Certificate</h4>
+<p>The SSL certificate was copied to your Ubuntu workstation’s home directory earlier. It exists at <strong>~/landscape_server_ca.crt</strong>. This certificate should be copied to mp-vm-1:</p>
+<pre><code class="lang-bash">multipass mount $HOME mp-vm-1
+</code></pre>
+<pre><code class="lang-bash">multipass transfer -vvvv $HOME/landscape_server_ca.crt mp-vm-1:/tmp
+</code></pre>
+<pre><code class="lang-bash">multipass umount mp-vm-1
+</code></pre>
+<p>Next, connect to the mp-vm-1 shell prompt:</p>
+<pre><code class="lang-bash">multipass shell mp-vm-1
+</code></pre>
+<p>Once you are connected to the shell prompt for mp-vm-1, move the certificate to the appropriate directory:</p>
+<pre><code class="lang-bash">sudo mv /tmp/landscape_server_ca.crt /usr/local/share/ca-certificates/
+</code></pre>
+<pre><code class="lang-bash">sudo update-ca-certificates
+</code></pre>
+<p>Look for confirmation that the certificates have been updated:</p>
+<pre><code class="lang-nohighlight">Updating certificates in /etc/ssl/certs...
+1 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+</code></pre>
+<h4>
+<a class="anchor" href="#step-2-install-the-landscape-client-31" name="step-2-install-the-landscape-client-31"></a>Step 2: Install the Landscape Client</h4>
+<p>Earlier in this tutorial, we decided the Landscape server’s hostname would be “landscape”. The Landscape client needs to be able to access the Landscape server through that same “landscape” hostname. You are still connected to the mp-vm-1 shell from the earlier step. Insert the hostname and IP address pairing in the <strong>/etc/hosts</strong> file on mp-vm-1 with this command:</p>
+<pre><code class="lang-bash">grep -qxF '192.168.33.2 landscape' /etc/hosts || sudo sed -i "3i192.168.33.2 landscape" /etc/hosts
+</code></pre>
+<p>Multipass configures images from a cloud template, in order for this setting to persist across reboots, it also needs to be applied to <strong>/etc/cloud/templates/hosts.debian.tmpl</strong> on mp-vm-1:</p>
+<pre><code class="lang-bash">grep -qxF '192.168.33.2 landscape' /etc/cloud/templates/hosts.debian.tmpl || sudo sed -i "18i192.168.33.2 landscape" /etc/cloud/templates/hosts.debian.tmpl
+</code></pre>
+<p>Install the Landscape client on mp-vm-1:</p>
+<pre><code class="lang-bash">sudo apt install landscape-client -y
+</code></pre>
+<h4>
+<a class="anchor" href="#step-3-configure-the-landscape-client-32" name="step-3-configure-the-landscape-client-32"></a>Step 3: Configure the Landscape Client</h4>
+<p>This command will submit an enrollment request for your virtual machine named mp-vm-1 to the Landscape server:</p>
+<pre><code class="lang-bash">sudo landscape-config --computer-title $(hostname) --account-name=standalone --url=https://landscape/message-system --ping-url=http://landscape/ping --script-users=ALL --silent
+</code></pre>
+<p>If you wish to have a more creative name for the computer title, instead of redundantly inserting the hostname, feel free to replace <code>$(hostname)</code> in the command above with something else.</p>
+<p>Once the registration request has been submitted to Landscape, you will get this confirmation in your shell:</p>
+<pre><code class="lang-nohighlight">url=https://landscape/message-system --ping-url=http://landscape/ping --script-users=ALL --silent
+Created symlink /etc/systemd/system/multi-user.target.wants/landscape-client.service → /lib/systemd/system/landscape-client.service.
+Please wait...
+System successfully registered.
+</code></pre>
+<h4>
+<a class="anchor" href="#step-4-accept-the-request-in-landscapes-dashboard-33" name="step-4-accept-the-request-in-landscapes-dashboard-33"></a>Step 4: Accept the request in Landscape’s dashboard</h4>
+<p>Open Firefox on your Ubuntu workstation and visit <code>https://landscape/account/standalone/pending-computers</code>.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/tyIwjaRkaNqtsdhaQBGgUGkQPMn.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/c/cf2bba1ec8380003516686baa24484d7aa0adde3.png" title="screenshot of accepting a virtual machine enrollment request in the landscape dashboard"><img alt="screenshot of accepting a virtual machine enrollment request in the landscape dashboard" data-base62-sha1="tyIwjaRkaNqtsdhaQBGgUGkQPMn" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/cf2bba1ec8380003516686baa24484d7aa0adde3_2_10x10.png" height="459" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/cf2bba1ec8380003516686baa24484d7aa0adde3_2_690x459.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/cf2bba1ec8380003516686baa24484d7aa0adde3_2_690x459.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/cf2bba1ec8380003516686baa24484d7aa0adde3_2_1035x688.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/c/cf2bba1ec8380003516686baa24484d7aa0adde3_2_1380x918.png 2x" width="690"/></a></div>
+<p>Accept the request from your virtual machine.</p>
+<h4>
+<a class="anchor" href="#delete-unwanted-virtual-machines-34" name="delete-unwanted-virtual-machines-34"></a>Delete unwanted virtual machines</h4>
+<p>You may also have a need to cleanly delete VMs. For example, to remove a virtual machine named “myuselessvm”, run these 3 commands:</p>
+<pre><code class="lang-bash">multipass delete myuselessvm
+</code></pre>
+<pre><code class="lang-bash">multipass purge
+</code></pre>
+<pre><code class="lang-bash">virsh destroy myuselessvm
+</code></pre>
+<p>The final command may produce an error message that reads as follows:</p>
+<pre><code class="lang-nohighlight">error: failed to get domain 'myuselessvm'
+</code></pre>
+<p>This is normal, and may be ignored. This command is a way to ensure that we have been thorough with the removal of the virtual machine, and that no traces of it exist within the Virtual Machine Manager. In situations where Multipass didn’t successfully create the virtual machine, you may encounter the following output when virsh successfully destroys the virtual machine:</p>
+<pre><code class="lang-nohighlight">Domain 'myuselessvm' destroyed
+</code></pre>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape/25654">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                0
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#4-install-landscape" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#6-summary--next-steps" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="6-summary--next-steps">
+      <h2 class="p-heading--3">6. Summary &amp; Next Steps</h2>
+
+      <article class="l-tutorial-section__content">
+        
+<p>Congratulations! Your development environment is neat and tidy. Repeat Step 6 for each new virtual Ubuntu instance you need, and everything will be tightly integrated to your host environment through Multipass, and get monitored and managed through Landscape.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/cph9CCE1MyQXZYyXANlkjLggIws.png?dl=1" href="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/5/56f58d5061cdfaed7030aef472e81a8e8f7828ec.png" title="screenshot of the landscape dashboard and some virtual machines"><img alt="screenshot of the landscape dashboard and some virtual machines" data-base62-sha1="cph9CCE1MyQXZYyXANlkjLggIws" data-small-upload="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56f58d5061cdfaed7030aef472e81a8e8f7828ec_2_10x10.png" height="517" src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56f58d5061cdfaed7030aef472e81a8e8f7828ec_2_690x517.png" srcset="https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56f58d5061cdfaed7030aef472e81a8e8f7828ec_2_690x517.png, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56f58d5061cdfaed7030aef472e81a8e8f7828ec_2_1035x775.png 1.5x, https://ubuntucommunity.s3.us-east-2.amazonaws.com/optimized/2X/5/56f58d5061cdfaed7030aef472e81a8e8f7828ec_2_1380x1034.png 2x" width="690"/></a></div>
+<p>This is the right time to organize your Ubuntu estate within Landscape: divide your virtual machines into groups by applying <a href="https://landscape.canonical.com/static/doc/user-guide/ch02.html#idm46604573230928">tags</a>, and define <a href="https://landscape.canonical.com/static/doc/user-guide/ch02.html#idm46604576939920">policy profiles</a> for each grouping of machines.</p>
+<p>Common <a href="https://landscape.canonical.com/static/doc/user-guide/ch08.html">use cases for Landscape</a> include:</p>
+<ul>
+<li>Upgrading all packages on a certain group of machines.</li>
+<li>Ensuring certain machines are kept up to date automatically.</li>
+<li>Pinning packages to a certain version.</li>
+<li>Observing resource utilization metrics over time, and configuring custom graphs.</li>
+</ul>
+<p>Landscape can be configured to allow <a href="https://landscape.canonical.com/static/doc/user-guide/ch02.html#idm46604580826720">remote execution of scripts</a> from within its dashboard. Pairing this capability with the <a href="https://landscape.canonical.com/static/doc/user-guide/ch09.html">Landscape API</a> empowers you to build some deeper integrations between Multipass, Landscape, and your existing workflows.</p>
+<p>If you wish to enable email notifications from within Landscape, this is a good time to configure Postfix. Postfix can act as an SMTP relay for Gmail, Sendgrid, Mailjet, and other services.</p>
+<p>Learn more about Canonical’s high availability <a href="https://landscape.canonical.com/try-landscape">systems management and server monitoring solution</a>, available through an affordable Software as a Service model. Landscape SaaS is available for free with an <a href="https://www.ubuntu.com/support/plans-and-pricing">Ubuntu Advantage</a> subscription.</p>
+
+      </article>
+
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape/25654">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                0
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#5-register-a-multipass-vm-with-landscape" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <a href="#7-tell-us-your-thoughts" class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom">
+                <i class="p-icon--chevron-down">Next step</i>
+              </a>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+    <section class="l-tutorial-section" id="7-tell-us-your-thoughts">
+      <h2 class="p-heading--3">7. Tell us your thoughts!</h2>
+
+      <article class="l-tutorial-section__content">
+        
+<p>Thank you for following this tutorial, we’d love to hear how you got on.</p>
+<p>Give us feedback in the <a href="/tutorials/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape">Ubuntu Discourse</a> if you have any issues.</p>
+<p>To help us improve our tutorials, we’d love to hear more about you:</p>
+<h4>
+<a class="anchor" href="#how-will-you-use-this-tutorial-37" name="how-will-you-use-this-tutorial-37"></a>How will you use this tutorial?</h4>
+<div class="poll" data-poll-name="poll_1" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="2b49a1bf6cc17a62c1981e0ad78e5cff" id="2b49a1bf6cc17a62c1981e0ad78e5cff" name="poll_1" type="radio"><label for="2b49a1bf6cc17a62c1981e0ad78e5cff">Only read through it</label></input>
+<input data-poll-option-id="91ae26f1b5e9e977d93efcdc6deb3e41" id="91ae26f1b5e9e977d93efcdc6deb3e41" name="poll_1" type="radio"><label for="91ae26f1b5e9e977d93efcdc6deb3e41">Read it and complete the exercises</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+<h4>
+<a class="anchor" href="#what-is-your-current-level-of-experience-38" name="what-is-your-current-level-of-experience-38"></a>What is your current level of experience?</h4>
+<div class="poll" data-poll-name="poll_2" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="db8c7082f4201d000c5956af9b940911" id="db8c7082f4201d000c5956af9b940911" name="poll_2" type="radio"><label for="db8c7082f4201d000c5956af9b940911">Novice</label></input>
+<input data-poll-option-id="c751d83ce6126aa24297e19371c61ffa" id="c751d83ce6126aa24297e19371c61ffa" name="poll_2" type="radio"><label for="c751d83ce6126aa24297e19371c61ffa">Intermediate</label></input>
+<input data-poll-option-id="e8d9abfbd2598207024717890d106b3a" id="e8d9abfbd2598207024717890d106b3a" name="poll_2" type="radio"><label for="e8d9abfbd2598207024717890d106b3a">Proficient</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+<h4>
+<a class="anchor" href="#why-were-you-interested-in-this-tutorial-39" name="why-were-you-interested-in-this-tutorial-39"></a>Why were you interested in this tutorial?</h4>
+<div class="poll" data-poll-name="poll_3" data-poll-status="open">
+<div>
+<div class="poll-container">
+<ul>
+<input data-poll-option-id="3798464d3fa698df5b67b0946056ba73" id="3798464d3fa698df5b67b0946056ba73" name="poll_3" type="radio"><label for="3798464d3fa698df5b67b0946056ba73">For my personal use, or hobby projects</label></input>
+<input data-poll-option-id="cec03f071a646254b53a74012e68dab9" id="cec03f071a646254b53a74012e68dab9" name="poll_3" type="radio"><label for="cec03f071a646254b53a74012e68dab9">Only for my personal developer environment</label></input>
+<input data-poll-option-id="40b33190dc6e2039e68c8d0af003f331" id="40b33190dc6e2039e68c8d0af003f331" name="poll_3" type="radio"><label for="40b33190dc6e2039e68c8d0af003f331">To evaluate Landscape for broader use within my organization</label></input>
+</ul>
+</div>
+
+</div>
+</div>
+      </article>
+
+      
+      <div class="l-tutorial__feedback-options">
+        <p>Was this tutorial useful?</p>
+        <ul class="p-inline-list">
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/aca5f600-Helpful-yes.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/aca5f600-Helpful-yes.svg 2x"
+      alt="Positive response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="positive"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/784c0dc9-Helpful-yes-green.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/784c0dc9-Helpful-yes-green.svg 2x"
+      alt="positive"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="positive"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/5dacff00-Helpful-unsure.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/5dacff00-Helpful-unsure.svg 2x"
+      alt="Neutral response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="neutral"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/b601b52c-Helpful-unsure-orange.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/b601b52c-Helpful-unsure-orange.svg 2x"
+      alt="Neutral response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="neutral"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+          <li class="p-inline-list__item">
+            <div class="u-inline--child js-feedback-icon">
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/4ff77e8e-Helpful-no.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/4ff77e8e-Helpful-no.svg 2x"
+      alt="Negative response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon"
+      data-feedback-value="negative"
+    />
+  </noscript>
+</div>
+
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_32,h_32/https://assets.ubuntu.com/v1/b45bf2a3-Helpful-no-red.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_64,h_64/https://assets.ubuntu.com/v1/b45bf2a3-Helpful-no-red.svg 2x"
+      alt="Negative response"
+      width="32"
+      height="32"
+      loading="lazy"
+      class="l-tutorial__feedback-icon has-color"
+      data-feedback-value="negative"
+    />
+  </noscript>
+</div>
+
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="l-tutorial__feedback-result p-notification--positive u-hide">
+        <div class="p-notification__content">
+          <p class="p-notification__message">Thank you for your feedback.</p>
+        </div>
+      </div>
+      
+
+      <hr class="u-sv3">
+      <footer class="l-tutorial-section__footer row">
+        <div class="col-6 col-small-2 col-medium-3">
+          <a class="l-tutorial__bug-link" href="https://discourse.ubuntu.com/t/multipass-and-libvirt-vms-on-ubuntu-managed-via-landscape/25654">
+            <small>Suggest changes&nbsp;&rsaquo;</small>
+          </a>
+        </div>
+        <div class="col-8 col-small-2 col-medium-3 u-align--right">
+          <div class="l-tutorial__duration">
+            <small>
+              <span class="u-hide--small">about</span>
+              
+                0
+              
+              minutes to go
+            </small>
+          </div>
+          <div class="l-tutorial__pagination">
+            
+              <a href="#6-summary--next-steps" class="l-tutorial__pagination-item--prev p-button has-icon u-no-margin--bottom" style="margin-right: 1rem;">
+                <i class="p-icon--chevron-down">Previous step</i>
+              </a>
+            
+
+            
+              <button class="l-tutorial__pagination-item--next p-button has-icon u-no-margin--bottom" disabled>
+                <i class="p-icon--chevron-down">Next step</i>
+              </button>
+            
+          </div>
+        </div>
+      </footer>
+    </section>
+    
+  </div>
+</div>
+
+<script>
+  if (window.location.hash == "#0") {
+    window.location.hash == "#welcome";
+  }
+</script>
+
+<script>
+  (function() {
+    var polls = document.querySelectorAll('.poll');
+
+    [].forEach.call(polls, function(poll) {
+      var answers = poll.querySelectorAll('[type="radio"]');
+      var pollId = poll.getAttribute('data-poll-name');
+
+      [].forEach.call(answers, function(answer) {
+        answer.addEventListener('change', function(e) {
+          var answerLabel = document.querySelector('label[for="' + e.target.id + '"]');
+          var eventLabel = answerLabel.innerText;
+          var eventAction = document.getElementById(pollId).innerText;
+
+          dataLayer.push({
+            'event' : 'GAEvent',
+            'eventCategory' : 'survey',
+            'eventAction' : eventAction,
+            'eventLabel' : eventLabel,
+            'eventValue' : undefined
+          });
+        });
+      });
+    });
+  })();
+</script>
+
+
+      
+    </main><!-- /.inner-wrapper -->
+  </div><!-- /.wrapper -->
+
+  <!-- footer content goes here -->
+  
+    <div class="p-footer p-strip">
+  <div class="u-fixed-width">
+    <div class="p-footer--secondary row">
+      <div class="col-7">
+        <p class="p-footer--secondary__content"><small>&copy; 2023 Canonical Ltd. Ubuntu and Canonical are
+    registered trademarks of Canonical Ltd.</small></p>
+<nav class="p-footer--secondary__nav">
+  <ul class="p-inline-list--middot u-no-margin--bottom">
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="8" href="/legal"><small>Legal information</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="9" href="/legal/data-privacy"><small>Data privacy</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a href="" class="p-link--soft js-revoke-cookie-manager"><small>Manage your tracker settings</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" href="https://github.com/canonical/ubuntu.com/issues/new" id="report-a-bug">
+        <small>Report a bug on this site</small>
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </div>
+</div>
+  
+</body>
+</html>

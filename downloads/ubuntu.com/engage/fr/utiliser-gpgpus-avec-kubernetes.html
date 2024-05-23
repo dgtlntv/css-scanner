@@ -1,0 +1,1327 @@
+
+  
+
+<!doctype html>
+
+<html prefix="og: http://ogp.me/ns#" class="" lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Utiliser des GPUs avec Kubernetes | Ubuntu</title>
+
+  <link rel="preconnect" href="https://res.cloudinary.com">
+
+  
+  <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+  <script src="/static/js/dist/main.js?v=d670c07" defer></script>
+  <script src="/static/js/src/infer-preferred-language.js?v=b69e09e"></script>
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=25147bc">
+  <link rel="stylesheet" type="text/css" media="print" href="/static/css/print.css?v=0980a57">
+  <script>performance.mark("Stylesheets finished")</script>
+
+  <link rel="canonical" href="https://ubuntu.com/engage/fr/utiliser-gpgpus-avec-kubernetes">
+
+  <link rel="shortcut icon" href="https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://assets.ubuntu.com/v1/17b68252-apple-touch-icon-180x180-precomposed-ubuntu.png">
+
+  
+  
+
+  
+  
+
+
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/46ed6870-Ubuntu-L-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/3baab91b-Ubuntu-Th-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/6113b69a-Ubuntu-LI-subset.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/0c7b8dc0-Ubuntu-R-subset.woff2" crossorigin>
+
+  <meta name="description" content="">
+
+  <meta name="facebook-domain-verification" content="zxp9j79g1gy2xenbu9ll964pttk5hu">
+  <meta name="twitter:account_id" content="4503599627481511">
+  <meta name="twitter:site" content="@ubuntu">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ubuntu.com/engage/fr/utiliser-gpgpus-avec-kubernetes">
+  <meta property="og:site_name" content="Ubuntu">
+  <meta name="copydoc" content="https://drive.google.com/drive/folders/1FyMcu6vqGnyQMdWLRjvxJVWm8gHgslk4">
+  <meta name="google-site-verification" content="ddh2iq7ZuKf1LpkL_gtM_T7DkKDVD7ibq6Ceue4a_3M">
+
+  
+  <meta name="twitter:title" content="Utiliser des GPUs avec Kubernetes | Ubuntu">
+  <meta property="og:title" content="Utiliser des GPUs avec Kubernetes | Ubuntu">
+  
+  
+
+  
+  <!-- Meta image: https://assets.ubuntu.com/v1/35515576-openstack-cloud.svg -->
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://assets.ubuntu.com/v1/35515576-openstack-cloud.svg">
+  <meta property="og:image" content="https://assets.ubuntu.com/v1/35515576-openstack-cloud.svg">
+  
+
+  
+
+          <!-- Google Analytics and Google Optimize -->
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-1018242-59', 'auto', {'allowLinker': true});
+        ga('require', 'GTM-N2MDH37');
+        ga('require', 'linker');
+        ga('linker:autoLink', ['conjure-up.io', 'login.ubuntu.com', 'www.ubuntu.com',
+        'ubuntu.com', 'insights.ubuntu.com', 'developer.ubuntu.com', 'cn.ubuntu.com',
+        'design.ubuntu.com', 'maas.io', 'canonical.com', 'landscape.canonical.com',
+        'pages.ubuntu.com', '/tutorials', 'docs.ubuntu.com']);
+        </script>
+        <!-- End Google Analytics and Google Optimize -->
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K92JCQ');</script>
+        <!-- End Google Tag Manager -->
+</head>
+
+<body class="">
+  <!-- google tag manager -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K92JCQ" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+  </noscript>
+  <!-- end google tag manager -->
+
+  
+
+  <div class="wrapper u-no-margin--top">
+    <div id="success" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">Your submission was sent successfully! <a href="#" onclick="location.href = document.referrer; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unsubscribed" class="p-strip u-no-padding--top">
+      <div class="u-fixed-width">
+        <div class="p-notification--positive u-no-margin--bottom">
+          <div class="p-notification__content">
+            <p class="p-notification__message">You have successfully unsubscribed! <a href="#" onclick="location.href = ''; return false;"><i class="p-notification__close">Close</i></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="main-content" class="inner-wrapper">
+      
+      
+      
+  
+
+<span id="publish_date" class="u-hide">2018-12-20</span>
+<span id="created_date" class="u-hide"></span>
+<section class="p-strip p-engage-banner--light">
+  <div class="u-fixed-width navigation-logo-engage">
+    <a href="/">
+      
+        
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_143,h_32/https://assets.ubuntu.com/v1/04115a7e-ubuntu_black-orange_hex.svg"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,w_286,h_64/https://assets.ubuntu.com/v1/04115a7e-ubuntu_black-orange_hex.svg 2x"
+      alt="Ubuntu"
+      width="143"
+      height="32"
+      loading="auto"
+    />
+      
+
+    </a>
+  </div>
+  <div class="row">
+    <div class="col-7 u-vertically-center">
+      <h1>Utiliser des GPUs avec Kubernetes</h1>
+      <p class="u-no-padding--top p-heading--4">
+        
+      </p>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="p-strip is-shallow is-bordered">
+  <div class="row">
+    <div class="col-12">
+      <div class="md-table">
+
+</div><p>Ce post décrit l’utilisation de GPUs avec Kubernetes et <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/">DevicePlugins</a>.</p>
+<p>Nous allons utiliser MicroK8s pour une station de développement et Charmed K8s pour un cluster. Ceci est consistant avec une approche multi-cloud. Les différents CAAS disponibles sur les clouds public comme GKE ont aussi une option GPU, vous pouvez aussi essayer cela.</p>
+<p>Nous allons utiliser Ubuntu comme OS simplement parce que GPU fonctionne bien sur tous les clouds en version Ubuntu et avec tout le hardware local. Et faire les images Docker sur Ubuntu garantit que les librairies CUDA soient alignées avec les drivers.</p>
+<p>Pour que tout cela fonctionne, le bon driver a besoin d’être installé sur le worker node pour que le GPU soit accessible à partir de l’OS; et typiquement, cela demande aussi des librairies userland pour fonctionner.</p>
+<p>Avec NVIDIA GPUs, cette activation dépend en plus de la bonne utilisation de Docker runtime (nvisia-docker2) qui demande des configurations supplémentaires au niveau du host et une installation après déploiement.</p>
+<p>Tout cela est automatisé sur Ubuntu avec MicroK8s et les charms Charmed Kubernetes, sur tous les clouds publics où les GPUs sont disponibles. Ceci est aussi disponible pour GKE et les autres offres CAAS vont suivre.</p>
+<h2>Des conteneurs GPU sur workstation avec Microk8s</h2>
+<p>MicroK8s est un snap Kubernetes upstream conçu pour le développement. Ce n’est pas un cluster mais un environnement Kubernetes sans besoin d’opération qui est compatible avec les offres Kubernetes multi-cloud. Pour arriver à nos fins il faut que l’option GPU soient actives dès la sortie de l’emballage.</p>
+<p>Pour installer MicroK8s:</p>
+<pre><code class="lang-auto">$ snap install microk8s --classic
+
+</code></pre>
+<p>Cela vous donne la dernière version stable de MicroK8s qui trace de très près les sorties upstream.</p>
+<p>Vous pouvez sélectionner une version particulière en utilisation l’option ‘snap channels’, regarder ‘snap info microk8s’ pour voir les différentes versions.</p>
+<p>En sélectionnant une version particulière, vous pouvez rester bloqué sur cette version.</p>
+<p>Par défaut, vous êtes sur la dernière version et vous avez les upgrades quand Kubernetes upstream sortira une nouvelle version stable.</p>
+<p>Sélectionner une version particulière avec l’option: <code>--channel=track/stability</code> grâce aux différentes chaînes disponibles. “Stable” vous amène à “latest/stable”.</p>
+<pre><code class="lang-auto">$ snap info microk8s
+[...]
+channels:
+  stable: v1.13.0 (340) 204MB classic 
+  candidate: v1.13.0 (340) 204MB classic
+  beta: v1.13.0 (340) 204MB classic 
+  edge: v1.13.0 (340) 204MB classic
+  1.13/stable: v1.13.0 (340) 204MB classic 
+  1.13/candidate: v1.13.0 (340) 204MB classic
+  1.13/beta: v1.13.0 (340) 204MB classic
+  1.13/edge: v1.13.0 (341) 204MB classic
+  1.12/stable: v1.12.3 (336) 226MB classic
+  1.12/candidate: v1.12.3 (336) 226MB classic
+  1.12/beta: v1.12.3 (336) 226MB classic
+  1.12/edge: v1.12.3 (336) 226MB classic 
+  1.11/stable: v1.11.5 (322) 219MB classic
+  1.11/candidate: v1.11.5 (322) 219MB classic
+  1.11/beta: v1.11.5 (322) 219MB classic
+  1.11/edge: v1.11.5 (322) 219MB classic
+  1.10/stable: v1.10.11 (321) 175MB classic 
+  1.10/candidate: v1.10.11 (321) 175MB classic
+  1.10/beta: v1.10.11 (321) 175MB classic
+  1.10/edge: v1.10.11 (321) 175MB classic 
+
+</code></pre>
+<p>Supposons que vous avez un GPU Nvidia avec le bon driver installé, vous pouvez activer le support Kubernetes avec la sous command “enable”.</p>
+<pre><code class="lang-auto">$ microk8s.enable gpu
+
+</code></pre>
+<p>Vous pouvez confirmer que le GPU est disponible avec la commande suivante:</p>
+<pre><code class="lang-auto">$ microk8s.status
+microk8s is running
+addons:
+gpu: enabled
+storage: disabled
+registry: disabled
+ingress: disabled
+dns: disabled
+metrics-server: disabled
+istio: disabled
+dashboard: disabled
+
+</code></pre>
+<h2>Faire tourner des conteneurs GPU accélérés sur K8s</h2>
+<p>Maintenant que vous avez de la capacité GPU disponible pour votre Kubernetes, vous pouvez déployer des containers qui ont accès au hardware dont ils ont besoin.</p>
+<p>Vos containers ont besoin des bonnes pièces userspaces, donc nous vous suggérons de construire les images OCI sur Ubuntu avec les librairies CUDA fournies; ces derniers seront portables sur toutes les offres CAAS cloud ainsi que les offres de Canonical, VMware, Pivotal, Cisco et autres qui utilise Ubuntu pour K8s.</p>
+<p>Vos workloads peuvent maintenant utiliser quelque chose comme cela pour sélectionner le bon worker node. (exemple extrait d’<a href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/#deploying-nvidia-gpu-device-plugin">ici</a>):</p>
+<p><strong>Listing 1</strong>: nvidia-pod-example.yaml</p>
+<pre><code class="lang-auto">apiVersion: v1
+kind: Pod
+metadata:
+  name: cuda-vector-add
+spec: 
+  restartPolicy: OnFailure
+  containers:
+  - name: cuda-vector-add
+    image: "k8s.gcr.io/cuda-vector-add:v0.1"
+    resources:
+      limits: nvidia.com/gpu: 1 # requesting 1 GPU
+
+</code></pre>
+<h2>Déploiement d’un cluster Kubernetes avec GPUs</h2>
+<p>Une caractéristique intéressante de Charmed Distribution of Kubernetes (CDK) est qu’il active automatique les ressources GPU qui sont présentent sur le worker node pour être utilisées par les pods.</p>
+<p>Les ressources GPU sont activé par l’usage de Device Plugins qui sont</p>
+<p>déployés comme <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">DaemonSets</a>. Cela assure que chaque worker node avec activation GPU puisse accéder au GPU et mette en place le bon chemin vers les drivers plugins du host. Avec DaemonSet déployé, le planificateur Kubernetes peut prendre avantage du NodeSelector pour filtrer les worker nodes qui proposent la fonction <a href="http://nvidia.com/gpu">nvidia.com/gpu</a> quand il planifie les workloads.</p>
+<p>Les Charms automatisent complètement le déploiement de Kubernetes d’une façon qui est orientée modèle et sont donc flexibles pour être utilisés sur différents types de clouds ou clusters. Nous utilisons les Charms pour les déploiements HPC de Kubernetes, par exemple, <a href="https://tutorials.ubuntu.com/tutorial/get-started-kubeflow?&amp;_ga=2.265846858.494025208.1594627832-55567406.1594627832#0">déployer des pipelines AI/ML</a> au dessus de Kubernetes de manière plus facile. L’activation du GPU est important pour ce genre de workload.</p>
+<p>Cependant, avant de déployer Kubeflow ou d’autres frameworks, la couche Kubernetes doit être complètement automatisée et les GPUs actives.</p>
+<p>Les Charms de K8s font tout le travail. Au fur et à mesure que les worker nodes sont commissionnés dans le modèle, les Charms de K8s détectent automatiquement la présence des cartes nvidia, installent les bons drivers et les bonnes librairies, remplacent le runtime du container par celui qui est supporté par NVIDIA, déploient le DaemonSet pour le DevicePlugin et catégorisent les nodes automatiquement.</p>
+<p>Le cluster K8s est facilement déployé avec <a href="https://conjure-up.io/">conjure-up</a> qui fournit un wizard pour vous accompagner tout le long du processus. Vous pouvez utiliser conjure-up sur un cloud public avec des instances GPUs activées, ou avec MAAS pour des clusters sur bare metal avec des serveurs qui contiennent des GPUs. Dans les deux cas, le déploiement est exactement le même.</p>
+<p>Par exemple, vous pouvez utiliser des instances p2.xlarge sur AWS. Pour que cela fonctionne, vous devez passer la contrainte dans le command line de conjure-up pour qu’il force l’usage d’instances avec des GPUs actives quand on déploie les clusters.</p>
+<p><strong>Listing 2</strong>: cdk-gpu-worker.yaml</p>
+<pre><code class="lang-auto">services:
+"kubernetes-worker":
+  charm: "cs:~containers/kubernetes-worker" 
+  num_units: 1
+  options:
+    channel: 1.13/stable
+  expose: true
+  constraints: "instance-type=p2.xlarge root-disk=32768"
+
+</code></pre>
+<p>Mettre ceci dans conjure-up:</p>
+<pre><code class="lang-auto">$ conjure-up canonical-kubernetes --bundle-add cdk-gpu-worker.yaml
+
+</code></pre>
+<p>Cela démarrera l‘interface wizard de conjure-up et vous permettra de sélectionner les add-ons à déployer, par exemple, Kubeflow peut être sélectionné ici.</p>
+<p>À l’écran de sélection du controller, vous pouvez soit déployer un contrôleur Juju dédié (nécessite une VM) ou vous pouvez prendre avantage de JAAS qui fournit Juju As a Service sur tous les clouds publics majeurs.</p>
+<p>Une fois que l’installation commence, vous avez cet écran:</p>
+<p>Le statut peut aussi être visualisé en utilisant la commande Juju</p>
+<p>directement. Si vous utilisez JAAS, vous pouvez trouver le model en tapant:</p>
+<pre><code class="lang-auto">$ juju models -c jaas
+Controller: jaas
+Model                         Cloud/Region   Status     Machines  Cores  Access  Last   connection
+conjure-canonical-kubern-9dc  aws/us-east-1  available         0      0  admin   never   connected
+
+</code></pre>
+<p>Inspectez alors le statut du model:</p>
+<pre><code class="lang-auto">$ juju status -m jaas:conjure-canonical-kubern-9dc
+Model                         Controller  Cloud/Region   Version  SLA          Timestamp
+conjure-canonical-kubern-9dc  jaas        aws/us-east-1  2.4.5    unsupported  16:13:37-08:00
+
+App                    Version  Status       Scale  Charm                  Store       Rev  OS      Notes
+aws-integrator         1.15.71  active           1  aws-integrator         jujucharms    7  ubuntu
+easyrsa                3.0.1    maintenance      1  easyrsa                jujucharms  117  ubuntu
+etcd                            maintenance      3  etcd                   jujucharms  209  ubuntu
+flannel                         waiting          0  flannel                jujucharms  146  ubuntu 
+kubeapi-load-balancer           maintenance      1  kubeapi-load-balancer  jujucharms  162  ubuntu  exposed
+kubernetes-master               maintenance      2  kubernetes-master      jujucharms  219  ubuntu
+kubernetes-worker               waiting        0/1  kubernetes-worker      jujucharms  239  ubuntu  exposed
+
+Unit                      Workload     Agent       Machine  Public address  Ports  Message
+aws-integrator/0*         active       idle        0        54.165.35.94           ready
+easyrsa/0*                maintenance  executing   1        34.234.207.232         (install) installing charm
+etcd/0*                   maintenance  executing   2        54.208.163.252         (install) installing charm
+etcd/1                    maintenance  executing   3        34.201.210.154         (install) installing charm
+etcd/2                    maintenance  executing   4        54.235.228.45          (install) installing charm
+kubeapi-load-balancer/0*  maintenance  executing   5        34.228.169.37          (install) installing charm
+kubernetes-master/0       maintenance  executing   6        18.207.179.122         (install) installing charm
+kubernetes-master/1*      maintenance  executing   7        18.212.150.203         (install) installing charm 
+kubernetes-worker/0       waiting      allocating  8        35.175.104.2           waiting for machine 
+
+Machine  State    DNS             Inst id              Series  AZ Message
+0        started  54.165.35.94    i-083ce279733998d59  bionic  us-east-1a running
+1        started  34.234.207.232  i-04828688ddfdb0c6c  bionic  us-east-1b running
+2        started  54.208.163.252  i-03d910e892e7c09f6  bionic  us-east-1a running
+3        started  34.201.210.154  i-00adeecd668174ee0  bionic  us-east-1b running
+4        started  54.235.228.45   i-032875fd24a1c1e78  bionic  us-east-1c running
+5        started  34.228.169.37   i-0008405049b9bed6d  bionic  us-east-1d running
+6        started  18.207.179.122  i-003abf7f3612a2f18  bionic  us-east-1b running
+7        started  18.212.150.203  i-0abe01060e8179618  bionic  us-east-1a running
+8        pending  35.175.104.2    i-0d493a35776b9217d  bionic  us-east-1e running
+
+</code></pre>
+<p>Une fois l’installation finie, toutes les ressources GPU sont configurées correctement et disponibles pour l’opérateur K8s. Vous pouvez vérifier cela avec la commande:</p>
+<pre><code class="lang-auto">$  ubectl get no -o wide -L cuda,gpu
+
+</code></pre>
+<h2>Conclusion</h2>
+<p>Utiliser les ressources GPU dans votre cluster Kubernetes est automatique</p>
+<p>et facile avec Charmed Distribution of Kubernetes (CDK) ou Microk8s.</p>
+<p>Qu’en pensez vous? Nous serions ravis de discuter de votre projet et de la</p>
+<p>façon dont CDK et/ou MicroK8s vous ont aidé avec vos workloads sensitifs</p>
+<p>aux GPUs.</p>
+<p><a href="https://ubuntu.com/contact-us">Nous contacter</a></p>
+    </div>
+    
+  </div>
+
+</section>
+
+
+  
+  
+    
+  
+  <!-- webinar -->
+  <section class="p-strip is-shallow" id="register-section">
+    <div class="row" id="brighttalk-webinar">
+      <div class="jsBrightTALKEmbedWrapper" style="width:100%; height:100%; position:relative;background: #ffffff;">
+        <script class="jsBrightTALKEmbedConfig" type="application/json">{ "channelId" : 6793, "language": "en-US", "commId" : , "displayMode" : "standalone", "height" : "auto" }</script>
+        <script src="https://www.brighttalk.com/clients/js/player-embed/player-embed.js" class="jsBrightTALKEmbed"></script>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+      
+    </main><!-- /.inner-wrapper -->
+  </div><!-- /.wrapper -->
+
+  <!-- footer content goes here -->
+  
+    
+
+
+
+<footer class="p-footer p-strip u-clearfix">
+  <div class="u-fixed-width p-footer__container">
+    <p class="u-hide--medium u-hide--large link-to-top"><a href="#"><small>Back to top</small></a></p>
+    <nav aria-label="Footer navigation" id="main-navigation" class="p-footer__nav u-clearfix row u-no-padding--left u-no-padding--right">
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/openstack">OpenStack</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/openstack-footer-nav">OpenStack</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/openstack-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/openstack/what-is-openstack">What is OpenStack</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/install">Install</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/openstack/support">Support</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/ceph">Ceph</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/ceph-footer-nav">Ceph</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/ceph-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/ceph/what-is-ceph">What is Ceph</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/docs">Docs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/install">Install</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/managed">Managed</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/managed-footer-nav">Managed</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/managed-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/openstack/managed">OpenStack</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/managed">Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ceph/managed">Ceph</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/managed/apps">Apps</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/observability/managed">Observability</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/kubernetes">Kubernetes</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/kubernetes-footer-nav">Kubernetes</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/kubernetes-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/kubernetes/what-is-kubernetes">What is Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/charmed-k8s">Charmed Kubernetes</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/managed">Managed</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/install">Install</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/docs">Docs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/kubernetes/resources">Resources</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/ai">AI / ML</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/ai-footer-nav">AI / ML</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/ai-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/ai/mlops">MLOps</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/what-is-kubeflow">Kubeflow</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/mlflow">MLflow</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/ai/roadshow">Roadshow</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/robotics">Robotics</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/robotics-footer-nav">Robotics</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/robotics-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/robotics/ros-esm">ROS ESM</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/what-is-ros">What is ROS</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/community">Community</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/robotics/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/cloud">Cloud</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/cloud-footer-nav">Cloud</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/cloud-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/cloud/cloud-computing">What is cloud computing</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/private-cloud">What is private cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/hybrid-cloud">What is hybrid cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/multi-cloud">What is multi-cloud</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/cloud/public-cloud">Public cloud</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/internet-of-things">IoT</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/internet-of-things-footer-nav">IoT</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/internet-of-things-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/internet-of-things/appstore">App store</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/embedded">Embedded Linux</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/internet-of-things/edgex">EdgeX</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/internet-of-things/management">Management</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/raspberry-pi">Raspberry Pi</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/raspberry-pi-footer-nav">Raspberry Pi</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/raspberry-pi-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/raspberry-pi/desktop">Desktop</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/raspberry-pi/server">Server</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/core">Core</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/core-footer-nav">Core</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/core-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/core/services">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/stories">Success stories</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/tutorials?q=core">Tutorials</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/core/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/desktop">Desktop</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/desktop-footer-nav">Desktop</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/desktop-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/desktop/features">Features</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/organisations">Organisations</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/developers">Developers</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/partners">Partners</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/desktop/flavours">Flavours</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/server">Server</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/server-footer-nav">Server</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/server-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/server/hyperscale">Hyperscale</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/server/docs">Docs</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/security">Security</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/security-footer-nav">Security</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/security-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/security/esm">ESM</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/livepatch">Livepatch</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/certifications">Certifications &amp; Hardening</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/cves">CVEs</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/notices">Notices</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/security/docker-images">Docker Images</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/download">Downloads</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/download-footer-nav">Downloads</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/download-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/download/desktop">Desktop</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/server">Server</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/iot">IoT</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/download/cloud">Cloud</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/observability">Observability</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/observability-footer-nav">Observability</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/observability-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/observability/what-is-observability">What is observability</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/observability/managed">Managed</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/appliance">Appliance</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/appliance-footer-nav">Appliance</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/appliance-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/appliance/about">About</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/portfolio">Portfolio</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/community">Community</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/hardware">Hardware</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/appliance/vm">Virtual machines</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+        </ul>
+      </div>
+      <div class="p-footer__nav-col col-2 col-medium-2 u-no-margin--bottom last-col">
+        <ul class="p-footer__links">
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/support">Support</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/support-footer-nav">Support</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/support-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/pro/dashboard">Your subscriptions</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pro/users">Account users</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/pro">Pricing</a></li>
+      
+      
+    
+      
+      
+        <li><a href="https://discourse.ubuntu.com/c/ubuntu-pro">Discourse</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          
+          <li class="p-footer__item">
+  <h2 class="p-footer__title">
+    <a class="p-link--soft u-hide--small" href="/pricing">Pricing</a>
+    <a class="p-link--soft u-hide--medium u-hide--large js-footer-accordion-cta" href="#" aria-controls="/pricing-footer-nav">Pricing</a>
+  </h2>
+
+  <ul class="second-level-nav" id="/pricing-footer-nav">
+    
+      
+    
+      
+      
+        <li><a href="/pricing/infra">Support</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/consulting">Consulting</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/desktop">Desktops</a></li>
+      
+      
+    
+      
+      
+        <li><a href="/pricing/devices">Devices</a></li>
+      
+      
+    
+  </ul>
+</li>
+          
+          <li class="p-footer__item p-footer__item--spaced">
+            <h2 class="p-footer__title p-footer__title-text">
+              <span class="js-footer-accordion-cta" aria-controls="sectors-footer-nav">Sectors</span>
+            </h2>
+            <ul class="second-level-nav" id="sectors-footer-nav">
+              <li><a href="/automotive">Automotive</a></li>
+              <li><a href="/industrial">Industrial</a></li>
+              <li><a href="/gov">Government</a></li>
+              <li><a href="/telco">Telco</a></li>
+              <li><a href="/financial-services">Finance</a></li>
+            </ul>
+          </li>
+          <li>
+            <ul class="second-level-nav second-level-nav-small">
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/containers">Containers</a>
+</li>
+              
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/tutorials">Tutorials</a>
+</li>
+              
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/16-04">16-04</a>
+</li>
+              
+              <li class="p-footer-list-single-child">
+                <a href="/software-partnerships">Software partnerships</a>
+              </li>
+              
+              
+<li class="p-footer-list-single-child">
+  <a class="p-link--soft" href="/landscape">Landscape</a>
+</li>
+              
+              <li class="p-footer-list-single-child">
+                <a href="/embedding">Canonical Embedding Programme</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <hr class="p-footer__divider" />
+    <div class="p-footer--secondary row">
+      <div class="col-7">
+        <nav aria-label="Resources navigation">
+          <ul class="p-inline-list">
+            <li class="u-hide--small p-inline-list__item">
+              <a class="p-button" href="/contact-us"><small class="u-no-padding--top">Contact us</small></a>
+            </li>
+            <li class="u-hide--medium u-hide--large p-inline-list__item">
+              <a class="p-link--soft" href="/contact-us"><small>Contact us</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/about"><small>About us</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/community"><small>Community</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="https://www.canonical.com/careers"><small>Careers</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/blog"><small>Blog</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/engage"><small>Resources</small></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-link--soft" href="/blog/press-centre"><small>Press centre</small></a>
+            </li>
+          </ul>
+        </nav>
+
+        <p class="p-footer--secondary__content"><small>&copy; 2023 Canonical Ltd. Ubuntu and Canonical are
+    registered trademarks of Canonical Ltd.</small></p>
+<nav class="p-footer--secondary__nav">
+  <ul class="p-inline-list--middot u-no-margin--bottom">
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="8" href="/legal"><small>Legal information</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" accesskey="9" href="/legal/data-privacy"><small>Data privacy</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a href="" class="p-link--soft js-revoke-cookie-manager"><small>Manage your tracker settings</small></a>
+    </li>
+    <li class="p-inline-list__item">
+      <a class="p-link--soft" href="https://github.com/canonical/ubuntu.com/issues/new" id="report-a-bug">
+        <small>Report a bug on this site</small>
+      </a>
+    </li>
+  </ul>
+</nav>
+        </div>
+        <div class="p-footer__nav-col col-5">
+          <ul class="p-inline-list-icons">
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--twitter" title="Follow Ubuntu on Twitter" href="https://twitter.com/ubuntu"><svg
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 374.9999">
+                <defs>
+                  <style>
+                    .twitter-icon {
+                      fill: #666666;
+                    }
+                    .cls-2{
+                      fill: #e5e5e5;
+                    }
+                    
+                  </style>
+                </defs>
+                <g>
+                  <path class="twitter-icon" d="M 187.46875 7.09375 C 87.851562 7.09375 7.09375 87.851562 7.09375 187.46875 C 7.09375 287.085938 87.851562 367.84375 187.46875 367.84375 C 287.085938 367.84375 367.84375 287.085938 367.84375 187.46875 C 367.84375 87.851562 287.085938 7.09375 187.46875 7.09375 "></path>
+                </g>
+                <g class="cls-2" transform="translate(85, 75)"> 
+                  <svg xmlns="http://www.w3.org/2000/svg" x="-32" y="-30" height="280" width="280" viewBox="0 0 50 50">
+                    <path d="M 6.9199219 6 L 21.136719 26.726562 L 6.2285156 44 L 9.40625 44 L 22.544922 28.777344 L 32.986328 44 L 43 44 L 28.123047 22.3125 L 42.203125 6 L 39.027344 6 L 26.716797 20.261719 L 16.933594 6 L 6.9199219 6 z"></path>
+                  </svg>
+                </g>
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--facebook" title="Follow Ubuntu on Facebook" href="https://www.facebook.com/ubuntulinux/"><svg
+                xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32">
+                <defs>
+                  <style>
+                    .facebook-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <g>
+                  <path class="facebook-icon" d="M15.947 0C7.14 0 0 7.143 0 15.95 0 24.76 7.142 31.9 15.95 31.9s15.948-7.14 15.948-15.95c0-4.23-1.68-8.286-4.672-11.277C24.234 1.68 20.176 0 15.946 0z" />
+                </g>
+                <path class="cls-2" d="M18.632 5.102c-2.91 0-4.904 1.776-4.904 5.04v2.55h-3.293v3.814h3.293V26.87c1.353-.18 2.678-.53 3.942-1.045v-9.31h3.285l.492-3.812h-3.784v-2.18c0-1.104.357-2.238 1.894-1.855h2.02V5.252c-.978-.103-1.96-.154-2.943-.15h-.002z" />
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--linkedin" title="Find Canonical on LinkedIn" href="https://www.linkedin.com/company/234280"><svg
+                xmlns="http://www.w3.org/2000/svg" viewbox="0 0 33 33">
+                <defs>
+                  <style>
+                    .linkedin-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <g>
+                  <path class="linkedin-icon" d="M16.26 0C7.28 0 0 7.28 0 16.26s7.28 16.262 16.26 16.262 16.262-7.28 16.262-16.26C32.522 7.28 25.242 0 16.262 0z" />
+                </g>
+                <path class="cls-2" d="M7 8.512v16.38c0 .758.63 1.37 1.404 1.37h16.192c.775 0 1.404-.612 1.404-1.37V8.512c0-.755-.63-1.37-1.404-1.37H8.404C7.63 7.143 7 7.757 7 8.513zm5.76 14.636H9.89v-8.634h2.87v8.634zm-1.435-9.812h-.02c-.962 0-1.585-.663-1.585-1.492 0-.847.642-1.492 1.624-1.492s1.586.645 1.604 1.492c0 .83-.623 1.492-1.623 1.492zm3.022 9.812s.038-7.824 0-8.634h2.87v1.252h-.02c.38-.59 1.058-1.454 2.607-1.454 1.888 0 3.303 1.234 3.303 3.885v4.95h-2.87V18.53c0-1.162-.415-1.953-1.453-1.953-.793 0-1.265.534-1.472 1.05-.076.184-.095.44-.095.7v4.82h-2.87z" />
+              </svg></a>
+            </li>
+            <li class="p-inline-list__item">
+              <a class="p-inline-list__link--rss" title="Use the Ubuntu Blog rss feed" href="/blog/feed"><svg width="2rem" height="2rem" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                  <style>
+                    .rss-icon {
+                      fill: #666666;
+                    }
+
+                    .cls-2 {
+                      fill: #E5E5E5;
+                    }
+                  </style>
+                </defs>
+                <g class="rss-icon">
+                  <circle cx="20" cy="20" r="20"></circle>
+                </g>
+                <g class="cls-2" transform="translate(10.000000, 8.000000)">
+                  <circle cx="3" cy="18.875" r="3"></circle>
+                  <path d="M14.5,21.875 L10.25,21.875 C10.25,16.2140813 5.66091869,11.625 3.55271368e-15,11.625 L3.55271368e-15,7.375 C8.00812887,7.375 14.5,13.8668711 14.5,21.875 Z"></path>
+                  <path d="M17.5,21.875 C17.5,12.2100169 9.66498312,4.375 7.10542736e-15,4.375 L7.10542736e-15,0 C12.0812289,0 21.875,9.7937711 21.875,21.875 L17.5,21.875 Z"></path>
+                </g>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      /* Add the page to the report a bug link */
+      var bugLink = document.querySelector('#report-a-bug');
+      bugLink.href += '?body=%0a%0a%0a---%0a*Reported%20from:%20' + location.href + '*';
+    </script>
+    <span class="u-off-screen"><a href="#">Go to the top of the page</a></span>
+  </div>
+</footer>
+
+
+    
+    
+    
+  
+</body>
+</html>

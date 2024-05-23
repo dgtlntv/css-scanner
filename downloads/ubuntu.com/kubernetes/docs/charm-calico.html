@@ -1,0 +1,1697 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Charmhub | Deploy Calico using Charmhub - The Open Operator Collection</title>
+
+    <meta name="description" content="Deploy the latest version of Calico on any cloud. A robust Software Defined Network from Project Calico" />
+
+   
+     <meta property="og:title" content="Deploy Calico using Charmhub - The Open Operator Collection"/>
+     <meta property="og:site_name" content="Charmhub"/>
+     <meta property="og:type" content="website"/>
+     <meta property="og:description" content="Deploy the latest version of Calico on any cloud. A robust Software Defined Network from Project Calico"/>
+     <meta property="og:image" content="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_sE5vgx5GS6Kt7iPAn8SrUSfAtKgs6ZBj_icon_883f4ae926638c939f78fc6766447bbcf33f444fd32d7fc2fe162ba1f6772542.png" />
+     <meta property="og:image:width" content="200" />
+     <meta property="og:image:height" content="200" />
+     <meta property="og:image:alt" content="Calico charm logo" />
+     <meta property="og:url" content="https://charmhub.io" />
+     <meta property="twitter:card" content="summary" />
+     <meta property="twitter:site" content="@juju_devops" />
+     <meta property="twitter:creator" content="@juju_devops" />
+     <meta property="twitter:image" content="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_sE5vgx5GS6Kt7iPAn8SrUSfAtKgs6ZBj_icon_883f4ae926638c939f78fc6766447bbcf33f444fd32d7fc2fe162ba1f6772542.png" />
+     <meta property="twitter:url" content="https://charmhum.io" />
+  
+
+    <meta name="copydoc" content="https://drive.google.com/drive/u/1/folders/1gqxew2MS9-OkQF5bTStPgmyLS35JpztF">
+    
+  
+
+    <link rel="canonical" href="https://charmhub.io/calico" />
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NNT2XX6');</script>
+    <!-- End Google Tag Manager -->
+
+    <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+    <link rel="preconnect" href="https://res.cloudinary.com">
+
+    <link rel="preconnect" href="https://assets.ubuntu.com">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=80d4c98" />
+
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/e8c07df6-Ubuntu-L_W.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/7f100985-Ubuntu-Th_W.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/f8097dea-Ubuntu-LI_W.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/fff37993-Ubuntu-R_W.woff2" crossorigin>
+    <link rel="search" type="application/opensearchdescription+xml" title="Charmhub" href="/static/opensearch.xml" />
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNT2XX6"
+    height="0" width="0" style="display: none; visibility: hidden;"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <header id="navigation" class="p-navigation is-dark">
+  <div class="p-navigation__row">
+    <div class="p-navigation__banner">
+      <div class="p-navigation__tagged-logo">
+        <a class="p-navigation__link" href="https://juju.is">
+          <div class="p-navigation__logo-tag">
+            <img class="p-navigation__logo-icon" src="https://assets.ubuntu.com/v1/a603c7c9-Favicon - Juju.svg" alt="Canonical Juju" />
+          </div>
+          <span class="p-navigation__logo-title">Canonical Juju</span>
+        </a>
+      </div>
+      <ul class="p-navigation__items">
+        <li class="p-navigation__item">
+          <a href="#navigation" class="p-navigation__toggle--open" title="menu">Menu</a>
+          <a href="#navigation-closed" class="p-navigation__toggle--close" title="close menu">Close menu</a>
+        </li>
+      </ul>
+    </div>
+    <nav class="p-navigation__nav">
+      <ul class="p-navigation__items">
+        <li class="p-navigation__item">
+          <a class="p-navigation__link" href="/">Charmhub</a>
+        </li>
+        <li class="p-navigation__item--dropdown-toggle" id="community-link">
+          <a class="p-navigation__link" href="#community-link-menu" aria-controls="community-link-menu">Community</a>
+          <ul class="p-navigation__dropdown" id="community-link-menu" aria-hidden="true">
+            <li>
+              <a href="https://discourse.charmhub.io" class="p-navigation__dropdown-item">
+                Discourse forum
+              </a>
+            </li>
+            <li>
+              <a href="https://chat.charmhub.io/" class="p-navigation__dropdown-item">
+                Mattermost chat
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="p-navigation__item--dropdown-toggle" id="docs-link">
+          <a class="p-navigation__link" href="#docs-link-menu" aria-controls="docs-link-menu">Docs</a>
+          <ul class="p-navigation__dropdown" id="docs-link-menu" aria-hidden="true">
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/docs/juju">Juju</a>
+            </li>
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/docs/sdk">Charm SDK</a>
+            </li>
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/docs/dev">Contribute to Juju</a>
+            </li>
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/operator-day">Operator Day</a>
+            </li>
+          </ul>
+        </li>
+        <li class="p-navigation__item">
+          <a class="p-navigation__link" href="https://ubuntu.com/blog/tag/juju">Blog</a>
+        </li>
+      </ul>
+      <ul class="p-navigation__items global-nav">
+        <li class="p-navigation__item js-nav-account" id="user-link">
+          
+          <a href="#user-link-menu" aria-controls="user-link-menu" class="p-navigation__link js-nav-account--authenticated u-hide js-account--name account-name">My account</a>
+          <ul class="p-navigation__dropdown--right" id="user-link-menu" aria-hidden="true">
+            <li>
+              <a href="/charms" class="p-navigation__dropdown-item">My charms and bundles</a>
+            </li>
+            <li>
+              <a href="/logout" class="p-navigation__dropdown-item">Sign out</a>
+            </li>
+          </ul>
+          
+          <a class="p-navigation__link js-nav-account--notauthenticated" href="/charms">
+            Sign in
+            <i class="p-icon--user is-light"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <main id="main-content">
+      
+  <div class="p-strip--light is-shallow">
+  
+  <div class="row">
+    <div class="col-8">
+      <div class="p-charm-header">
+        <div class="p-media-object--large">
+          
+            
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_100,h_100/https://api.charmhub.io/api/v1/media/download/charm_sE5vgx5GS6Kt7iPAn8SrUSfAtKgs6ZBj_icon_883f4ae926638c939f78fc6766447bbcf33f444fd32d7fc2fe162ba1f6772542.png"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_sE5vgx5GS6Kt7iPAn8SrUSfAtKgs6ZBj_icon_883f4ae926638c939f78fc6766447bbcf33f444fd32d7fc2fe162ba1f6772542.png 2x"
+      alt="calico"
+      width="100"
+      height="100"
+      loading="lazy"
+      class="p-media-object__image"
+    />
+  </noscript>
+</div>
+
+            
+          
+          <div class="p-media-object__details">
+            <h1 class="p-media-object__title">
+              Calico
+            </h1>
+            <div class="p-media-object__content u-no-margin--bottom">
+              <ul class="p-inline-list--middot">
+                <li class="p-inline-list__item">
+                  
+                    By Canonical Kubernetes
+                  
+		  
+                  
+                </li>
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="p-charm-header__container">
+  <div style="position: relative;">
+    <button class="p-button p-channel-map__button" data-controls="channel-map-versions" aria-controls="channel-map-versions" data-js="channel-map">
+      <span data-js="channel-map-selected">
+        stable 30f4aa8
+      </span>
+      &nbsp;&nbsp;<i class="p-icon--chevron-down"></i>
+    </button>
+    <div class="p-channel-map u-hide">
+      <div class="p-channel-map__mask">
+      </div>
+      <div class="p-card--highlighted p-channel-map__content">
+        <div class="u-fixed-width">
+          <div class="p-form p-form--inline">
+            <div class="p-form__group">
+              <label class="p-form__label">Architecture:</label>
+              <div class="p-form__control">
+                <select data-js="channel-map-filter">
+                  <option value="any">Any</option>
+                  
+                  <option value="s390x">s390x</option>
+                  
+                  <option value="powerpc">powerpc</option>
+                  
+                  <option value="i386">i386</option>
+                  
+                  <option value="armhf">armhf</option>
+                  
+                  <option value="amd64">amd64</option>
+                  
+                  <option value="ppc64el">ppc64el</option>
+                  
+                  <option value="riscv64">riscv64</option>
+                  
+                  <option value="arm64">arm64</option>
+                  
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="u-fixed-width">
+          <table class="p-table--mobile-card">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Revision</th>
+                <th>Published</th>
+                <th>Runs on</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="stable" data-channel-map-version="30f4aa8" data-channel-map-filter=" arm64  amd64  arm64  amd64  s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">latest/stable</td>
+                <td data-heading="Revision">99</td>
+                <td data-heading="Published">26 Sep 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="candidate" data-channel-map-version="8021019" data-channel-map-filter=" arm64  amd64  arm64  amd64  s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">latest/candidate</td>
+                <td data-heading="Revision">101</td>
+                <td data-heading="Published">01 Nov 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="beta" data-channel-map-version="b21b59e" data-channel-map-filter=" arm64  amd64  arm64  amd64  s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">latest/beta</td>
+                <td data-heading="Revision">95</td>
+                <td data-heading="Published">17 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="edge" data-channel-map-version="e1dfdda" data-channel-map-filter=" arm64  amd64  arm64  amd64  s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">latest/edge</td>
+                <td data-heading="Revision">100</td>
+                <td data-heading="Published">25 Oct 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.29" data-channel-map-channel="edge" data-channel-map-version="e1dfdda" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.29/edge</td>
+                <td data-heading="Revision">100</td>
+                <td data-heading="Published">25 Oct 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="stable" data-channel-map-version="30f4aa8" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.28/stable</td>
+                <td data-heading="Revision">99</td>
+                <td data-heading="Published">26 Sep 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="candidate" data-channel-map-version="8021019" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.28/candidate</td>
+                <td data-heading="Revision">101</td>
+                <td data-heading="Published">01 Nov 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="beta" data-channel-map-version="b21b59e" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.28/beta</td>
+                <td data-heading="Revision">95</td>
+                <td data-heading="Published">17 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="edge" data-channel-map-version="b21b59e" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.28/edge</td>
+                <td data-heading="Revision">96</td>
+                <td data-heading="Published">17 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="stable" data-channel-map-version="a164af4" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.27/stable</td>
+                <td data-heading="Revision">87</td>
+                <td data-heading="Published">12 Jun 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="candidate" data-channel-map-version="a164af4" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.27/candidate</td>
+                <td data-heading="Revision">87</td>
+                <td data-heading="Published">12 Jun 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="beta" data-channel-map-version="a164af4" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.27/beta</td>
+                <td data-heading="Revision">82</td>
+                <td data-heading="Published">10 Apr 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="edge" data-channel-map-version="a164af4" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.27/edge</td>
+                <td data-heading="Revision">79</td>
+                <td data-heading="Published">07 Apr 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="stable" data-channel-map-version="a164af4" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.26/stable</td>
+                <td data-heading="Revision">77</td>
+                <td data-heading="Published">20 Mar 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="candidate" data-channel-map-version="a164af4" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.26/candidate</td>
+                <td data-heading="Revision">77</td>
+                <td data-heading="Published">16 Mar 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="beta" data-channel-map-version="2287a08" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.26/beta</td>
+                <td data-heading="Revision">63</td>
+                <td data-heading="Published">09 Apr 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="edge" data-channel-map-version="2287a08" data-channel-map-filter=" arm64  amd64  arm64  amd64 ">
+                <td data-heading="Channel">1.26/edge</td>
+                <td data-heading="Revision">63</td>
+                <td data-heading="Published">01 Dec 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="stable" data-channel-map-version="f1672aa" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.25/stable</td>
+                <td data-heading="Revision">62</td>
+                <td data-heading="Published">01 Dec 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="candidate" data-channel-map-version="f1672aa" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.25/candidate</td>
+                <td data-heading="Revision">62</td>
+                <td data-heading="Published">30 Nov 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="beta" data-channel-map-version="2287a08" data-channel-map-filter=" arm64  amd64  arm64  amd64 ">
+                <td data-heading="Channel">1.25/beta</td>
+                <td data-heading="Revision">64</td>
+                <td data-heading="Published">01 Dec 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="edge" data-channel-map-version="676c167" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.25/edge</td>
+                <td data-heading="Revision">46</td>
+                <td data-heading="Published">09 Sep 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="stable" data-channel-map-version="1.24+ck1" data-channel-map-filter=" arm64  amd64  s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">1.24/stable</td>
+                <td data-heading="Revision">36</td>
+                <td data-heading="Published">04 Aug 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="candidate" data-channel-map-version="1.24+ck1" data-channel-map-filter=" arm64  amd64 ">
+                <td data-heading="Channel">1.24/candidate</td>
+                <td data-heading="Revision">36</td>
+                <td data-heading="Published">02 Aug 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="beta" data-channel-map-version="0700d1f" data-channel-map-filter=" s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">1.24/beta</td>
+                <td data-heading="Revision">24</td>
+                <td data-heading="Published">03 May 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                      <span class="series-tag">Ubuntu 16.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="edge" data-channel-map-version="dbcc594" data-channel-map-filter=" arm64  amd64  s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">1.24/edge</td>
+                <td data-heading="Revision">34</td>
+                <td data-heading="Published">27 Jul 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.23" data-channel-map-channel="beta" data-channel-map-version="3df3721" data-channel-map-filter=" s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">1.23/beta</td>
+                <td data-heading="Revision">10</td>
+                <td data-heading="Published">22 Mar 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                      <span class="series-tag">Ubuntu 16.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.23" data-channel-map-channel="edge" data-channel-map-version="4abf344" data-channel-map-filter=" s390x  powerpc  i386  armhf  amd64  ppc64el  riscv64  arm64 ">
+                <td data-heading="Channel">1.23/edge</td>
+                <td data-heading="Revision">13</td>
+                <td data-heading="Published">25 Mar 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                      <span class="series-tag">Ubuntu 16.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-charm-header__code">
+    <div class="p-tooltip--information">
+      <div>
+        <code>juju deploy calico</code>
+      </div>
+      <div class="instruction-tooltip">
+        <div class="p-tooltip__button" role="button" aria-controls="icon-tooltip-modal" tabindex="0">
+          Show information
+        </div>
+        <div class="p-tooltip__modal" id="icon-tooltip-modal">
+          <div class="p-tooltip__dialog" role="dialog" aria-labelledby="modal-content">
+            <button class="p-tooltip__close" aria-controls="icon-tooltip-modal" aria-label="Close tooltip modal">Close</button>
+            <span id="modal-content" class="u-no-margin--bottom u-no-padding--top">
+              <p class="u-no-padding--top">You will need Juju 2.9 to be able to run this command. <a href="https://discourse.charmhub.io/t/juju-2-9-0-release-notes/4525">Learn how to upgrade to Juju 2.9</a>.</p>
+              
+              <p>Deploy universal operators easily with Juju, the <a href="https://juju.is/overview">Universal Operator Lifecycle Manager</a>.</p>
+              <p class="u-no-margin--bottom"><a href="https://juju.is/docs/deploying-applications#heading--deploying-from-the-charm-store">Learn how with our Quickstart Guide</a></p>
+              
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+    <div class="col-4">
+      <p style="margin-bottom: 0.5rem;">
+        <small class="u-no-padding--top u-text--muted">
+          Platform:
+        </small>
+      </p>
+
+      
+        
+          
+            
+              
+                <div class="series-base">
+                  <div class="series-base__title">
+                    
+                      <img src="https://assets.ubuntu.com/v1/adac6928-ubuntu.svg" alt="Ubuntu" width="89" height="20" class="p-image--base">
+                    
+                  </div>
+                  <div>
+                    
+                      <span class="series-tag">
+                        22.04
+                      </span>
+                    
+                      <span class="series-tag">
+                        20.04
+                      </span>
+                    
+                  </div>
+                </div>
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+      
+    </div>
+  </div>
+</div>
+  <div class="u-fixed-width">
+  <nav class="p-tabs" data-js="tabs" aria-label="Details pages navigation">
+    <ul class="p-tabs__list" role="tablist">
+      <li class="p-tabs__item" role="presentation">
+        <a href="/calico" class="p-tabs__link" tabindex="0" role="tab" aria-selected="true" >Description</a>
+      </li>
+      
+      <li class="p-tabs__item" role="presentation">
+        <a href="/calico/resources" class="p-tabs__link" tabindex="0" role="tab" >Resources</a>
+      </li>
+      <li class="p-tabs__item" role="presentation">
+        <a href="/calico/integrations" class="p-tabs__link" tabindex="0" role="tab" >Integrations</a>
+      </li>
+      <li class="p-tabs__item" role="presentation">
+        <a href="/calico/libraries" class="p-tabs__link" tabindex="0" role="tab" >Libraries</a>
+      </li>
+      
+      <li class="p-tabs__item" role="presentation">
+        <a href="/calico/configure" class="p-tabs__link" tabindex="0" role="tab" >Configure</a>
+      </li>
+      
+      <li class="p-tabs__item" role="presentation">
+        <a href="/calico/actions" class="p-tabs__link" tabindex="0" role="tab" >Actions</a>
+      </li>
+      
+    </ul>
+  </nav>
+</div>
+
+
+  
+  <div class="row p-details-tab__content">
+    <div class="col-3 p-details-tab__content__sidebar">
+      
+
+
+  
+  <nav data-js="navigation" class="p-side-navigation--raw-html" id="default">
+    <a href="#default" class="p-side-navigation__toggle js-drawer-toggle" aria-controls="default">
+      Toggle side navigation
+    </a>
+    <div class="p-side-navigation__overlay js-drawer-toggle" aria-controls="default"></div>
+    <div class="p-side-navigation__drawer">
+      <div class="p-side-navigation__drawer-header">
+        <a href="#" class="p-side-navigation__toggle--in-drawer js-drawer-toggle" aria-controls="default">
+          Toggle side navigation
+        </a>
+      </div>
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          class="p-side-navigation__link "
+          href="/calico"
+          
+          aria-current="page"
+        >Overview</a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </div>
+  </nav>
+  <hr class="p-separator--shallow" />
+
+
+<!-- Once there is a topology image available, uncomment the section below -->
+
+
+
+
+  <h4 class="p-heading--5 u-no-margin--bottom">Relevant links</h4>
+  <ul class="p-list">
+    
+      <li class="p-list__item u-no-margin--bottom">
+        <a href="https://github.com/charmed-kubernetes/layer-calico"><i class="p-icon--home"></i>&nbsp;&nbsp;Homepage</a>
+      </li>
+    
+    
+    
+    
+  </ul>
+  <hr class="p-separator--shallow" />
+
+<!-- Once `links` is fully ready we can remove the `request.args` check -->
+
+
+<h4 class="p-heading--5 u-no-margin--bottom">Discuss this charm</h4>
+<p>Share your thoughts on this charm with the community on discourse.</p>
+<p><a class="p-button" href="https://discourse.charmhub.io/">Join the discussion</a></p>
+
+<script src="/static/js/dist/docs-side-nav.js?v=12819d8"></script>
+    </div>
+    <div class="col-9 p-details-tab__content__body">
+      
+      <div class="js-readme-content">
+        
+        
+          <p><p>Calico is a new approach to virtual networking and network security for containers,
+VMs, and bare metal services, that provides a rich set of security enforcement
+capabilities running on top of a highly scalable and efficient virtual network fabric.</p>
+<p>This charm will deploy calico as a background service, and configure CNI for
+use with calico, on any principal charm that implements the <a href="https://github.com/juju-solutions/interface-kubernetes-cni">kubernetes-cni</a>
+interface.</p>
+<h2>Usage</h2>
+<p>The calico charm is a <a href="https://juju.is/docs/sdk#heading--subordinate-charms">subordinate</a>. This charm will require a principal charm
+that implements the <code>kubernetes-cni</code> interface in order to properly deploy.</p>
+<pre><code class="lang-auto">juju deploy calico
+juju deploy etcd
+juju deploy kubernetes-control-plane
+juju deploy kubernetes-worker
+juju add-relation calico etcd
+juju add-relation calico kubernetes-control-plane
+juju add-relation calico kubernetes-worker
+</code></pre>
+<ul>
+<li><a href="https://www.projectcalico.org/">Calico Homepage</a></li>
+</ul></p>
+        
+      </div>
+      
+        <hr class="p-separator--medium" />
+        <div class="p-notification--information">
+          <div class="p-notification__content">
+            <p class="p-notification__message">
+              <a href="https://discourse.charmhub.io/t/calico-docs-index/6167" class="p-link--external">Help improve this document in the forum</a> (<a href="https://discourse.charmhub.io/t/how-to-write-docs-our-documentation-guidelines-for-contributors/1245" class="p-link--external">guidelines</a>). Last updated 1 year, 6 months ago. 
+            </p>
+          </div>
+        </div>
+      
+    </div>
+  </div>
+
+
+    </main>
+
+    <hr />
+
+<footer class="p-strip">
+  <div class="row">
+    <div class="col-3">
+      <h2 class="p-heading--5">Juju</h2>
+
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/#what-is-juju"><small>What is Juju?</small></a>
+        </li>
+
+        <!--<li class="p-list__item">
+          <a class="p-link--soft" href="https://charmhub.io"><small>What is Charmhub?</small></a>
+        </li>-->
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/docs/juju/reference"><small>What are Charms?</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/model-driven-operations-manifesto"><small>Charm Manifesto</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/docs/sdk"><small>Charm SDK</small></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-3">
+      <h2 class="p-heading--5">Charms</h2>
+
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="/?base=all&filter=databases,big-data"><small>Data</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://ubuntu.com/kubernetes"><small>Charmed Kubernetes</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://ubuntu.com/openstack"><small>Charmed OpenStack</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-heading--5 p-link--soft" href="/"><small>All operators&nbsp;&rsaquo;</small></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-3">
+      <h2 class="p-heading--5">Compare</h2>
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/operators-and-charmed-operators"><small>Operators & Charms</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/beyond-helm-and-kustomize-the-future-of-kubernetes-apps"><small>Helm alternative</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/beyond-helm-and-kustomize-the-future-of-kubernetes-apps"><small>Kustomize alternative</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/ansible-vs-terraform-vs-juju-fight-or-cooperation"><small>Ansible alternative</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/juju-vs-infrastructure-as-code-tools"><small>Terraform alternative</small></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-3">
+      <h2 class="p-heading--5">Blog</h2>
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/ubuntu-and-canonical-at-kubecon-europe-2021"><small>Best Practices for creating charms</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/model-driven-operations-manifesto"><small>Model Driven Operations Manifesto</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/beyond-helm-and-kustomize-the-future-of-kubernetes-apps"><small>Why Helm and Kustomize Aren’t Enough: the Future of Kubernetes Apps</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/operators-and-charmed-operators"><small>Comparing Operators to Charms</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-heading--5 p-link--soft" href="https://juju.is/blog"><small>Read all of our blogs&nbsp;&rsaquo;</small></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="u-sv2 u-fixed-width">
+      <hr>
+    </div>
+  </div>
+
+  <div class="p-strip is-shallow">
+    <div class="row u-vertically-center">
+      <div class="col-6">
+        <h2>Join the community</h2>
+      </div>
+
+      <div class="col-6">
+        <ul class="p-inline-list u-no-margin--bottom u-float-right--medium u-float-right--large">
+          <li class="p-inline-list__item">
+            <a href="https://chat.charmhub.io/charmhub/channels/juju" class="p-icon--chat">Chat</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="http://discourse.charmhub.io/" class="p-icon--forum">Discourse</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="https://juju.is/careers" class="p-icon--careers">Careers</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="https://github.com/canonical/operator/" class="p-icon--github">GitHub</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="http://www.twitter.com/juju_devops" class="p-icon--twitter">Twitter</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="http://youtube.com/jujucharms" class="p-icon--youtube">YouTube</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="u-sv2 u-fixed-width">
+      <hr>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft js-revoke-cookie-manager" href=""><small>Manage your tracker settings</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://www.ubuntu.com/legal"><small>Legal Information</small></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+    <!-- Set default Marketo information for contact form below-->
+    <div class="u-hide" id="contact-form-container" data-form-location="/get-in-touch" data-form-id="1337" data-lp-id="2313" data-return-url="http://charmhub.io/thank-you" data-lp-url=""></div>
+
+    <script src="/static/js/dist/base.js?v=c7e9a32"></script>
+    <script src="/static/js/dist/navigation-events.js?v=c9038b8"></script>
+
+    <script src="/static/js/build/global-nav/global-nav.js"></script>
+    <script>
+      canonicalGlobalNav.createNav({ breakpoint: 1110 });
+    </script>
+
+    
+  <script src="/static/js/dist/details.js?v=d47f781" defer></script>
+  <script src="/static/js/dist/highlight-js.js?v=472df03" defer></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      charmhub.details.init("calico");
+
+      const codeBlocks = document.querySelectorAll(".js-readme-content code");
+      codeBlocks.forEach((codeBlock) => {
+        codeBlock.classList.add("language-bash");
+      });
+      Prism.highlightAll();
+    });
+    </script>
+  
+  <script src="/static/js/dist/details_overview.js?v=3eb8905" defer></script>
+  
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      charmhub.details.overview.init();
+      
+    });
+  </script>
+
+
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@id": "https://charmhub.io/#organization",
+        "@type": "Organization",
+        "name": "Charmhub",
+        "logo": "https://assets.ubuntu.com/v1/3c4a2ba6-Canonical-Charmhub-2022.svg",
+        "url": "https://charmhub.io",
+        "sameAs": [
+          "https://github.com/canonical/operator/",
+          "https://en.wikipedia.org/wiki/Juju_(software)",
+          "https://twitter.com/juju_devops",
+          "https://www.youtube.com/@jujucharms"
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@id": "https://charmhub.ii/#website",
+        "@type": "WebPage",
+        "name": "Charmhub",
+        "url": "https://charmhub.io"
+      }
+    </script>
+    
+    
+<script type="application/ld+json">
+ {
+     "@context": "http://schema.org",
+     "@type": "SoftwareApplication",
+     "name": "Calico",
+     "image": "https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_sE5vgx5GS6Kt7iPAn8SrUSfAtKgs6ZBj_icon_883f4ae926638c939f78fc6766447bbcf33f444fd32d7fc2fe162ba1f6772542.png",
+     "url": "https://charmhub.io/calico",
+     "publisher": {
+         "@type": "Organization",
+         "name": "Canonical Kubernetes"
+     },
+     
+       "applicationCategory": "other",
+     
+     "operatingSystem": "",
+     "softwareVersion": "stable"
+ }
+</script>
+
+  </body>
+</html>

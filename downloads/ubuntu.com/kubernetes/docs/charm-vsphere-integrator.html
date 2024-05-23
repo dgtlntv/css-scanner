@@ -1,0 +1,1808 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Charmhub | Deploy VMware vSphere Integrator using Charmhub - The Open Operator Collection</title>
+
+    <meta name="description" content="Deploy the latest version of VMware vSphere Integrator on any cloud. Proxy charm to enable VMware vSphere integrations via Juju relations.
+" />
+
+   
+     <meta property="og:title" content="Deploy VMware vSphere Integrator using Charmhub - The Open Operator Collection"/>
+     <meta property="og:site_name" content="Charmhub"/>
+     <meta property="og:type" content="website"/>
+     <meta property="og:description" content="Deploy the latest version of VMware vSphere Integrator on any cloud. Proxy charm to enable VMware vSphere integrations via Juju relations.
+"/>
+     <meta property="og:image" content="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_ZXa21Cq0TzxAJE2BpPHWDFOnkQuHdSYv_icon_f56f3cd1361578c0468421193825956cf42fc5eaa305ed4fcde89a092e1ea0da.png" />
+     <meta property="og:image:width" content="200" />
+     <meta property="og:image:height" content="200" />
+     <meta property="og:image:alt" content="VMware vSphere Integrator charm logo" />
+     <meta property="og:url" content="https://charmhub.io" />
+     <meta property="twitter:card" content="summary" />
+     <meta property="twitter:site" content="@juju_devops" />
+     <meta property="twitter:creator" content="@juju_devops" />
+     <meta property="twitter:image" content="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_ZXa21Cq0TzxAJE2BpPHWDFOnkQuHdSYv_icon_f56f3cd1361578c0468421193825956cf42fc5eaa305ed4fcde89a092e1ea0da.png" />
+     <meta property="twitter:url" content="https://charmhum.io" />
+  
+
+    <meta name="copydoc" content="https://drive.google.com/drive/u/1/folders/1gqxew2MS9-OkQF5bTStPgmyLS35JpztF">
+    
+  
+
+    <link rel="canonical" href="https://charmhub.io/vsphere-integrator" />
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NNT2XX6');</script>
+    <!-- End Google Tag Manager -->
+
+    <script src="https://assets.ubuntu.com/v1/703e23c9-lazysizes+noscript+native-loading.5.1.2.min.js" defer></script>
+
+    <link rel="preconnect" href="https://res.cloudinary.com">
+
+    <link rel="preconnect" href="https://assets.ubuntu.com">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/styles.css?v=80d4c98" />
+
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/e8c07df6-Ubuntu-L_W.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/7f100985-Ubuntu-Th_W.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/f8097dea-Ubuntu-LI_W.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/fff37993-Ubuntu-R_W.woff2" crossorigin>
+    <link rel="search" type="application/opensearchdescription+xml" title="Charmhub" href="/static/opensearch.xml" />
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNT2XX6"
+    height="0" width="0" style="display: none; visibility: hidden;"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <header id="navigation" class="p-navigation is-dark">
+  <div class="p-navigation__row">
+    <div class="p-navigation__banner">
+      <div class="p-navigation__tagged-logo">
+        <a class="p-navigation__link" href="https://juju.is">
+          <div class="p-navigation__logo-tag">
+            <img class="p-navigation__logo-icon" src="https://assets.ubuntu.com/v1/a603c7c9-Favicon - Juju.svg" alt="Canonical Juju" />
+          </div>
+          <span class="p-navigation__logo-title">Canonical Juju</span>
+        </a>
+      </div>
+      <ul class="p-navigation__items">
+        <li class="p-navigation__item">
+          <a href="#navigation" class="p-navigation__toggle--open" title="menu">Menu</a>
+          <a href="#navigation-closed" class="p-navigation__toggle--close" title="close menu">Close menu</a>
+        </li>
+      </ul>
+    </div>
+    <nav class="p-navigation__nav">
+      <ul class="p-navigation__items">
+        <li class="p-navigation__item">
+          <a class="p-navigation__link" href="/">Charmhub</a>
+        </li>
+        <li class="p-navigation__item--dropdown-toggle" id="community-link">
+          <a class="p-navigation__link" href="#community-link-menu" aria-controls="community-link-menu">Community</a>
+          <ul class="p-navigation__dropdown" id="community-link-menu" aria-hidden="true">
+            <li>
+              <a href="https://discourse.charmhub.io" class="p-navigation__dropdown-item">
+                Discourse forum
+              </a>
+            </li>
+            <li>
+              <a href="https://chat.charmhub.io/" class="p-navigation__dropdown-item">
+                Mattermost chat
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="p-navigation__item--dropdown-toggle" id="docs-link">
+          <a class="p-navigation__link" href="#docs-link-menu" aria-controls="docs-link-menu">Docs</a>
+          <ul class="p-navigation__dropdown" id="docs-link-menu" aria-hidden="true">
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/docs/juju">Juju</a>
+            </li>
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/docs/sdk">Charm SDK</a>
+            </li>
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/docs/dev">Contribute to Juju</a>
+            </li>
+            <li>
+              <a class="p-navigation__dropdown-item" href="https://juju.is/operator-day">Operator Day</a>
+            </li>
+          </ul>
+        </li>
+        <li class="p-navigation__item">
+          <a class="p-navigation__link" href="https://ubuntu.com/blog/tag/juju">Blog</a>
+        </li>
+      </ul>
+      <ul class="p-navigation__items global-nav">
+        <li class="p-navigation__item js-nav-account" id="user-link">
+          
+          <a href="#user-link-menu" aria-controls="user-link-menu" class="p-navigation__link js-nav-account--authenticated u-hide js-account--name account-name">My account</a>
+          <ul class="p-navigation__dropdown--right" id="user-link-menu" aria-hidden="true">
+            <li>
+              <a href="/charms" class="p-navigation__dropdown-item">My charms and bundles</a>
+            </li>
+            <li>
+              <a href="/logout" class="p-navigation__dropdown-item">Sign out</a>
+            </li>
+          </ul>
+          
+          <a class="p-navigation__link js-nav-account--notauthenticated" href="/charms">
+            Sign in
+            <i class="p-icon--user is-light"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <main id="main-content">
+      
+  <div class="p-strip--light is-shallow">
+  
+  <div class="row">
+    <div class="col-8">
+      <div class="p-charm-header">
+        <div class="p-media-object--large">
+          
+            
+              
+<div class="lazyload" data-noscript>
+  <noscript>
+    <img
+      src="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_100,h_100/https://api.charmhub.io/api/v1/media/download/charm_ZXa21Cq0TzxAJE2BpPHWDFOnkQuHdSYv_icon_f56f3cd1361578c0468421193825956cf42fc5eaa305ed4fcde89a092e1ea0da.png"
+      srcset="https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_ZXa21Cq0TzxAJE2BpPHWDFOnkQuHdSYv_icon_f56f3cd1361578c0468421193825956cf42fc5eaa305ed4fcde89a092e1ea0da.png 2x"
+      alt="vsphere-integrator"
+      width="100"
+      height="100"
+      loading="lazy"
+      class="p-media-object__image"
+    />
+  </noscript>
+</div>
+
+            
+          
+          <div class="p-media-object__details">
+            <h1 class="p-media-object__title">
+              VMware vSphere Integrator
+            </h1>
+            <div class="p-media-object__content u-no-margin--bottom">
+              <ul class="p-inline-list--middot">
+                <li class="p-inline-list__item">
+                  
+                    By Canonical Kubernetes
+                  
+		  
+                  
+                </li>
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="p-charm-header__container">
+  <div style="position: relative;">
+    <button class="p-button p-channel-map__button" data-controls="channel-map-versions" aria-controls="channel-map-versions" data-js="channel-map">
+      <span data-js="channel-map-selected">
+        stable aa0d6a1
+      </span>
+      &nbsp;&nbsp;<i class="p-icon--chevron-down"></i>
+    </button>
+    <div class="p-channel-map u-hide">
+      <div class="p-channel-map__mask">
+      </div>
+      <div class="p-card--highlighted p-channel-map__content">
+        <div class="u-fixed-width">
+          <div class="p-form p-form--inline">
+            <div class="p-form__group">
+              <label class="p-form__label">Architecture:</label>
+              <div class="p-form__control">
+                <select data-js="channel-map-filter">
+                  <option value="any">Any</option>
+                  
+                  <option value="s390x">s390x</option>
+                  
+                  <option value="arm64">arm64</option>
+                  
+                  <option value="armhf">armhf</option>
+                  
+                  <option value="riscv64">riscv64</option>
+                  
+                  <option value="powerpc">powerpc</option>
+                  
+                  <option value="ppc64el">ppc64el</option>
+                  
+                  <option value="i386">i386</option>
+                  
+                  <option value="amd64">amd64</option>
+                  
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="u-fixed-width">
+          <table class="p-table--mobile-card">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Revision</th>
+                <th>Published</th>
+                <th>Runs on</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="stable" data-channel-map-version="aa0d6a1" data-channel-map-filter=" s390x  arm64  amd64  s390x  arm64  amd64  s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">latest/stable</td>
+                <td data-heading="Revision">49</td>
+                <td data-heading="Published">26 Sep 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="candidate" data-channel-map-version="aa0d6a1" data-channel-map-filter=" s390x  arm64  amd64  s390x  arm64  amd64  s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">latest/candidate</td>
+                <td data-heading="Revision">49</td>
+                <td data-heading="Published">22 Sep 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="beta" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64  s390x  arm64  amd64  s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">latest/beta</td>
+                <td data-heading="Revision">44</td>
+                <td data-heading="Published">17 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="latest" data-channel-map-channel="edge" data-channel-map-version="2728826" data-channel-map-filter=" s390x  arm64  amd64  s390x  arm64  amd64  s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">latest/edge</td>
+                <td data-heading="Revision">47</td>
+                <td data-heading="Published">30 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.29" data-channel-map-channel="edge" data-channel-map-version="2728826" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.29/edge</td>
+                <td data-heading="Revision">47</td>
+                <td data-heading="Published">30 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="stable" data-channel-map-version="aa0d6a1" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.28/stable</td>
+                <td data-heading="Revision">49</td>
+                <td data-heading="Published">26 Sep 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="candidate" data-channel-map-version="aa0d6a1" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.28/candidate</td>
+                <td data-heading="Revision">49</td>
+                <td data-heading="Published">22 Sep 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="beta" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.28/beta</td>
+                <td data-heading="Revision">44</td>
+                <td data-heading="Published">07 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.28" data-channel-map-channel="edge" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.28/edge</td>
+                <td data-heading="Revision">45</td>
+                <td data-heading="Published">09 Aug 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="stable" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.27/stable</td>
+                <td data-heading="Revision">40</td>
+                <td data-heading="Published">12 Jun 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="candidate" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.27/candidate</td>
+                <td data-heading="Revision">40</td>
+                <td data-heading="Published">12 Jun 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="beta" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.27/beta</td>
+                <td data-heading="Revision">37</td>
+                <td data-heading="Published">09 Apr 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.27" data-channel-map-channel="edge" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.27/edge</td>
+                <td data-heading="Revision">35</td>
+                <td data-heading="Published">07 Apr 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="stable" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.26/stable</td>
+                <td data-heading="Revision">34</td>
+                <td data-heading="Published">27 Feb 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="candidate" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.26/candidate</td>
+                <td data-heading="Revision">34</td>
+                <td data-heading="Published">25 Feb 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="beta" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.26/beta</td>
+                <td data-heading="Revision">28</td>
+                <td data-heading="Published">09 Apr 2023</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.26" data-channel-map-channel="edge" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.26/edge</td>
+                <td data-heading="Revision">28</td>
+                <td data-heading="Published">19 Nov 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="stable" data-channel-map-version="30beb81" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.25/stable</td>
+                <td data-heading="Revision">27</td>
+                <td data-heading="Published">30 Sep 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="candidate" data-channel-map-version="30beb81" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.25/candidate</td>
+                <td data-heading="Revision">27</td>
+                <td data-heading="Published">28 Sep 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="beta" data-channel-map-version="d18bb9a" data-channel-map-filter=" s390x  arm64  amd64  s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.25/beta</td>
+                <td data-heading="Revision">29</td>
+                <td data-heading="Published">01 Dec 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.25" data-channel-map-channel="edge" data-channel-map-version="30beb81" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.25/edge</td>
+                <td data-heading="Revision">22</td>
+                <td data-heading="Published">09 Sep 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="stable" data-channel-map-version="1.24+ck1" data-channel-map-filter=" s390x  arm64  amd64  s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">1.24/stable</td>
+                <td data-heading="Revision">16</td>
+                <td data-heading="Published">04 Aug 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="candidate" data-channel-map-version="1.24+ck1" data-channel-map-filter=" s390x  arm64  amd64 ">
+                <td data-heading="Channel">1.24/candidate</td>
+                <td data-heading="Revision">16</td>
+                <td data-heading="Published">01 Aug 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="beta" data-channel-map-version="8b4a330" data-channel-map-filter=" s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">1.24/beta</td>
+                <td data-heading="Revision">8</td>
+                <td data-heading="Published">21 Apr 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                      <span class="series-tag">Ubuntu 16.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.24" data-channel-map-channel="edge" data-channel-map-version="30beb81" data-channel-map-filter=" s390x  arm64  amd64  s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">1.24/edge</td>
+                <td data-heading="Revision">15</td>
+                <td data-heading="Published">27 Jul 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 22.04</span>
+                      
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+              
+              <tr data-channel-map-track="1.23" data-channel-map-channel="beta" data-channel-map-version="79bb48d" data-channel-map-filter=" s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">1.23/beta</td>
+                <td data-heading="Revision">4</td>
+                <td data-heading="Published">22 Mar 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                      <span class="series-tag">Ubuntu 16.04</span>
+                      
+                    
+                    
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              <tr data-channel-map-track="1.23" data-channel-map-channel="edge" data-channel-map-version="79bb48d" data-channel-map-filter=" s390x  ppc64el  arm64  armhf  riscv64  powerpc  i386  amd64 ">
+                <td data-heading="Channel">1.23/edge</td>
+                <td data-heading="Revision">2</td>
+                <td data-heading="Published">24 Feb 2022</td>
+                <td data-heading="Runs on">
+                  <div class="series-tags u-no-margin--top">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                      <span class="series-tag">Ubuntu 20.04</span>
+                      
+                      <span class="series-tag">Ubuntu 18.04</span>
+                      
+                      <span class="series-tag">Ubuntu 16.04</span>
+                      
+                    
+                    
+                  </div>
+                </td>
+              </tr>
+              
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-charm-header__code">
+    <div class="p-tooltip--information">
+      <div>
+        <code>juju deploy vsphere-integrator</code>
+      </div>
+      <div class="instruction-tooltip">
+        <div class="p-tooltip__button" role="button" aria-controls="icon-tooltip-modal" tabindex="0">
+          Show information
+        </div>
+        <div class="p-tooltip__modal" id="icon-tooltip-modal">
+          <div class="p-tooltip__dialog" role="dialog" aria-labelledby="modal-content">
+            <button class="p-tooltip__close" aria-controls="icon-tooltip-modal" aria-label="Close tooltip modal">Close</button>
+            <span id="modal-content" class="u-no-margin--bottom u-no-padding--top">
+              <p class="u-no-padding--top">You will need Juju 2.9 to be able to run this command. <a href="https://discourse.charmhub.io/t/juju-2-9-0-release-notes/4525">Learn how to upgrade to Juju 2.9</a>.</p>
+              
+              <p>Deploy universal operators easily with Juju, the <a href="https://juju.is/overview">Universal Operator Lifecycle Manager</a>.</p>
+              <p class="u-no-margin--bottom"><a href="https://juju.is/docs/deploying-applications#heading--deploying-from-the-charm-store">Learn how with our Quickstart Guide</a></p>
+              
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+    <div class="col-4">
+      <p style="margin-bottom: 0.5rem;">
+        <small class="u-no-padding--top u-text--muted">
+          Platform:
+        </small>
+      </p>
+
+      
+        
+          
+            
+              
+                <div class="series-base">
+                  <div class="series-base__title">
+                    
+                      <img src="https://assets.ubuntu.com/v1/adac6928-ubuntu.svg" alt="Ubuntu" width="89" height="20" class="p-image--base">
+                    
+                  </div>
+                  <div>
+                    
+                      <span class="series-tag">
+                        22.04
+                      </span>
+                    
+                      <span class="series-tag">
+                        20.04
+                      </span>
+                    
+                  </div>
+                </div>
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+      
+    </div>
+  </div>
+</div>
+  <div class="u-fixed-width">
+  <nav class="p-tabs" data-js="tabs" aria-label="Details pages navigation">
+    <ul class="p-tabs__list" role="tablist">
+      <li class="p-tabs__item" role="presentation">
+        <a href="/vsphere-integrator" class="p-tabs__link" tabindex="0" role="tab" aria-selected="true" >Description</a>
+      </li>
+      
+      <li class="p-tabs__item" role="presentation">
+        <a href="/vsphere-integrator/resources" class="p-tabs__link" tabindex="0" role="tab" >Resources</a>
+      </li>
+      <li class="p-tabs__item" role="presentation">
+        <a href="/vsphere-integrator/integrations" class="p-tabs__link" tabindex="0" role="tab" >Integrations</a>
+      </li>
+      <li class="p-tabs__item" role="presentation">
+        <a href="/vsphere-integrator/libraries" class="p-tabs__link" tabindex="0" role="tab" >Libraries</a>
+      </li>
+      
+      <li class="p-tabs__item" role="presentation">
+        <a href="/vsphere-integrator/configure" class="p-tabs__link" tabindex="0" role="tab" >Configure</a>
+      </li>
+      
+      <li class="p-tabs__item" role="presentation">
+        <a href="/vsphere-integrator/actions" class="p-tabs__link" tabindex="0" role="tab" >Actions</a>
+      </li>
+      
+    </ul>
+  </nav>
+</div>
+
+
+  
+  <div class="row p-details-tab__content">
+    <div class="col-3 p-details-tab__content__sidebar">
+      
+
+
+  
+  <nav data-js="navigation" class="p-side-navigation--raw-html" id="default">
+    <a href="#default" class="p-side-navigation__toggle js-drawer-toggle" aria-controls="default">
+      Toggle side navigation
+    </a>
+    <div class="p-side-navigation__overlay js-drawer-toggle" aria-controls="default"></div>
+    <div class="p-side-navigation__drawer">
+      <div class="p-side-navigation__drawer-header">
+        <a href="#" class="p-side-navigation__toggle--in-drawer js-drawer-toggle" aria-controls="default">
+          Toggle side navigation
+        </a>
+      </div>
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+    <li class="p-side-navigation__item">
+      
+        <a
+          class="p-side-navigation__link "
+          href="/vsphere-integrator"
+          
+          aria-current="page"
+        >Overview</a>
+      
+
+      
+        
+        
+  <ul class="p-side-navigation__list">
+    
+  </ul>
+
+      
+    </li>
+    
+  </ul>
+
+      
+    </div>
+  </nav>
+  <hr class="p-separator--shallow" />
+
+
+<!-- Once there is a topology image available, uncomment the section below -->
+
+
+
+
+  <h4 class="p-heading--5 u-no-margin--bottom">Relevant links</h4>
+  <ul class="p-list">
+    
+      <li class="p-list__item u-no-margin--bottom">
+        <a href="https://github.com/juju-solutions/charm-vsphere-integrator"><i class="p-icon--home"></i>&nbsp;&nbsp;Homepage</a>
+      </li>
+    
+    
+    
+    
+  </ul>
+  <hr class="p-separator--shallow" />
+
+<!-- Once `links` is fully ready we can remove the `request.args` check -->
+
+
+<h4 class="p-heading--5 u-no-margin--bottom">Discuss this charm</h4>
+<p>Share your thoughts on this charm with the community on discourse.</p>
+<p><a class="p-button" href="https://discourse.charmhub.io/">Join the discussion</a></p>
+
+<script src="/static/js/dist/docs-side-nav.js?v=12819d8"></script>
+    </div>
+    <div class="col-9 p-details-tab__content__body">
+      
+      <div class="js-readme-content">
+        
+        
+          <p><p>This charm acts as a proxy to VMware vSphere and provides an <a href="https://github.com/juju-solutions/interface-vsphere-integration">interface</a> to
+provide a set of credentials for a somewhat limited project user to the
+applications that are related to this charm.</p>
+<h2>Usage</h2>
+<p>When on a vSphere cloud, this charm can be deployed, granted trust via Juju to
+access vSphere, and then related to an application that supports the
+<a href="https://github.com/juju-solutions/interface-vsphere-integration">interface</a>.</p>
+<p>For example, <a href="https://charmhub.io/charmed-kubernetes">Charmed Kubernetes</a> has support for this, and can be
+deployed with the following bundle overlay:</p>
+<pre><code class="lang-yaml">applications:
+  vsphere-integrator:
+    charm: cs:~containers/vsphere-integrator
+    num_units: 1
+relations:
+  - ['vsphere-integrator', 'kubernetes-control-plane']
+  - ['vsphere-integrator', 'kubernetes-worker']
+</code></pre>
+<p>Using Juju 2.4 or later:</p>
+<pre><code class="lang-bash">juju deploy charmed-kubernetes --overlay ./k8s-vsphere-overlay.yaml
+juju trust vsphere-integrator
+</code></pre>
+<p>To deploy with earlier versions of Juju, you will need to provide the cloud
+credentials via the <code>credentials</code> charm config option:</p>
+<pre><code class="lang-bash">cat &lt;&lt;EOJ &gt; /path/to/cloud.json
+{
+  "vsphere_ip": "a.b.c.d",
+  "user": "joe",
+  "password": "passw0rd",
+  "datacenter": "dc0"
+}
+EOJ
+
+juju config vsphere-integrator credentials="$(base64 /path/to/cloud.json)"
+</code></pre>
+<h2>Configuration</h2>
+<p>This charm supports multiple config options that can be used to describe they
+vSphere environment.</p>
+<p>The only required option is <code>datastore</code>, as it is not included in the Juju
+credential that this charm relies on. By default, this is set to <em>datastore1</em>.
+This can be changed with:</p>
+<pre><code class="lang-bash">juju config vsphere-integrator datastore='mydatastore'
+</code></pre>
+<p>You may also configure a <em>folder</em> and <em>resource pool path</em> for this charm.
+Details about these options can be found in the <a href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/existing.html">vmware documentation</a>:</p>
+<pre><code class="lang-bash">juju config vsphere-integrator folder='juju-kubernetes' respool_path='foo'
+</code></pre>
+<p>As mentioned in the <strong>Usage</strong> section, <code>credentials</code> may be set with a
+base64-encoded json file. When set, this data will take precedent over all
+other methods of specifying credentials for this charm.</p>
+<p>If <code>credentials</code> is empty, there are config options for each key that
+constitute a Juju credential. These can be set with:</p>
+<pre><code class="lang-bash">juju config vsphere-integrator \
+  vsphere_ip='a.b.c.d' \
+  user='joe' \
+  password='passw0rd' \
+  datacenter='dc0'
+</code></pre>
+<blockquote>
+<p>Note: If any of the credential config options are set, they must all be set.</p>
+</blockquote>
+<p>When all of the credential config options are empty, this charm will fall
+back to the credential data it received with <code>juju trust vsphere-integrator</code>.</p>
+<h2>Resource Usage Note</h2>
+<p>By relating to this charm, other charms can directly allocate resources, such
+as PersistentDisk volumes, which could lead to cloud charges and count against
+quotas.  Because these resources are not managed by Juju, they will not be
+automatically deleted when the models or applications are destroyed, nor will
+they show up in Juju’s status or GUI.  It is therefore up to the operator to
+manually delete these resources when they are no longer needed, using the
+vCenter console or API.</p>
+<h2>Examples</h2>
+<p>The following are some examples using vSphere integration with Charmed
+Kubernetes.</p>
+<h3>Creating a pod with a PersistentDisk-backed volume</h3>
+<p>This script creates a busybox pod with a persistent volume claim backed by
+vSphere’s PersistentDisk.</p>
+<pre><code class="lang-bash">#!/bin/bash
+
+# create a storage class using the `kubernetes.io/vsphere-volume` provisioner
+kubectl create -f - &lt;&lt;EOY
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: mystorage
+provisioner: kubernetes.io/vsphere-volume
+parameters:
+  diskformat: zeroedthick
+EOY
+
+# create a persistent volume claim using that storage class
+kubectl create -f - &lt;&lt;EOY
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: testclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: mystorage
+EOY
+
+# create the busybox pod with a volume using that PVC:
+kubectl create -f - &lt;&lt;EOY
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: default
+spec:
+  containers:
+    - image: busybox
+      command:
+        - sleep
+        - "3600"
+      imagePullPolicy: IfNotPresent
+      name: busybox
+      volumeMounts:
+        - mountPath: "/pv"
+          name: testvolume
+  restartPolicy: Always
+  volumes:
+    - name: testvolume
+      persistentVolumeClaim:
+        claimName: testclaim
+EOY
+</code></pre></p>
+        
+      </div>
+      
+        <hr class="p-separator--medium" />
+        <div class="p-notification--information">
+          <div class="p-notification__content">
+            <p class="p-notification__message">
+              <a href="https://discourse.charmhub.io/t/vsphere-integrator-docs-index/6216" class="p-link--external">Help improve this document in the forum</a> (<a href="https://discourse.charmhub.io/t/how-to-write-docs-our-documentation-guidelines-for-contributors/1245" class="p-link--external">guidelines</a>). Last updated 1 year, 6 months ago. 
+            </p>
+          </div>
+        </div>
+      
+    </div>
+  </div>
+
+
+    </main>
+
+    <hr />
+
+<footer class="p-strip">
+  <div class="row">
+    <div class="col-3">
+      <h2 class="p-heading--5">Juju</h2>
+
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/#what-is-juju"><small>What is Juju?</small></a>
+        </li>
+
+        <!--<li class="p-list__item">
+          <a class="p-link--soft" href="https://charmhub.io"><small>What is Charmhub?</small></a>
+        </li>-->
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/docs/juju/reference"><small>What are Charms?</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/model-driven-operations-manifesto"><small>Charm Manifesto</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/docs/sdk"><small>Charm SDK</small></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-3">
+      <h2 class="p-heading--5">Charms</h2>
+
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="/?base=all&filter=databases,big-data"><small>Data</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://ubuntu.com/kubernetes"><small>Charmed Kubernetes</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://ubuntu.com/openstack"><small>Charmed OpenStack</small></a>
+        </li>
+
+        <li class="p-list__item">
+          <a class="p-heading--5 p-link--soft" href="/"><small>All operators&nbsp;&rsaquo;</small></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-3">
+      <h2 class="p-heading--5">Compare</h2>
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/operators-and-charmed-operators"><small>Operators & Charms</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/beyond-helm-and-kustomize-the-future-of-kubernetes-apps"><small>Helm alternative</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/beyond-helm-and-kustomize-the-future-of-kubernetes-apps"><small>Kustomize alternative</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/ansible-vs-terraform-vs-juju-fight-or-cooperation"><small>Ansible alternative</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/juju-vs-infrastructure-as-code-tools"><small>Terraform alternative</small></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-3">
+      <h2 class="p-heading--5">Blog</h2>
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/ubuntu-and-canonical-at-kubecon-europe-2021"><small>Best Practices for creating charms</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/model-driven-operations-manifesto"><small>Model Driven Operations Manifesto</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/beyond-helm-and-kustomize-the-future-of-kubernetes-apps"><small>Why Helm and Kustomize Aren’t Enough: the Future of Kubernetes Apps</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://juju.is/blog/operators-and-charmed-operators"><small>Comparing Operators to Charms</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-heading--5 p-link--soft" href="https://juju.is/blog"><small>Read all of our blogs&nbsp;&rsaquo;</small></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="u-sv2 u-fixed-width">
+      <hr>
+    </div>
+  </div>
+
+  <div class="p-strip is-shallow">
+    <div class="row u-vertically-center">
+      <div class="col-6">
+        <h2>Join the community</h2>
+      </div>
+
+      <div class="col-6">
+        <ul class="p-inline-list u-no-margin--bottom u-float-right--medium u-float-right--large">
+          <li class="p-inline-list__item">
+            <a href="https://chat.charmhub.io/charmhub/channels/juju" class="p-icon--chat">Chat</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="http://discourse.charmhub.io/" class="p-icon--forum">Discourse</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="https://juju.is/careers" class="p-icon--careers">Careers</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="https://github.com/canonical/operator/" class="p-icon--github">GitHub</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="http://www.twitter.com/juju_devops" class="p-icon--twitter">Twitter</a>
+          </li>
+          <li class="p-inline-list__item">
+            <a href="http://youtube.com/jujucharms" class="p-icon--youtube">YouTube</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="u-sv2 u-fixed-width">
+      <hr>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <ul class="p-list">
+        <li class="p-list__item">
+          <a class="p-link--soft js-revoke-cookie-manager" href=""><small>Manage your tracker settings</small></a>
+        </li>
+        <li class="p-list__item">
+          <a class="p-link--soft" href="https://www.ubuntu.com/legal"><small>Legal Information</small></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+    <!-- Set default Marketo information for contact form below-->
+    <div class="u-hide" id="contact-form-container" data-form-location="/get-in-touch" data-form-id="1337" data-lp-id="2313" data-return-url="http://charmhub.io/thank-you" data-lp-url=""></div>
+
+    <script src="/static/js/dist/base.js?v=c7e9a32"></script>
+    <script src="/static/js/dist/navigation-events.js?v=c9038b8"></script>
+
+    <script src="/static/js/build/global-nav/global-nav.js"></script>
+    <script>
+      canonicalGlobalNav.createNav({ breakpoint: 1110 });
+    </script>
+
+    
+  <script src="/static/js/dist/details.js?v=d47f781" defer></script>
+  <script src="/static/js/dist/highlight-js.js?v=472df03" defer></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      charmhub.details.init("vsphere-integrator");
+
+      const codeBlocks = document.querySelectorAll(".js-readme-content code");
+      codeBlocks.forEach((codeBlock) => {
+        codeBlock.classList.add("language-bash");
+      });
+      Prism.highlightAll();
+    });
+    </script>
+  
+  <script src="/static/js/dist/details_overview.js?v=3eb8905" defer></script>
+  
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      charmhub.details.overview.init();
+      
+    });
+  </script>
+
+
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@id": "https://charmhub.io/#organization",
+        "@type": "Organization",
+        "name": "Charmhub",
+        "logo": "https://assets.ubuntu.com/v1/3c4a2ba6-Canonical-Charmhub-2022.svg",
+        "url": "https://charmhub.io",
+        "sameAs": [
+          "https://github.com/canonical/operator/",
+          "https://en.wikipedia.org/wiki/Juju_(software)",
+          "https://twitter.com/juju_devops",
+          "https://www.youtube.com/@jujucharms"
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@id": "https://charmhub.ii/#website",
+        "@type": "WebPage",
+        "name": "Charmhub",
+        "url": "https://charmhub.io"
+      }
+    </script>
+    
+    
+<script type="application/ld+json">
+ {
+     "@context": "http://schema.org",
+     "@type": "SoftwareApplication",
+     "name": "VMware vSphere Integrator",
+     "image": "https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_200,h_200/https://api.charmhub.io/api/v1/media/download/charm_ZXa21Cq0TzxAJE2BpPHWDFOnkQuHdSYv_icon_f56f3cd1361578c0468421193825956cf42fc5eaa305ed4fcde89a092e1ea0da.png",
+     "url": "https://charmhub.io/vsphere-integrator",
+     "publisher": {
+         "@type": "Organization",
+         "name": "Canonical Kubernetes"
+     },
+     
+       "applicationCategory": "other",
+     
+     "operatingSystem": "",
+     "softwareVersion": "stable"
+ }
+</script>
+
+  </body>
+</html>
